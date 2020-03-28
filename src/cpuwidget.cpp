@@ -42,6 +42,9 @@ DWIDGET_USE_NAMESPACE
 
 CpuWidget::CpuWidget(QWidget *parent) : DeviceInfoWidgetBase(parent, tr("CPU"))
 {
+//    ArticleStruct model("address sizes");
+
+
     initWidget();
 }
 

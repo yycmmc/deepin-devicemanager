@@ -225,7 +225,7 @@ bool DeviceInfoParser::queryRemainderDeviceInfo(const QString &toolname,
     }
 #if GenerateTsItem
     //handl pasting may cause chaos,so put those all in one file
-    QFile file(QString("../../translate/ManulTrack.txt").arg(context));
+    QFile file(QString("./ManulTrack.txt").arg(context));
     QTextStream *out = nullptr;
     static bool startWrite = true;
     if (startWrite == true) {
@@ -233,7 +233,7 @@ bool DeviceInfoParser::queryRemainderDeviceInfo(const QString &toolname,
             file.remove();
         startWrite = false;
     }
-    if (file.open(QIODevice::WriteOnly | QIODevice::Append)) {
+    if (file.open(QIODevice::ReadWrite|QIODevice::Append)) {
         out = new QTextStream(&file);
         if (context != nullptr && disambiguation != nullptr) {
             *out << "<context>\n"

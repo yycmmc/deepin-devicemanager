@@ -287,7 +287,7 @@ bool MemoryWidget::update_l_Designer_l_WholeDownWidget()
 //        if (mem.contains("size", Qt::CaseInsensitive)) {
 //            DeviceInfoParser::Instance().queryRemainderDeviceInfo("dmidecode", mem, articles, existArticles);
 //        }
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("dmidecode", mem, articles, existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("dmidecode", mem, articles, existArticles ,"ManulTrack__Memory", "Memory Information");
 
         QString deviceName = vendor.value + " " + model.value;
         if (vendor.value == tr("Unknown") && model.value == tr("Unknown")) {
@@ -513,7 +513,7 @@ void MemoryWidget::updateWholeDownWidget_Good()
         articles.push_back(configSpeed);
         existArticles.insert("Configured Memory Speed");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("dmidecode", mem, articles, existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("dmidecode", mem, articles, existArticles, "ManulTrack__Memory", "Memory Information");
 
         QString deviceName;
         if (locator.isValid()) {

@@ -125,7 +125,7 @@ bool KeyboardWidget::findKeyboardFromLshw()
         articles.push_back(capabilities);
         existArticles.insert("capabilities");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", keyboard, articles, existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", keyboard, articles, existArticles,"ManulTrack__KeyBoard","HUAWEI Keyboard");
 
         QString title = name.isValid()? name.value: description.value;
         m_articles.insert(title,articles);
@@ -221,7 +221,7 @@ bool KeyboardWidget::findKeyboardFromCatInput()
 
                 //existArticles.insert("Connected");
 
-                DeviceInfoParser::Instance().queryRemainderDeviceInfo("paired-devices", blueTooth, articles, existArticles);
+                DeviceInfoParser::Instance().queryRemainderDeviceInfo("paired-devices", blueTooth, articles, existArticles,"ManulTrack__KeyBoard","HUAWEI Keyboard");
             }
         }
 
@@ -285,7 +285,7 @@ bool KeyboardWidget::findKeyboardFromCatInput()
         articles.push_back(product);
         existArticles.insert("Product");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("catinput", device, articles, existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("catinput", device, articles, existArticles,"ManulTrack__KeyBoard","HUAWEI Keyboard");
 
         if( uniq.isValid() )
         {

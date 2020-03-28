@@ -94,7 +94,7 @@ void PrinterWidget::initWidget()
         articles.push_back(capabilities);
         existArticles.insert("capabilities");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", device, articles, existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", device, articles);
 
         addDevice( device, articles, lshwPrinterList.size() );
 

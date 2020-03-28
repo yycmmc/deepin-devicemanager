@@ -126,7 +126,7 @@ void DisplayadapterWidget::initWidget()
         articles.push_back(capabilities);
         existArticles.insert("capabilities");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", displayadapter, articles, existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", displayadapter, articles, existArticles,"ManulTrack__DisplayAdapter","HUAWEI DisplayAdapter");
 
         QString dpName = "";
         if ( displayadapterList.size() > 1 ) {

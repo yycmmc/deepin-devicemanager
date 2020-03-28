@@ -104,7 +104,7 @@ void NetworkadapterWidget::initWidget()
         articles.push_back(capabilities);
         existArticles.insert("capabilities");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", networkadapter, articles, existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", networkadapter, articles, existArticles,"ManulTrack__NetworkAdpater","HUAWEI NetworkAdpater");
 
         QString deviceName = name.value;
         if(name.isValid() == false && description.isValid())

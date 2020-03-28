@@ -95,7 +95,7 @@ void OtherPciDeviceWidget::initWidget()
         articles.push_back(capabilities);
         existArticles.insert("capabilities");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", device, articles, existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", device, articles, existArticles,"ManulTrack__OtherPciDevice","HUAWEI OtherPciDevice");
 
         addDevice( name.value, articles, otherPcideviceList.size() );
 
