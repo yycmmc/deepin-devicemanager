@@ -162,7 +162,7 @@
         <location filename="../src/bluetoothwidget.cpp" line="111"/>
         <source>Modalias</source>
         <comment>Bluetooth Info</comment>
-        <translation>Modalias</translation>
+        <translation>设置命令别名</translation>
     </message>
     <message>
         <location filename="../src/bluetoothwidget.cpp" line="114"/>
@@ -1530,12 +1530,22 @@
    <message><!-- manul track message -->
        <source>slot</source>
        <comment>HUAWEI NetworkAdpater</comment>
-       <translation type ="unfinished"></translation>
+       <translation>扩展插槽</translation>
    </message>
    <message><!-- manul track message -->
        <source>wireless</source>
        <comment>HUAWEI NetworkAdpater</comment>
        <translation>无线</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>network</source>
+       <comment>HUAWEI NetworkAdpater</comment>
+       <translation>网络</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>ip</source>
+       <comment>HUAWEI NetworkAdpater</comment>
+       <translation>IP</translation>
    </message>
 </context>
 <context>
@@ -2958,6 +2968,34 @@
    </message>
 </context>
 <context>
+<name>ManulTrack__Bluetooth_upower</name>
+   <message><!-- manul track message -->
+       <source>Modalias</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>设置命令别名</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Alias</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>别名</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Class</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>类</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Name</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>名称</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>UUID</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>UUID</translation>
+   </message>
+</context>
+<context>
 <name>ManulTrack__POWER</name>
    <message><!-- manul track message -->
        <source>has history</source>
@@ -3119,6 +3157,11 @@
        <comment>HUAWEI power</comment>
        <translation>警告级别</translation>
    </message>
+   <message><!-- manul track message -->
+       <source>time to empty</source>
+       <comment>HUAWEI power</comment>
+       <translation>清空时间</translation>
+   </message>
 </context>
 <context>
 <name>ManulTrack__Camera</name>
@@ -3144,21 +3187,59 @@
    </message>
 </context>
 <context>
+<name>ManulTrack__DisplayAdapter</name>
+   <message><!-- manul track message -->
+       <source>EGL client APIs</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>EGL接口</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>EGL version</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>EGL版本</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>GDDR capacity</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>GDDR容量</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>GL version</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>GL版本</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>GLSL version</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>GLSL版本</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>GPU type</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>GPU类型</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>GPU vendor</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>GPU供应商</translation>
+   </message>
+</context>
+<context>
 <name>ManulTrack__OtherDevice</name>
    <message><!-- manul track message -->
        <source>ansiversion</source>
        <comment>HUAWEI OtherDevice</comment>
-       <translation type ="unfinished"></translation>
+       <translation>ANSI版本</translation>
    </message>
    <message><!-- manul track message -->
        <source>generic</source>
        <comment>HUAWEI OtherDevice</comment>
-       <translation type ="unfinished"></translation>
+       <translation>无商标</translation>
    </message>
    <message><!-- manul track message -->
        <source>serial</source>
        <comment>HUAWEI OtherDevice</comment>
-       <translation type ="unfinished"></translation>
+       <translation>序列号</translation>
    </message>
 </context>
 </TS>
