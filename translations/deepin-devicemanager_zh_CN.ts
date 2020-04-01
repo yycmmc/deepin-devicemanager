@@ -1350,6 +1350,16 @@
 <context>
 <name>ManulTrack__Disk</name>
    <message><!-- manul track message -->
+       <source>SSD</source>
+       <comment>Disk Information</comment>
+       <translation>固态</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>SSD</source>
+       <comment>Disk Information</comment>
+       <translation>机械</translation>
+   </message>
+   <message><!-- manul track message -->
        <source>Type</source>
        <comment>Disk Information</comment>
        <translation>类型</translation>

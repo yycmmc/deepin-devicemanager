@@ -196,12 +196,13 @@ void DiskWidget::initWidget()
 
 
         ArticleStruct interface(tr("Interface","stroage info"));
-        QStringList lst = disk.split("_");
-        interface.value = tr("Unknown");
-        if( lst.size() > 2 )
-        {
-            interface.value = lst.at(lst.size() -2);
-        }
+        interface.value = tr("UFS 3.0");
+//        QStringList lst = disk.split("_");
+//        interface.value = tr("Unknown");
+//        if( lst.size() > 2 )
+//        {
+//            interface.value = lst.at(lst.size() -2);
+//        }
 
         ArticleStruct size(tr("Size","stroage info"));
         size.value = sizeStr1;
@@ -232,7 +233,8 @@ void DiskWidget::initWidget()
             existArticles.insert("Device Model");
 
             ArticleStruct description(tr("Description","stroage info"));
-            description.queryData("lshw", disk, "description");
+            description.value = tr("Universal Flash Storage");
+            //description.queryData("lshw", disk, "description");
             articles.push_back(description);
             existArticles.insert("description");
 
@@ -250,10 +252,11 @@ void DiskWidget::initWidget()
             articles.push_back(interface);
             existArticles.insert("SATA Version");
 
-            ArticleStruct rr(tr("Rotation Rate","stroage info"));
-            rr.value = rotationRate;
-            articles.push_back(rr);
-            existArticles.insert("Rotation Rate");
+//************华为临时要求删除转速
+//            ArticleStruct rr(tr("Rotation Rate","stroage info"));
+//            rr.value = rotationRate;
+//            articles.push_back(rr);
+//            existArticles.insert("Rotation Rate");
 
             articles.push_back(serial);
 
@@ -370,14 +373,14 @@ bool DiskWidget::getDiskType(const QString& diskProperty, QString& type)
 {
     if( diskProperty.contains("SSD", Qt::CaseInsensitive) || diskProperty.contains("Solid", Qt::CaseInsensitive) )
     {
-        type = "SSD";
+        type = DApplication::translate("ManulTrack__Disk", "SSD", "Disk Information");
         return true;
     }
 
     if(diskProperty.contains("HDD", Qt::CaseInsensitive) || diskProperty.contains("7200", Qt::CaseInsensitive) \
             || diskProperty.contains("5400", Qt::CaseInsensitive) || diskProperty.contains("rpm", Qt::CaseInsensitive))
     {
-        type = "HDD";
+        type = DApplication::translate("ManulTrack__Disk", "HDD", "Disk Information");
         return true;
     }
 
@@ -388,7 +391,7 @@ bool DiskWidget::getDiskType(const QString& diskProperty, QString& type)
             diskProperty.contains("Blue", Qt::CaseInsensitive) ||
             diskProperty.contains("Red", Qt::CaseInsensitive) ||
             diskProperty.contains("Scorpio", Qt::CaseInsensitive) )
-        type = "HDD";
+        type = DApplication::translate("ManulTrack__Disk", "HDD", "Disk Information");
         return true;
     }
 

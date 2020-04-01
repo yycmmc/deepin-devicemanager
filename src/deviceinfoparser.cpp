@@ -2834,9 +2834,9 @@ bool DeviceInfoParser::loadHwinfoDatabase()
 
 bool DeviceInfoParser::loadGpuInfo()
 {
-    if (isHuaweiAndroidUos() == false) {
-        return false;
-    }
+//    if (isHuaweiAndroidUos() == false) {
+//        return false;
+//    }
     if (false == executeProcess("gpuinfo")) {
         return false;
     }
