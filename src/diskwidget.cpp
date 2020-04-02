@@ -256,7 +256,7 @@ void DiskWidget::initWidget()
 //            ArticleStruct rr(tr("Rotation Rate","stroage info"));
 //            rr.value = rotationRate;
 //            articles.push_back(rr);
-//            existArticles.insert("Rotation Rate");
+            existArticles.insert("Rotation Rate");
 
             articles.push_back(serial);
 
