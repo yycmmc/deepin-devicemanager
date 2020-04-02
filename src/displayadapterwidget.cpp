@@ -33,8 +33,6 @@ DisplayadapterWidget::DisplayadapterWidget(QWidget *parent) : DeviceInfoWidgetBa
 
 void DisplayadapterWidget::initWidget()
 {
-    initGpuInof();
-    return;
     if(DeviceInfoParser::Instance().isHuaweiAndroidUos()){
         return initGpuInof();
     }
@@ -170,29 +168,22 @@ void DisplayadapterWidget::initWidget()
 void DisplayadapterWidget::initGpuInof()
 {
     QList<ArticleStruct> articles;
-    QSet<QString> existArticles;
-    DeviceInfoParser::Instance().queryRemainderDeviceInfo("gpuinfo", "Integrated Graphics Controller", articles, existArticles,"ManulTrack__DisplayAdapter","HUAWEI DisplayAdapter");
+    if (DeviceInfoParser::Instance().isHuaweiAndroidUos()) {
+        const auto &db = DeviceInfoParser::Instance().toolDatabase_.value("gpuinfo");
+        foreach (auto gpuKey, db.keys()) {
+            overviewInfo_.value += (overviewInfo_.value.isEmpty()) ? "" : " / ";
+            overviewInfo_.value += gpuKey;
 
-
-//    QList<ArticleStruct> articles;
-//    const auto &db = DeviceInfoParser::Instance().toolDatabase_.value("gpuinfo");
-//    foreach (auto gpuKey, db.keys()) {
-//        overviewInfo_.value += (overviewInfo_.value.isEmpty()) ? "" : " / ";
-//        overviewInfo_.value += gpuKey;
-
-//        articles.clear();
-//        foreach (auto artTitle, db.value(gpuKey).keys()) {
-//            ArticleStruct t(artTitle,true);
-//            t.value = db.value(gpuKey).value(artTitle);
-//            articles.push_back(t);
-//        }
-//        addDevice(gpuKey, articles, db.keys().count(),true);
-//    }
-
-//    if (DeviceInfoParser::Instance().isHuaweiAndroidUos()) {
-
-//    } else {
-//        setCentralInfo(tr("Failed to find display adapter information"));
-//    }
+            articles.clear();
+            foreach (auto artTitle, db.value(gpuKey).keys()) {
+                ArticleStruct t(artTitle);
+                t.value = db.value(gpuKey).value(artTitle);
+                articles.push_back(t);
+            }
+            addDevice(gpuKey, articles, db.keys().count(),true);
+        }
+    } else {
+        setCentralInfo(tr("Failed to find display adapter information"));
+    }
 }
 
