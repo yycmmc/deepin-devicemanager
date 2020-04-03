@@ -257,6 +257,8 @@ void DiskWidget::initWidget()
 //            rr.value = rotationRate;
 //            articles.push_back(rr);
             existArticles.insert("Rotation Rate");
+            existArticles.insert("SMART support");
+
 
             articles.push_back(serial);
 
