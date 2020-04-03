@@ -384,6 +384,10 @@ QStringList DeviceInfoParser::getLshwDiskNameList()
 {
     checkValueFun_t func = [](const QString & fk)->bool {
         int index = fk.lastIndexOf("disk");
+        qDebug() << fk;
+        if(fk == QString("Computer_core_pci:2_storage")){
+            qDebug() << fk;
+        }
 
         if ((index > 0 && fk.size() - index < 7))
         {
@@ -1589,6 +1593,10 @@ bool DeviceInfoParser::loadLshwDatabase()
 
             lshwDatabase_[deviceTypeName] = DeviceInfoMap;
             secondOrder.push_back(deviceTypeName);
+            if(QString("Computer_core_pci:2_storage") == deviceTypeName){
+
+                qDebug() << deviceTypeName;
+            }
 
             DeviceInfoMap.clear();
 
@@ -1620,7 +1628,7 @@ bool DeviceInfoParser::loadLshwDatabase()
         if (index > 0) {
             QString name = line.mid(0, index).trimmed().remove(Devicetype_lshw_Class_Prefix);
             if (name == "configuration" || name == "resources") {
-                QChar splitChar = name == "configuration" ? '=' : ':';
+                QChar splitChar = /*name == "configuration" ? '=' : */':';
 
                 QStringList lst = line.mid(index + 1).trimmed().split(splitChar);
                 if (lst.size() < 2) {
