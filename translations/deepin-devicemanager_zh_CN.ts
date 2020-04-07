@@ -311,7 +311,7 @@
     <message>
         <location filename="../src/cdromwidget.cpp" line="81"/>
         <source>ansicersion</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/cdromwidget.cpp" line="86"/>
@@ -1038,37 +1038,61 @@
     <message>
         <location filename="../src/keyboardwidget.cpp" line="99"/>
         <source>Serial ID</source>
-        <translation type="unfinished">序列号</translation>
+        <translation>序列号</translation>
     </message>
     <message>
         <location filename="../src/keyboardwidget.cpp" line="101"/>
         <source>Status</source>
-        <translation type="unfinished">状态</translation>
+        <translation>状态</translation>
     </message>
     <message>
         <location filename="../src/keyboardwidget.cpp" line="102"/>
         <source>Driver</source>
-        <translation type="unfinished">驱动</translation>
+        <translation>驱动</translation>
     </message>
     <message>
         <location filename="../src/keyboardwidget.cpp" line="103"/>
         <source>Speed</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/keyboardwidget.cpp" line="104"/>
         <source>BusID</source>
-        <translation type="unfinished">总线ID</translation>
+        <translation>总线ID</translation>
     </message>
     <message>
         <location filename="../src/keyboardwidget.cpp" line="106"/>
         <source>Unique ID</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/keyboardwidget.cpp" line="107"/>
         <source>SysFS ID</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/keyboardwidget.cpp" line="121"/>
+        <location filename="../src/keyboardwidget.cpp" line="207"/>
+        <source>driver</source>
+        <translation>驱动</translation>
+    </message>
+    <message>
+        <location filename="../src/keyboardwidget.cpp" line="126"/>
+        <location filename="../src/keyboardwidget.cpp" line="212"/>
+        <source>maxpower</source>
+        <translation>最大功率</translation>
+    </message>
+    <message>
+        <location filename="../src/keyboardwidget.cpp" line="131"/>
+        <location filename="../src/keyboardwidget.cpp" line="217"/>
+        <source>physical id</source>
+        <translation>物理ID</translation>
+    </message>
+    <message>
+        <location filename="../src/keyboardwidget.cpp" line="136"/>
+        <location filename="../src/keyboardwidget.cpp" line="222"/>
+        <source>speed</source>
+        <translation>速度</translation>
     </message>
     <message>
         <location filename="../src/keyboardwidget.cpp" line="162"/>
@@ -2072,6 +2096,26 @@
         <location filename="../src/mousewidget.cpp" line="103"/>
         <source>Capabilities</source>
         <translation>功能</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="108"/>
+        <source>driver</source>
+        <translation>驱动</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="113"/>
+        <source>maxpower</source>
+        <translation>最大功率</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="118"/>
+        <source>physical id</source>
+        <translation>物理ID</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="123"/>
+        <source>speed</source>
+        <translation>速度</translation>
     </message>
     <message>
         <location filename="../src/mousewidget.cpp" line="111"/>

@@ -105,6 +105,38 @@ bool KeyboardWidget::findKeyboardFromHwinfo()
         ArticleStruct description = addArticleStruct(tr("Description"), "Keyboard", keyboard, "description");
         addArticleStruct(tr("Unique ID"), "Keyboard", keyboard, "Unique ID");
         addArticleStruct(tr("SysFS ID"), "Keyboard", keyboard, "SysFS ID");
+        m_existArticles.insert("Device");
+        m_existArticles.insert("Vendor");
+        m_existArticles.insert("Serial ID");
+        m_existArticles.insert("Revision");
+        m_existArticles.insert("Config Status");
+        m_existArticles.insert("Driver");
+        m_existArticles.insert("Speed");
+        m_existArticles.insert("SysFS BusID");
+        m_existArticles.insert("description");
+        m_existArticles.insert("Unique ID");
+        m_existArticles.insert("Speed");
+        m_existArticles.insert("SysFS ID");
+//        m_existArticles.insert("description");
+        ArticleStruct driver(tr("driver"));
+        driver.queryData("lshw", keyboard, "driver");
+        m_articles.push_back(driver);
+        m_existArticles.insert("driver");
+
+        ArticleStruct maxpower(tr("maxpower"));
+        maxpower.queryData("lshw", keyboard, "maxpower");
+        m_articles.push_back(maxpower);
+        m_existArticles.insert("maxpower");
+
+        ArticleStruct physicalId(tr("physical id"));
+        physicalId.queryData("lshw", keyboard, "physical id");
+        m_articles.push_back(physicalId);
+        m_existArticles.insert("physical id");
+
+        ArticleStruct speed(tr("speed"));
+        speed.queryData("lshw", keyboard, "speed");
+        m_articles.push_back(speed);
+        m_existArticles.insert("speed");
 
         DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", keyboard, m_articles, m_existArticles);
 

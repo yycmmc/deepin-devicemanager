@@ -932,52 +932,52 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="324"/>
+        <location filename="../src/keyboardwidget.cpp" line="356"/>
         <source>Sysfs</source>
         <comment>Keyboard Info,better if dont translate，my personal opinion</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="375"/>
+        <location filename="../src/keyboardwidget.cpp" line="407"/>
         <source>No keyboard found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/keyboardwidget.cpp" line="35"/>
         <location filename="../src/keyboardwidget.cpp" line="96"/>
-        <location filename="../src/keyboardwidget.cpp" line="155"/>
-        <location filename="../src/keyboardwidget.cpp" line="249"/>
+        <location filename="../src/keyboardwidget.cpp" line="187"/>
+        <location filename="../src/keyboardwidget.cpp" line="281"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/keyboardwidget.cpp" line="35"/>
         <location filename="../src/keyboardwidget.cpp" line="97"/>
-        <location filename="../src/keyboardwidget.cpp" line="157"/>
-        <location filename="../src/keyboardwidget.cpp" line="250"/>
+        <location filename="../src/keyboardwidget.cpp" line="189"/>
+        <location filename="../src/keyboardwidget.cpp" line="282"/>
         <source>Vendor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="251"/>
+        <location filename="../src/keyboardwidget.cpp" line="283"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/keyboardwidget.cpp" line="105"/>
-        <location filename="../src/keyboardwidget.cpp" line="156"/>
+        <location filename="../src/keyboardwidget.cpp" line="188"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="158"/>
+        <location filename="../src/keyboardwidget.cpp" line="190"/>
         <source>Bus Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/keyboardwidget.cpp" line="100"/>
-        <location filename="../src/keyboardwidget.cpp" line="161"/>
-        <location filename="../src/keyboardwidget.cpp" line="332"/>
+        <location filename="../src/keyboardwidget.cpp" line="193"/>
+        <location filename="../src/keyboardwidget.cpp" line="364"/>
         <source>Version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1022,75 +1022,79 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="162"/>
+        <location filename="../src/keyboardwidget.cpp" line="194"/>
         <source>Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="163"/>
+        <location filename="../src/keyboardwidget.cpp" line="195"/>
         <source>Clock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="164"/>
+        <location filename="../src/keyboardwidget.cpp" line="196"/>
         <source>Capabilities</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="175"/>
+        <location filename="../src/keyboardwidget.cpp" line="121"/>
+        <location filename="../src/keyboardwidget.cpp" line="207"/>
         <source>driver</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="180"/>
+        <location filename="../src/keyboardwidget.cpp" line="126"/>
+        <location filename="../src/keyboardwidget.cpp" line="212"/>
         <source>maxpower</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="185"/>
+        <location filename="../src/keyboardwidget.cpp" line="131"/>
+        <location filename="../src/keyboardwidget.cpp" line="217"/>
         <source>physical id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="190"/>
+        <location filename="../src/keyboardwidget.cpp" line="136"/>
+        <location filename="../src/keyboardwidget.cpp" line="222"/>
         <source>speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="261"/>
+        <location filename="../src/keyboardwidget.cpp" line="293"/>
         <source>Uniq</source>
         <comment>Keyboard Info</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="276"/>
+        <location filename="../src/keyboardwidget.cpp" line="308"/>
         <source>Connected</source>
         <comment>Keyboard Info</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="290"/>
+        <location filename="../src/keyboardwidget.cpp" line="322"/>
         <source>Phys</source>
         <comment>Keyboard Info</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="337"/>
+        <location filename="../src/keyboardwidget.cpp" line="369"/>
         <source>Product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="348"/>
+        <location filename="../src/keyboardwidget.cpp" line="380"/>
         <source>Power</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="159"/>
+        <location filename="../src/keyboardwidget.cpp" line="191"/>
         <source>Physical ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/keyboardwidget.cpp" line="160"/>
+        <location filename="../src/keyboardwidget.cpp" line="192"/>
         <source>Logical Name</source>
         <translation type="unfinished"></translation>
     </message>
