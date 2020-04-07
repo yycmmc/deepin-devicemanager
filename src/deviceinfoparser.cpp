@@ -219,6 +219,7 @@ bool DeviceInfoParser::queryRemainderDeviceInfo(const QString &toolname,
                                                 const QSet<QString> &existArticles,
                                                 const char *context, const char *disambiguation)
 {
+    QObject::tr("Type");
     if (false == toolDatabase_.contains(toolname)) {
         return false;
     }
@@ -385,7 +386,8 @@ QStringList DeviceInfoParser::getLshwDiskNameList()
     checkValueFun_t func = [](const QString & fk)->bool {
         int index = fk.lastIndexOf("disk");
         qDebug() << fk;
-        if(fk == QString("Computer_core_pci:2_storage")){
+        if (fk == QString("Computer_core_pci:2_storage"))
+        {
             qDebug() << fk;
         }
 
@@ -1593,7 +1595,7 @@ bool DeviceInfoParser::loadLshwDatabase()
 
             lshwDatabase_[deviceTypeName] = DeviceInfoMap;
             secondOrder.push_back(deviceTypeName);
-            if(QString("Computer_core_pci:2_storage") == deviceTypeName){
+            if (QString("Computer_core_pci:2_storage") == deviceTypeName) {
 
                 qDebug() << deviceTypeName;
             }

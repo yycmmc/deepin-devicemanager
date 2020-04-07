@@ -140,9 +140,27 @@ void UsbdeviceWidget::initWidget()
         addArticleStruct(tr("Width"), "lshw", device, "width");
         addArticleStruct(tr("Clock"), "lshw", device, "clock");
         addArticleStruct(tr("Capabilities"), "lshw", device, "capabilities");
+        addArticleStruct(tr("driver"), "lshw", device, "driver");
+        addArticleStruct(tr("maxpower"), "lshw", device, "maxpower");
+        addArticleStruct(tr("speed"), "lshw", device, "speed");
+//        addArticleStruct(tr("Capabilities"), "lshw", device, "capabilities");
+
+        m_existArticles.insert("product");
+        m_existArticles.insert("description");
+        m_existArticles.insert("vendor");
+        m_existArticles.insert("bus info");
+        m_existArticles.insert("physical id");
+        m_existArticles.insert("logical name");
+        m_existArticles.insert("version");
+        m_existArticles.insert("width");
+        m_existArticles.insert("clock");
+        m_existArticles.insert("capabilities");
+        m_existArticles.insert("driver");
+        m_existArticles.insert("maxpower");
+        m_existArticles.insert("speed");
 
         // 添加USB info的其他项
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", device, m_articles, m_existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", device, m_articles, m_existArticles, "ManulTrack__USB", "USB Information");
 
         setTabList(usbdeviceList.size(), name, vendor, description);
     }
