@@ -105,7 +105,7 @@ void MemoryWidget::init_l_Designer_l_TableWdiget()
         }
 
         QString speed = DeviceInfoParser::Instance().queryData("dmidecode", mem, "Speed");
-//        QString size = DeviceInfoParser::Instance().queryData("dmidecode", mem, "Size");//3311
+//      QString size = DeviceInfoParser::Instance().queryData("dmidecode", mem, "Size");//3311
 
         if (isSlotValid(sizeMemory, speed) == false) {
             canUpgrade_ = 1;
