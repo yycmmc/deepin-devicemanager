@@ -33,9 +33,9 @@ DisplayadapterWidget::DisplayadapterWidget(QWidget *parent) : DeviceInfoWidgetBa
 
 void DisplayadapterWidget::initWidget()
 {
-    if(DeviceInfoParser::Instance().isHuaweiAndroidUos()){
-        return initGpuInof();
-    }
+//    if(DeviceInfoParser::Instance().isHuaweiAndroidUos()){
+//        return initGpuInof();
+//    }
     QList<QStringList> tabList;
     QList<ArticleStruct> articles;
     QSet<QString> existArticles;
