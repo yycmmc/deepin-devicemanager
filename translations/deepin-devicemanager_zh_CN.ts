@@ -1579,6 +1579,56 @@
        <comment>Disk Information</comment>
        <translation>供应商</translation>
    </message>
+   <message><!-- manul track message -->
+       <source>irq</source>
+       <comment>Disk Information</comment>
+       <translation>中断请求号</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Controller ID</source>
+       <comment>Disk Information</comment>
+       <translation>控制器ID</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Critical Comp. Temp. Threshold</source>
+       <comment>Disk Information</comment>
+       <translation>Critical Comp. Temp. Threshold</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Firmware Updates (0x14)</source>
+       <comment>Disk Information</comment>
+       <translation>Firmware Updates (0x14)</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Firmware Version</source>
+       <comment>Disk Information</comment>
+       <translation>Firmware Version</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>IEEE OUI Identifier</source>
+       <comment>Disk Information</comment>
+       <translation>IEEE OUI Identifier</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Maximum Data Transfer Size</source>
+       <comment>Disk Information</comment>
+       <translation>Maximum Data Transfer Size</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Model Number</source>
+       <comment>Disk Information</comment>
+       <translation>Model Number</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Namespace 1 Features (0x02)</source>
+       <comment>Disk Information</comment>
+       <translation>Namespace 1 Features (0x02)</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Namespace 1 Formatted LBA Size</source>
+       <comment>Disk Information</comment>
+       <translation>Namespace 1 Formatted LBA Size</translation>
+   </message>
 </context>
 <context>
 <name>ManulTrack__NetworkAdpater</name>
@@ -2304,6 +2354,26 @@
     </message>
     <message>
         <location filename="../src/mousewidget.cpp" line="108"/>
+        <source>driver</source>
+        <translation>驱动</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="113"/>
+        <source>maxpower</source>
+        <translation>最大电量</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="118"/>
+        <source>physical id</source>
+        <translation>物理ID</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="123"/>
+        <source>speed</source>
+        <translation>速度</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="108"/>
         <source>Capabilities</source>
         <translation>功能</translation>
     </message>
@@ -2340,6 +2410,41 @@
         <source>Power</source>
         <comment>Mouse Info from upower</comment>
         <translation>电源</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="199"/>
+        <source>Bus</source>
+        <translation>总线</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="204"/>
+        <source>EV</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="209"/>
+        <source>Handlers</source>
+        <translation>处理程序</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="214"/>
+        <source>KEY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="219"/>
+        <source>MSC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="224"/>
+        <source>PROP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="229"/>
+        <source>REL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2475,6 +2580,21 @@
         <location filename="../src/otherdevicewidget.cpp" line="93"/>
         <source>Clock</source>
         <translation>时钟频率</translation>
+    </message>
+    <message>
+        <location filename="../src/otherdevicewidget.cpp" line="96"/>
+        <source>iomemory</source>
+        <translation>ioMemory</translation>
+    </message>
+    <message>
+        <location filename="../src/otherdevicewidget.cpp" line="101"/>
+        <source>latency</source>
+        <translation>延迟</translation>
+    </message>
+    <message>
+        <location filename="../src/otherdevicewidget.cpp" line="106"/>
+        <source>memory</source>
+        <translation>内存</translation>
     </message>
     <message>
         <location filename="../src/otherdevicewidget.cpp" line="98"/>
@@ -3567,6 +3687,16 @@
        <source>configuration</source>
        <comment>USB Information</comment>
        <translation>配置</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>usb</source>
+       <comment>USB Information</comment>
+       <translation>USB</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>serial</source>
+       <comment>USB Information</comment>
+       <translation>序列号</translation>
    </message>
 </context>
 <context>
