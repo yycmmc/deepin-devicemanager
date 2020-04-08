@@ -31,6 +31,6 @@ public:
     explicit DisplayadapterWidget(QWidget *parent = nullptr);
 
     void initWidget() override;
-    void initGpuInof();//for huawei graphics card
+    bool initGpuInof();//for huawei graphics card
 };
 
