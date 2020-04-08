@@ -70,9 +70,9 @@ void MonitorWidget::initWidget()
     QList<ArticleStruct> articles;
     QSet<QString> existArticles;
 
-    if(DeviceInfoParser::Instance().isHuaweiAndroidUos()) {
-        return initHwMonitor();
-    }
+//    if(DeviceInfoParser::Instance().isHuaweiAndroidUos()) {
+//        return initHwMonitor();
+//    }
     QStringList hwinfMonitorList = DeviceInfoParser::Instance().getHwinfoMonitorList();
     QStringList xrandrMonitorList = DeviceInfoParser::Instance().getXrandrMonitorList();
 
