@@ -138,7 +138,7 @@ bool KeyboardWidget::findKeyboardFromHwinfo()
         m_articles.push_back(speed);
         m_existArticles.insert("speed");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", keyboard, m_articles, m_existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", keyboard, m_articles, m_existArticles, "ManulTrack__KeyBoard", "HUAWEI Keyboard");
 
         QString title = name.isValid() ? name.value : description.value;
         m_articlesmap.insert(title, m_articles);
@@ -214,10 +214,10 @@ bool KeyboardWidget::findKeyboardFromLshw()
         m_articles.push_back(maxpower);
         m_existArticles.insert("maxpower");
 
-        ArticleStruct physicalId(tr("physical id"));
-        physicalId.queryData("lshw", keyboard, "physical id");
-        m_articles.push_back(physicalId);
-        m_existArticles.insert("physical id");
+//        ArticleStruct physicalId(tr("physical id"));
+//        physicalId.queryData("lshw", keyboard, "physical id");
+//        m_articles.push_back(physicalId);
+//        m_existArticles.insert("physical id");
 
         ArticleStruct speed(tr("speed"));
         speed.queryData("lshw", keyboard, "speed");
@@ -225,7 +225,7 @@ bool KeyboardWidget::findKeyboardFromLshw()
         m_existArticles.insert("speed");
 
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", keyboard, m_articles, m_existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", keyboard, m_articles, m_existArticles, "ManulTrack__KeyBoard", "HUAWEI Keyboard");
 
         QString title = name.isValid() ? name.value : description.value;
         m_articlesmap.insert(title, m_articles);
@@ -315,7 +315,7 @@ bool KeyboardWidget::findKeyboardFromCatInput()
 
                 //existArticles.insert("Connected");
 
-                DeviceInfoParser::Instance().queryRemainderDeviceInfo("paired-devices", blueTooth, articles, existArticles, "ManulTrack__PanGu__Keyboard", "KeyBoard Information");
+                DeviceInfoParser::Instance().queryRemainderDeviceInfo("paired-devices", blueTooth, articles, existArticles, "ManulTrack__KeyBoard", "HUAWEI Keyboard");
             }
         }
 
@@ -371,7 +371,7 @@ bool KeyboardWidget::findKeyboardFromCatInput()
         articles.push_back(product);
         existArticles.insert("Product");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("catinput", device, articles, existArticles, "ManulTrack__PanGu__Keyboard", "KeyBoard Information");
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("catinput", device, articles, existArticles, "ManulTrack__KeyBoard", "HUAWEI Keyboard");
 
         if (uniq.isValid()) {
             auto upower = DeviceInfoParser::Instance().getCorrespondUpower(uniq.value);

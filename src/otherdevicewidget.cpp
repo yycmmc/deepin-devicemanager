@@ -113,7 +113,7 @@ void OtherDevicesWidget::initWidget()
         articles.push_back(capabilities);
         existArticles.insert("capabilities");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", device, articles, existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", device, articles, existArticles, "ManulTrack__OtherDevice", "HUAWEI OtherDevice");
 
         QString titleValue = name.value;
         if (name.isValid() == false || name.value == vendor.value) {

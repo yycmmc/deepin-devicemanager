@@ -35,8 +35,7 @@ void NetworkadapterWidget::initWidget()
 {
     QStringList networkadapterList = DeviceInfoParser::Instance().getLshwNetworkadapterList();
 
-    if( networkadapterList.size() < 1 )
-    {
+    if (networkadapterList.size() < 1) {
         setCentralInfo(tr("No network adapter found"));
         return;
     }
@@ -44,80 +43,76 @@ void NetworkadapterWidget::initWidget()
     QList<QStringList> tabList;
     QList<ArticleStruct> articles;
     QSet<QString> existArticles;
-    foreach(const QString& networkadapter, networkadapterList)
-    {
+    foreach (const QString &networkadapter, networkadapterList) {
         articles.clear();
         existArticles.clear();
 
         ArticleStruct name(tr("Name"));
-        name.queryData( "lshw", networkadapter, "product");
+        name.queryData("lshw", networkadapter, "product");
         articles.push_back(name);
         existArticles.insert("product");
 
         ArticleStruct vendor(tr("Vendor"));
-        vendor.queryData( "lshw", networkadapter, "vendor");
+        vendor.queryData("lshw", networkadapter, "vendor");
         articles.push_back(vendor);
         existArticles.insert("vendor");
 
         ArticleStruct description(tr("Description"));
-        description.queryData( "lshw", networkadapter, "description");
+        description.queryData("lshw", networkadapter, "description");
         articles.push_back(description);
         existArticles.insert("description");
 
         ArticleStruct version(tr("Version"));
-        version.queryData( "lshw", networkadapter, "version");
+        version.queryData("lshw", networkadapter, "version");
         articles.push_back(version);
         existArticles.insert("version");
 
         ArticleStruct busInfo(tr("Bus Info"));
-        busInfo.queryData( "lshw", networkadapter, "bus info");
+        busInfo.queryData("lshw", networkadapter, "bus info");
         articles.push_back(busInfo);
         existArticles.insert("bus info");
 
         ArticleStruct logicalName(tr("Logical Name"));
-        logicalName.queryData( "lshw", networkadapter, "logical name");
+        logicalName.queryData("lshw", networkadapter, "logical name");
         articles.push_back(logicalName);
         existArticles.insert("logical name");
 
         ArticleStruct mac(tr("MAC Address"));
-        mac.queryData( "lshw", networkadapter, "serial");
+        mac.queryData("lshw", networkadapter, "serial");
         articles.push_back(mac);
         existArticles.insert("serial");
 
-        ArticleStruct speed(tr("Speed","Network Adapter"));
-        speed.queryData( "lshw", networkadapter, "speed");
+        ArticleStruct speed(tr("Speed", "Network Adapter"));
+        speed.queryData("lshw", networkadapter, "speed");
         articles.push_back(speed);
         existArticles.insert("speed");
 
-        ArticleStruct width(tr("Width","Network Adapter"));
-        width.queryData( "lshw", networkadapter, "width");
+        ArticleStruct width(tr("Width", "Network Adapter"));
+        width.queryData("lshw", networkadapter, "width");
         articles.push_back(width);
         existArticles.insert("width");
 
-        ArticleStruct clock(tr("Clock","Network Adapter"));
-        clock.queryData( "lshw", networkadapter, "clock");
+        ArticleStruct clock(tr("Clock", "Network Adapter"));
+        clock.queryData("lshw", networkadapter, "clock");
         articles.push_back(clock);
         existArticles.insert("clock");
 
-        ArticleStruct capabilities(tr("Capabilities","Network Adapter"));
-        capabilities.queryData( "lshw", networkadapter, "capabilities");
+        ArticleStruct capabilities(tr("Capabilities", "Network Adapter"));
+        capabilities.queryData("lshw", networkadapter, "capabilities");
         articles.push_back(capabilities);
         existArticles.insert("capabilities");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", networkadapter, articles, existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", networkadapter, articles, existArticles, "ManulTrack__NetworkAdpater", "HUAWEI NetworkAdpater");
 
         QString deviceName = name.value;
-        if(name.isValid() == false && description.isValid())
-        {
+        if (name.isValid() == false && description.isValid()) {
             deviceName = description.value;
         }
 
-        addDevice( deviceName, articles, networkadapterList.size() );
+        addDevice(deviceName, articles, networkadapterList.size());
 
-        if( networkadapterList.size() > 1 )
-        {
-            QStringList tab =
-            {
+        if (networkadapterList.size() > 1) {
+            QStringList tab = {
                 deviceName,
                 vendor.value
             };
@@ -126,22 +121,19 @@ void NetworkadapterWidget::initWidget()
         }
 
 
-        if( overviewInfo_.value.isEmpty() == false )
-        {
+        if (overviewInfo_.value.isEmpty() == false) {
             overviewInfo_.value += " / ";
         }
 
-        if(vendor.isValid() && deviceName.contains(vendor.value, Qt::CaseInsensitive) == false )
-        {
+        if (vendor.isValid() && deviceName.contains(vendor.value, Qt::CaseInsensitive) == false) {
             overviewInfo_.value += vendor.value;
             overviewInfo_.value += " ";
         }
         overviewInfo_.value += deviceName;
     }
 
-    if( networkadapterList.size() > 1 )
-    {
+    if (networkadapterList.size() > 1) {
         QStringList headers = { tr("Name"),  tr("Vendor") };
-        addTable( headers, tabList);
+        addTable(headers, tabList);
     }
 }

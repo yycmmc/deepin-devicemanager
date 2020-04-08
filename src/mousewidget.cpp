@@ -130,7 +130,7 @@ void MouseWidget::initWidget()
 //            articles.push_back(capabilities);
 //            existArticles.insert("capabilities");
 
-            DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", lshwMouse, articles, existArticles, "ManulTrack__PanGu__Mouse", "PanGu Mouse Information");
+            DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", lshwMouse, articles, existArticles, "ManulTrack__Mouse", "HUAWEI Mouse");
         }
 
         ArticleStruct uniq(tr("Uniq", "Mouse Info from catinput"));
@@ -150,7 +150,7 @@ void MouseWidget::initWidget()
                     continue;
                 }
 
-                DeviceInfoParser::Instance().queryRemainderDeviceInfo("paired-devices", blueTooth, articles, existArticles, "ManulTrack__PanGu__Mouse", "PanGu Mouse Information");
+                DeviceInfoParser::Instance().queryRemainderDeviceInfo("paired-devices", blueTooth, articles, existArticles, "ManulTrack__Mouse", "HUAWEI Mouse");
             }
         }
 
@@ -231,7 +231,7 @@ void MouseWidget::initWidget()
         articles.push_back(rel);
         existArticles.insert("REL");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("catinput", device, articles, existArticles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("catinput", device, articles, existArticles, "ManulTrack__Mouse", "HUAWEI Mouse");
 
         if (uniq.isValid()) {
             auto upower = DeviceInfoParser::Instance().getCorrespondUpower(uniq.value);
@@ -241,7 +241,7 @@ void MouseWidget::initWidget()
                 power.value = " ";
                 articles.push_back(power);
 
-                DeviceInfoParser::Instance().queryRemainderDeviceInfo("upower", upower, articles, existArticles);
+                DeviceInfoParser::Instance().queryRemainderDeviceInfo("upower", upower, articles, existArticles, "ManulTrack__Mouse", "HUAWEI Mouse");
             }
         }
 
