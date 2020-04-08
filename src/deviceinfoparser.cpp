@@ -432,7 +432,13 @@ QStringList DeviceInfoParser::getLshwDiaplayadapterList()
 QStringList DeviceInfoParser::getXrandrScreenName()
 {
     checkValueFun_t func = [](const QString & fk)->bool {
-        if (fk.contains("Screen", Qt::CaseInsensitive))
+//        if (fk.contains("Screen", Qt::CaseInsensitive))
+//        {
+//            return true;
+//        }
+
+        if (fk.contains("connected", Qt::CaseInsensitive) &&
+                fk.contains("disconnected", Qt::CaseInsensitive) == false)
         {
             return true;
         }
@@ -2202,6 +2208,31 @@ bool DeviceInfoParser::loadCatInputDatabase()
     return true;
 }
 
+int DeviceInfoParser::judgeResolution(QString &current, QString &max, QString &min)
+{
+    int index = current.indexOf("x");
+    int wCur = current.mid(0, index).toInt();
+    int hCur = current.mid(index + 1).toInt();
+
+    index = max.indexOf("x");
+    int wMax = max.mid(0, index).toInt();
+    int hMax = max.mid(index + 1).toInt();
+
+    index = min.indexOf("x");
+    int wMin = min.mid(0, index).toInt();
+    int hMin = min.mid(index + 1).toInt();
+
+    if (wCur * hCur > wMax * hMax) {
+        max = current;
+    }
+
+    if (wCur * hCur < wMin * hMin) {
+        min = current;
+    }
+
+    return 0;
+}
+
 bool DeviceInfoParser::loadXrandrDatabase()
 {
     if (false == executeProcess("xrandr --verbose")) {
@@ -2244,6 +2275,25 @@ bool DeviceInfoParser::loadXrandrDatabase()
                 secondOrder.push_back(title);
             }
             break;
+        }
+
+        if (line.contains("HSync", Qt::CaseInsensitive) && line.contains("VSync", Qt::CaseInsensitive)) {
+            int position = line.indexOf("(");
+            line = line.mid(0, position);
+            position = line.indexOf("i");
+            if (position > 0) {
+                line = line.mid(0, position);
+            }
+            auto iter = DeviceInfoMap.find("maxresolution");
+            if (iter != DeviceInfoMap.end()) {
+//                QString max = DeviceInfoMap["maxresolution"];
+//                QString min = DeviceInfoMap["minresolution"];
+                judgeResolution(line, DeviceInfoMap["maxresolution"], DeviceInfoMap["minresolution"]);
+            } else {
+                DeviceInfoMap["maxresolution"] = line;
+                DeviceInfoMap["minresolution"] = line;
+            }
+
         }
 
         if (line.startsWith(Devicetype_Xrandr_Screen) && line.contains(Devicetype_Separator)) {
@@ -2298,6 +2348,7 @@ bool DeviceInfoParser::loadXrandrDatabase()
             content += line;
             continue;
         }
+
 
 
         if (line.contains(Devicetype_Xrandr_Connected) || line.contains(Devicetype_Xrandr_Disconnected)) {

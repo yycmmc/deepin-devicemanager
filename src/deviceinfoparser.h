@@ -49,6 +49,8 @@ const QString Devicetype_Xrandr_Tab = "\t";
 const QString Devicetype_Xrandr_Twotab = "\t\t";
 const QString Devicetype_Xrandr_Twospace = "  ";
 const QString Devicetype_Xrandr_TabAndspace = "\t  ";
+const QString Devicetype_Xrandr_HSync = "HSync";
+const QString Devicetype_Xrandr_VSync = "VSync";
 
 const QString Devicetype_Lspci_Seperator = ": ";
 const QString Devicetype_Lspci_Tab = "\t";
@@ -257,6 +259,9 @@ public:
 
     // USB hwinfo --keybooard
     bool loadKeyboardinfoDatabase();
+
+    // 判断分辨率
+    int judgeResolution(QString &current, QString &max, QString &min);
 public:
     bool getRootPassword();
     bool executeProcess(const QString &cmd);
