@@ -1183,7 +1183,6 @@ bool DeviceInfoParser::loadOSInfo()
     }
 
     str = osinfoFile.readAll();
-    this->osVersion_ = str;
     osinfoFile.close();
 #endif
 
@@ -3346,12 +3345,8 @@ bool DeviceInfoParser::loadGpuInfo()
             value.insert(line.left(pos), line.right(line.length() - 1 - pos));
         }
     }
-
-    if (value.empty() == false) {
-        db.insert(key, value);
-        toolDatabase_["gpuinfo"] = db;
-    }
-
+    db.insert(key, value);
+    toolDatabase_["gpuinfo"] = db;
     return true;
 }
 
