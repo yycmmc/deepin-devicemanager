@@ -385,7 +385,7 @@ QStringList DeviceInfoParser::getLshwDiskNameList()
 {
     checkValueFun_t func = [](const QString & fk)->bool {
         int index = fk.lastIndexOf("disk");
-        qDebug() << fk;
+//        qDebug() << fk;
         if (fk == QString("Computer_core_pci:2_storage"))
         {
             qDebug() << fk;
@@ -1648,45 +1648,45 @@ bool DeviceInfoParser::loadLshwDatabase()
 
             // configuration 和 resources中会出现多个配置项，需要拆分
             if (name == "configuration" || name == "resources") {
-//                QChar splitChar = /*name == "configuration" ? '=' : */':';
-                QString lst = line.mid(index + 1).trimmed();
-                QStringList itemList = lst.split(" ");
-                foreach (auto item, itemList) {
-                    int pos = item.indexOf("=");
-                    QString configName = item.mid(0, pos).trimmed();
-                    QString configValue = item.mid(pos + 1).trimmed();
-                    DeviceInfoMap[configName] = configValue;
-                }
-
-//                if (lst.size() < 2) {
-//                    if (DeviceInfoMap.contains(name)) {
-//                        DeviceInfoMap[name] += ", ";
-//                        DeviceInfoMap[name] += line.mid(index + 1).trimmed();
-//                    } else {
-//                        DeviceInfoMap[name] = line.mid(index + 1).trimmed();
-//                    }
-
-//                } else {
-//                    for (int ind = 0; ind < lst.size() - 1; ++ind) {
-//                        QString tempName = lst[ind].split(" ").last();
-//                        int spaceIndex = lst[ind + 1].lastIndexOf(" ");
-//                        if (spaceIndex < 0) {
-//                            if (DeviceInfoMap.contains(tempName)) {
-//                                DeviceInfoMap[tempName] += ", ";
-//                                DeviceInfoMap[tempName] += lst[ind + 1];
-//                            } else {
-//                                DeviceInfoMap[tempName] = lst[ind + 1];
-//                            }
-//                        } else {
-//                            if (DeviceInfoMap.contains(tempName)) {
-//                                DeviceInfoMap[tempName] += ", ";
-//                                DeviceInfoMap[tempName] += lst[ind + 1].mid(0, spaceIndex);
-//                            } else {
-//                                DeviceInfoMap[tempName] = lst[ind + 1].mid(0, spaceIndex);
-//                            }
-//                        }
-//                    }
+                QChar splitChar = name == "configuration" ? '=' : ':';
+//                QString lst = line.mid(index + 1).trimmed();
+//                QStringList itemList = lst.split(" ");
+//                foreach (auto item, itemList) {
+//                    int pos = item.indexOf("=");
+//                    QString configName = item.mid(0, pos).trimmed();
+//                    QString configValue = item.mid(pos + 1).trimmed();
+//                    DeviceInfoMap[configName] = configValue;
 //                }
+                QStringList lst = line.mid(index + 1).trimmed().split(splitChar);
+                if (lst.size() < 2) {
+                    if (DeviceInfoMap.contains(name)) {
+                        DeviceInfoMap[name] += ", ";
+                        DeviceInfoMap[name] += line.mid(index + 1).trimmed();
+                    } else {
+                        DeviceInfoMap[name] = line.mid(index + 1).trimmed();
+                    }
+
+                } else {
+                    for (int ind = 0; ind < lst.size() - 1; ++ind) {
+                        QString tempName = lst[ind].split(" ").last();
+                        int spaceIndex = lst[ind + 1].lastIndexOf(" ");
+                        if (spaceIndex < 0) {
+                            if (DeviceInfoMap.contains(tempName)) {
+                                DeviceInfoMap[tempName] += ", ";
+                                DeviceInfoMap[tempName] += lst[ind + 1];
+                            } else {
+                                DeviceInfoMap[tempName] = lst[ind + 1];
+                            }
+                        } else {
+                            if (DeviceInfoMap.contains(tempName)) {
+                                DeviceInfoMap[tempName] += ", ";
+                                DeviceInfoMap[tempName] += lst[ind + 1].mid(0, spaceIndex);
+                            } else {
+                                DeviceInfoMap[tempName] = lst[ind + 1].mid(0, spaceIndex);
+                            }
+                        }
+                    }
+                }
             } else {
                 if (DeviceInfoMap.contains(name)) {
                     DeviceInfoMap[name] += ", ";
