@@ -1194,20 +1194,28 @@ bool DeviceInfoParser::loadOSInfo()
 
     QString linuxCoreVerson;
     QString releaseVersion;
+    QString debianVersion;
+//   QRegExp rx("(^[\\s\\S]*)\\([\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?\\)([\\s\\S]*)$");
+    QRegExp rx("(^[\\s\\S]*)(\\([\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@[\\s\\S]*\\))([\\s\\S]*)$");
 
-    QRegExp rx("^([\\s\\S]*)\\([\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?\\)([\\s\\S]*)$");
     if (rx.exactMatch(str)) {
         linuxCoreVerson = rx.cap(1).trimmed();
-        releaseVersion = rx.cap(2).trimmed();
+        releaseVersion = rx.cap(3).trimmed();
+        debianVersion = rx.cap(2).trimmed();
 
-        rx.setPattern("^(\\(gcc version [\\d-.]*)[\\s\\S]*$");
-        if (rx.exactMatch(releaseVersion)) {
-            releaseVersion.remove(rx.cap(1));
-            int index = releaseVersion.indexOf(")");
-            releaseVersion.remove(index, 1);
+//        rx.setPattern("^(\\(gcc version [\\d-.]*)[\\s\\S]*$");
+        rx.setPattern("([\\s\\S]*)(\\(Debian [\\d-.]*\\))[\\s\\S]*$");
+        if (rx.exactMatch(debianVersion)) {
+            debianVersion.remove(rx.cap(1));
+            int index = debianVersion.indexOf(")");
+            debianVersion.remove(index, 1);
+            osInfo_ = linuxCoreVerson + debianVersion + releaseVersion;
+        }
+        else {
+            osInfo_ = linuxCoreVerson + releaseVersion;
         }
 
-        osInfo_ = linuxCoreVerson + releaseVersion;
+
     } else {
         osInfo_ = str;
     }
