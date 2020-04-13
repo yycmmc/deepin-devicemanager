@@ -198,6 +198,7 @@ public:
     bool loadCatBoardinfoDatabase();
     // lshw parse
     bool loadLshwDatabase();
+    bool loadLshwDataBaseDisk();
     // sudo lsblk -l stdout parse
     bool loadLsblKDatabase();
     QStringList getLsblkDiskNameList();

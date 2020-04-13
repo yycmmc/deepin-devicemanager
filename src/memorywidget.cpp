@@ -49,36 +49,36 @@ void MemoryWidget::initWidget()
      * lshw show memory summary info without memory bank.
      * we need collect memory bank info if it exist in future version.
      */
-    auto memorys = DeviceInfoParser::Instance().getLshwMeoryList();
-    if (memorys.isEmpty() == false) {
-        int index = 1;
-        for (auto ptr = memorys.begin(); ptr != memorys.end(); ptr++) {
-            QList<ArticleStruct> articles;
-            foreach (auto key, ptr.value().keys()) {
-                ArticleStruct art(key);
-                art.value = ptr.value().value(key);
+//    auto memorys = DeviceInfoParser::Instance().getLshwMeoryList();
+//    if (memorys.isEmpty() == false) {
+//        int index = 1;
+//        for (auto ptr = memorys.begin(); ptr != memorys.end(); ptr++) {
+//            QList<ArticleStruct> articles;
+//            foreach (auto key, ptr.value().keys()) {
+//                ArticleStruct art(key);
+//                art.value = ptr.value().value(key);
 
-                art.value.replace(QRegExp("TiB"), "TB");
-                art.value.replace(QRegExp("GiB"), "GB");
-                art.value.replace(QRegExp("MiB"), "MB");
-                art.value.replace(QRegExp("KiB"), "KB");
+//                art.value.replace(QRegExp("TiB"), "TB");
+//                art.value.replace(QRegExp("GiB"), "GB");
+//                art.value.replace(QRegExp("MiB"), "MB");
+//                art.value.replace(QRegExp("KiB"), "KB");
 
-                if (key == QString("size")) {
-                    overviewInfo_.value += overviewInfo_.value.isEmpty() ? "" : " /";
-                    overviewInfo_.value += art.value;
-                }
-                articles.append(art);
-            }
-            QString title = tr("Memory");
-            addSubInfo(memorys.count() <= 1 ?
-                       QString("%1\n").arg(title) :
-                       QString("%1 %2\n").arg(title).arg(index),
-                       articles);
-            index ++;
-        }
-        return;
-    }
-    return setCentralInfo(tr("Failed to get memory information"));
+//                if (key == QString("size")) {
+//                    overviewInfo_.value += overviewInfo_.value.isEmpty() ? "" : " /";
+//                    overviewInfo_.value += art.value;
+//                }
+//                articles.append(art);
+//            }
+//            QString title = tr("Memory");
+//            addSubInfo(memorys.count() <= 1 ?
+//                       QString("%1\n").arg(title) :
+//                       QString("%1 %2\n").arg(title).arg(index),
+//                       articles);
+//            index ++;
+//        }
+//        return;
+//    }
+//    return setCentralInfo(tr("Failed to get memory information"));
 }
 
 void MemoryWidget::init_l_Designer_l_TableWdiget()
