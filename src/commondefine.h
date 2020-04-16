@@ -78,4 +78,4 @@ const int TableViewRowHeight_ = 36;
 //const QString DEVICEINFO_PATH ="/home/archermind/workspace/git/device-manager/dde_devicemanager/computers/4G00_600";
 
 //#define TEST_DATA_FROM_FILE
-//const QString DEVICEINFO_PATH = "/home/archermind/Desktop/pangu";
+//const QString DEVICEINFO_PATH = "/home/lx777/Desktop/getHardwareInfoScript_all/deviceInfo";
