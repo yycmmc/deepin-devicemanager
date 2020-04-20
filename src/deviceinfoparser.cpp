@@ -346,7 +346,7 @@ QStringList DeviceInfoParser::getDmidecodePhysicMemory()
 QStringList DeviceInfoParser::getDmidecodeMemoryList()
 {
     checkValueFun_t func = [](const QString & fk)->bool {
-        if (fk == "Memory Device")
+        if (fk.contains("Memory Device"))
         {
             DeviceInfoParser::Instance().orderedDevices.insert(fk);
             return true;
