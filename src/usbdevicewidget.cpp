@@ -98,7 +98,7 @@ void UsbdeviceWidget::initWidget()
         articles.push_back(capabilities);
         existArticles.insert("capabilities");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", device, articles);
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", device, articles,existArticles,"ManulTrack__USB","USB Information");
 
         QString title = name.isValid() ? name.value : description.value;
         addDevice(title, articles, usbdeviceList.size());

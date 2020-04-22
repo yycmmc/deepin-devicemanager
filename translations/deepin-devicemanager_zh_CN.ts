@@ -81,7 +81,7 @@
         <location filename="../src/audiodevicewidget.cpp" line="159"/>
         <source>Sysfs</source>
         <comment>Audio Device Info</comment>
-        <translation>Sysfs</translation>
+        <translation>系统文件</translation>
     </message>
 </context>
 <context>
@@ -266,6 +266,56 @@
         <location filename="../src/cdromwidget.cpp" line="40"/>
         <source>No CD-ROM found</source>
         <translation>未发现光驱</translation>
+    </message>
+    <message>
+        <location filename="../src/cdromwidget.cpp" line="51"/>
+        <source>Model</source>
+        <translation>型号</translation>
+    </message>
+    <message>
+        <location filename="../src/cdromwidget.cpp" line="56"/>
+        <source>Vendor</source>
+        <translation>制造商</translation>
+    </message>
+    <message>
+        <location filename="../src/cdromwidget.cpp" line="61"/>
+        <source>Description</source>
+        <translation>描述</translation>
+    </message>
+    <message>
+        <location filename="../src/cdromwidget.cpp" line="66"/>
+        <source>Bus Info</source>
+        <translation>总线信息</translation>
+    </message>
+    <message>
+        <location filename="../src/cdromwidget.cpp" line="71"/>
+        <source>Version</source>
+        <translation>版本</translation>
+    </message>
+    <message>
+        <location filename="../src/cdromwidget.cpp" line="76"/>
+        <source>Logical Name</source>
+        <translation>逻辑名称</translation>
+    </message>
+    <message>
+        <location filename="../src/cdromwidget.cpp" line="81"/>
+        <source>ansicersion</source>
+        <translation>ANSI版本</translation>
+    </message>
+    <message>
+        <location filename="../src/cdromwidget.cpp" line="86"/>
+        <source>capabilities</source>
+        <translation>功能</translation>
+    </message>
+    <message>
+        <location filename="../src/cdromwidget.cpp" line="91"/>
+        <source>physical id</source>
+        <translation>物理ID</translation>
+    </message>
+    <message>
+        <location filename="../src/cdromwidget.cpp" line="96"/>
+        <source>status</source>
+        <translation>状态</translation>
     </message>
 </context>
 <context>
@@ -697,7 +747,7 @@
     </message>
     <message>
         <source>Device Name</source>
-        <translation type="vanished">设备名称</translation>
+        <translation>设备名称</translation>
     </message>
     <message>
         <location filename="../src/diskwidget.cpp" line="274"/>
@@ -759,27 +809,27 @@
     </message>
     <message>
         <source>Model Family</source>
-        <translation type="vanished">产品家族</translation>
+        <translation>产品家族</translation>
     </message>
     <message>
         <source>Device Model</source>
-        <translation type="vanished">设备型号</translation>
+        <translation>设备型号</translation>
     </message>
     <message>
         <source>Form Factor</source>
-        <translation type="vanished">尺寸型号</translation>
+        <translation>尺寸型号</translation>
     </message>
     <message>
         <source>Firmware Version</source>
-        <translation type="vanished">固件版本</translation>
+        <translation>固件版本</translation>
     </message>
     <message>
         <source>Rotation Rate</source>
-        <translation type="vanished">转速</translation>
+        <translation>转速</translation>
     </message>
     <message>
         <source>Power Cycle Count</source>
-        <translation type="vanished">通电次数</translation>
+        <translation>通电次数</translation>
     </message>
     <message>
         <location filename="../src/diskwidget.cpp" line="364"/>
@@ -896,7 +946,7 @@
         <location filename="../src/keyboardwidget.cpp" line="270"/>
         <source>Sysfs</source>
         <comment>Keyboard Info,better if dont translate，my personal opinion</comment>
-        <translation>Sysfs</translation>
+        <translation>系统文件</translation>
     </message>
     <message>
         <location filename="../src/keyboardwidget.cpp" line="324"/>
@@ -954,6 +1004,30 @@
         <translation>功能</translation>
     </message>
     <message>
+        <location filename="../src/keyboardwidget.cpp" line="121"/>
+        <location filename="../src/keyboardwidget.cpp" line="207"/>
+        <source>driver</source>
+        <translation>驱动</translation>
+    </message>
+    <message>
+        <location filename="../src/keyboardwidget.cpp" line="126"/>
+        <location filename="../src/keyboardwidget.cpp" line="212"/>
+        <source>maxpower</source>
+        <translation>最大功率</translation>
+    </message>
+    <message>
+        <location filename="../src/keyboardwidget.cpp" line="131"/>
+        <location filename="../src/keyboardwidget.cpp" line="217"/>
+        <source>physical id</source>
+        <translation>物理ID</translation>
+    </message>
+    <message>
+        <location filename="../src/keyboardwidget.cpp" line="136"/>
+        <location filename="../src/keyboardwidget.cpp" line="222"/>
+        <source>speed</source>
+        <translation>速率</translation>
+    </message>
+    <message>
         <location filename="../src/keyboardwidget.cpp" line="195"/>
         <source>Uniq</source>
         <comment>Keyboard Info</comment>
@@ -974,7 +1048,7 @@
     <message>
         <source>Sysfs</source>
         <comment>Keyboard Info,better if dont do translation ,i think</comment>
-        <translation type="vanished">Sysfs</translation>
+        <translation>系统文件</translation>
     </message>
     <message>
         <location filename="../src/keyboardwidget.cpp" line="283"/>
@@ -1098,6 +1172,61 @@
        <comment>Audio device infomation from catinput</comment>
        <translation type ="unfinished"></translation>
    </message>
+   <message><!-- manul track message -->
+       <source>Type</source>
+       <comment>Audio device infomation from lshw</comment>
+       <translation>类型</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>capabilities</source>
+       <comment>Audio device infomation from lshw</comment>
+       <translation>功能</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>clock</source>
+       <comment>Audio device infomation from lshw</comment>
+       <translation>时钟频率</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>configuration</source>
+       <comment>Audio device infomation from lshw</comment>
+       <translation>配置</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>irq</source>
+       <comment>Audio device infomation from lshw</comment>
+       <translation>中断请求号</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>memory</source>
+       <comment>Audio device infomation from lshw</comment>
+       <translation>内存</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>driver</source>
+       <comment>Audio device infomation from lshw</comment>
+       <translation>驱动</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>latency</source>
+       <comment>Audio device infomation from lshw</comment>
+       <translation>延迟</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>physical id</source>
+       <comment>Audio device infomation from lshw</comment>
+       <translation>物理ID</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>version</source>
+       <comment>Audio device infomation from lshw</comment>
+       <translation>版本</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>width</source>
+       <comment>Audio device infomation from lshw</comment>
+       <translation>位宽</translation>
+   </message>
 </context>
 <context>
 <name>ManulTrack__BiosInfo_dmi</name>
@@ -1160,7 +1289,7 @@
    <message><!-- manul track message -->
        <source>CPU part</source>
        <comment>CPU Information</comment>
-       <translation type ="unfinished"></translation>
+       <translation>CPU部件</translation>
    </message>
    <message><!-- manul track message -->
        <source>CPU revision</source>
@@ -1355,7 +1484,7 @@
        <translation>固态</translation>
    </message>
    <message><!-- manul track message -->
-       <source>SSD</source>
+       <source>HDD</source>
        <comment>Disk Information</comment>
        <translation>机械</translation>
    </message>
@@ -1375,6 +1504,11 @@
        <translation>总线信息</translation>
    </message>
    <message><!-- manul track message -->
+       <source>width</source>
+       <comment>Disk Information</comment>
+       <translation>位宽</translation>
+   </message>
+   <message><!-- manul track message -->
        <source>disk</source>
        <comment>Disk Information</comment>
        <translation>硬盘</translation>
@@ -1385,6 +1519,16 @@
        <translation>逻辑名称</translation>
    </message>
    <message><!-- manul track message -->
+       <source>driver</source>
+       <comment>Disk Information</comment>
+       <translation>驱动</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>latency</source>
+       <comment>Disk Information</comment>
+       <translation>延迟</translation>
+   </message>
+   <message><!-- manul track message -->
        <source>logicalsectorsize</source>
        <comment>Disk Information</comment>
        <translation>逻辑扇区大小</translation>
@@ -1393,6 +1537,26 @@
        <source>physical id</source>
        <comment>Disk Information</comment>
        <translation>物理ID</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>clock</source>
+       <comment>Disk Information</comment>
+       <translation>时钟频率</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>configuration</source>
+       <comment>Disk Information</comment>
+       <translation>配置</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>memory</source>
+       <comment>Disk Information</comment>
+       <translation>内存</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>description</source>
+       <comment>Disk Information</comment>
+       <translation>描述</translation>
    </message>
    <message><!-- manul track message -->
        <source>sectorsize</source>
@@ -1459,6 +1623,56 @@
        <comment>Disk Information</comment>
        <translation>供应商</translation>
    </message>
+   <message><!-- manul track message -->
+       <source>irq</source>
+       <comment>Disk Information</comment>
+       <translation>中断请求号</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Controller ID</source>
+       <comment>Disk Information</comment>
+       <translation>控制器ID</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Critical Comp. Temp. Threshold</source>
+       <comment>Disk Information</comment>
+       <translation>Critical Comp. Temp. Threshold</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Firmware Updates (0x14)</source>
+       <comment>Disk Information</comment>
+       <translation>Firmware Updates (0x14)</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Firmware Version</source>
+       <comment>Disk Information</comment>
+       <translation>固件版本</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>IEEE OUI Identifier</source>
+       <comment>Disk Information</comment>
+       <translation>IEEE OUI Identifier</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Maximum Data Transfer Size</source>
+       <comment>Disk Information</comment>
+       <translation>Maximum Data Transfer Size</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Model Number</source>
+       <comment>Disk Information</comment>
+       <translation>型号数量</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Namespace 1 Features (0x02)</source>
+       <comment>Disk Information</comment>
+       <translation>Namespace 1 Features (0x02)</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Namespace 1 Formatted LBA Size</source>
+       <comment>Disk Information</comment>
+       <translation>Namespace 1 Formatted LBA Size</translation>
+   </message>
 </context>
 <context>
 <name>ManulTrack__NetworkAdpater</name>
@@ -1466,6 +1680,11 @@
        <source>Type</source>
        <comment>HUAWEI NetworkAdpater</comment>
        <translation>类型</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>firmware</source>
+       <comment>HUAWEI NetworkAdpater</comment>
+       <translation>固件</translation>
    </message>
    <message><!-- manul track message -->
        <source>autonegotiation</source>
@@ -1478,9 +1697,19 @@
        <translation>广播</translation>
    </message>
    <message><!-- manul track message -->
+       <source>configuration</source>
+       <comment>HUAWEI NetworkAdpater</comment>
+       <translation>配置</translation>
+   </message>
+   <message><!-- manul track message -->
        <source>capacity</source>
        <comment>HUAWEI NetworkAdpater</comment>
        <translation>容量</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>iomemory</source>
+       <comment>HUAWEI NetworkAdpater</comment>
+       <translation>IO内存</translation>
    </message>
    <message><!-- manul track message -->
        <source>driver</source>
@@ -1500,7 +1729,7 @@
    <message><!-- manul track message -->
        <source>irq</source>
        <comment>HUAWEI NetworkAdpater</comment>
-       <translation>irq</translation>
+       <translation>中断请求号</translation>
    </message>
    <message><!-- manul track message -->
        <source>latency</source>
@@ -1515,7 +1744,7 @@
    <message><!-- manul track message -->
        <source>memory</source>
        <comment>HUAWEI NetworkAdpater</comment>
-       <translation>记忆</translation>
+       <translation>内存</translation>
    </message>
    <message><!-- manul track message -->
        <source>multicast</source>
@@ -2009,7 +2238,7 @@
     <message>
         <location filename="../src/motherboardwidget.cpp" line="150"/>
         <source>UUID</source>
-        <translation>UUID</translation>
+        <translation>通用唯一标识符</translation>
     </message>
     <message>
         <location filename="../src/motherboardwidget.cpp" line="155"/>
@@ -2174,6 +2403,26 @@
     </message>
     <message>
         <location filename="../src/mousewidget.cpp" line="108"/>
+        <source>driver</source>
+        <translation>驱动</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="113"/>
+        <source>maxpower</source>
+        <translation>最大电量</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="118"/>
+        <source>physical id</source>
+        <translation>物理ID</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="123"/>
+        <source>speed</source>
+        <translation>速度</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="108"/>
         <source>Capabilities</source>
         <translation>功能</translation>
     </message>
@@ -2198,7 +2447,7 @@
         <location filename="../src/mousewidget.cpp" line="171"/>
         <source>Sysfs</source>
         <comment>Mouse Info from catinput</comment>
-        <translation>Sysfs</translation>
+        <translation>系统文件</translation>
     </message>
     <message>
         <location filename="../src/mousewidget.cpp" line="184"/>
@@ -2210,6 +2459,41 @@
         <source>Power</source>
         <comment>Mouse Info from upower</comment>
         <translation>电源</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="199"/>
+        <source>Bus</source>
+        <translation>总线</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="204"/>
+        <source>EV</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="209"/>
+        <source>Handlers</source>
+        <translation>处理程序</translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="214"/>
+        <source>KEY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="219"/>
+        <source>MSC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="224"/>
+        <source>PROP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mousewidget.cpp" line="229"/>
+        <source>REL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2345,6 +2629,21 @@
         <location filename="../src/otherdevicewidget.cpp" line="93"/>
         <source>Clock</source>
         <translation>时钟频率</translation>
+    </message>
+    <message>
+        <location filename="../src/otherdevicewidget.cpp" line="96"/>
+        <source>iomemory</source>
+        <translation>IO内存</translation>
+    </message>
+    <message>
+        <location filename="../src/otherdevicewidget.cpp" line="101"/>
+        <source>latency</source>
+        <translation>延迟</translation>
+    </message>
+    <message>
+        <location filename="../src/otherdevicewidget.cpp" line="106"/>
+        <source>memory</source>
+        <translation>内存</translation>
     </message>
     <message>
         <location filename="../src/otherdevicewidget.cpp" line="98"/>
@@ -2862,19 +3161,69 @@
         <translation>未发现USB设备</translation>
     </message>
     <message>
-        <location filename="../src/usbdevicewidget.cpp" line="53"/>
-        <location filename="../src/usbdevicewidget.cpp" line="132"/>
+        <location filename="../src/usbdevicewidget.cpp" line="84"/>
+        <location filename="../src/usbdevicewidget.cpp" line="104"/>
+        <location filename="../src/usbdevicewidget.cpp" line="133"/>
+        <location filename="../src/usbdevicewidget.cpp" line="170"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../src/usbdevicewidget.cpp" line="58"/>
+        <location filename="../src/usbdevicewidget.cpp" line="86"/>
+        <source>Model</source>
+        <translation>型号</translation>
+    </message>
+    <message>
+        <location filename="../src/usbdevicewidget.cpp" line="87"/>
+        <source>Serial ID</source>
+        <translation>序列号</translation>
+    </message>
+    <message>
+        <location filename="../src/usbdevicewidget.cpp" line="89"/>
+        <source>Status</source>
+        <translation>状态</translation>
+    </message>
+    <message>
+        <location filename="../src/usbdevicewidget.cpp" line="90"/>
+        <source>Driver</source>
+        <translation>驱动</translation>
+    </message>
+    <message>
+        <location filename="../src/usbdevicewidget.cpp" line="91"/>
+        <source>Speed</source>
+        <translation>速度</translation>
+    </message>
+    <message>
+        <location filename="../src/usbdevicewidget.cpp" line="92"/>
+        <source>BusID</source>
+        <translation>总线ID</translation>
+    </message>
+    <message>
+        <location filename="../src/usbdevicewidget.cpp" line="93"/>
+        <location filename="../src/usbdevicewidget.cpp" line="134"/>
         <source>Description</source>
         <translation>描述</translation>
     </message>
     <message>
-        <location filename="../src/usbdevicewidget.cpp" line="63"/>
-        <location filename="../src/usbdevicewidget.cpp" line="132"/>
+        <location filename="../src/usbdevicewidget.cpp" line="143"/>
+        <source>driver</source>
+        <translation>驱动</translation>
+    </message>
+    <message>
+        <location filename="../src/usbdevicewidget.cpp" line="144"/>
+        <source>maxpower</source>
+        <translation>最大功率</translation>
+    </message>
+    <message>
+        <location filename="../src/usbdevicewidget.cpp" line="145"/>
+        <source>speed</source>
+        <translation>速度</translation>
+    </message>
+    <message>
+        <location filename="../src/usbdevicewidget.cpp" line="87"/>
+        <location filename="../src/usbdevicewidget.cpp" line="106"/>
+        <location filename="../src/usbdevicewidget.cpp" line="137"/>
+        <location filename="../src/usbdevicewidget.cpp" line="154"/>
         <source>Vendor</source>
         <translation>制造商</translation>
     </message>
@@ -2915,94 +3264,121 @@
     </message>
 </context>
 <context>
-<name>ManulTrack__Bluetooth_hciconfig</name>
+<name>ManulTrack__Bluetooth</name>
    <message><!-- manul track message -->
        <source>ACL MT</source>
-       <comment>Bluetooth infomation from hciconfig</comment>
+       <comment>Bluetooth information</comment>
        <translation type ="unfinished"></translation>
    </message>
    <message><!-- manul track message -->
        <source>Class</source>
-       <comment>Bluetooth infomation from hciconfig</comment>
+       <comment>Bluetooth information</comment>
        <translation>类</translation>
    </message>
    <message><!-- manul track message -->
        <source>Device Class</source>
-       <comment>Bluetooth infomation from hciconfig</comment>
+       <comment>Bluetooth information</comment>
        <translation>设备类别</translation>
    </message>
    <message><!-- manul track message -->
        <source>Features</source>
-       <comment>Bluetooth infomation from hciconfig</comment>
-       <translation type ="unfinished"></translation>
+       <comment>Bluetooth information</comment>
+       <translation>特征</translation>
    </message>
    <message><!-- manul track message -->
        <source>HCI Version</source>
-       <comment>Bluetooth infomation from hciconfig</comment>
+       <comment>Bluetooth information</comment>
        <translation>HCI 版本</translation>
    </message>
    <message><!-- manul track message -->
        <source>LMP Version</source>
-       <comment>Bluetooth infomation from hciconfig</comment>
+       <comment>Bluetooth information</comment>
        <translation>LMP 版本</translation>
    </message>
    <message><!-- manul track message -->
        <source>Packet type</source>
-       <comment>Bluetooth infomation from hciconfig</comment>
+       <comment>Bluetooth information</comment>
        <translation>封包类型</translation>
    </message>
    <message><!-- manul track message -->
        <source>RX bytes</source>
-       <comment>Bluetooth infomation from hciconfig</comment>
+       <comment>Bluetooth information</comment>
        <translation>接收字节数</translation>
    </message>
    <message><!-- manul track message -->
        <source>SCO MT</source>
-       <comment>Bluetooth infomation from hciconfig</comment>
+       <comment>Bluetooth information</comment>
        <translation type ="unfinished"></translation>
    </message>
    <message><!-- manul track message -->
+       <source>Type</source>
+       <comment>Bluetooth information</comment>
+       <translation>类型</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>configuration</source>
+       <comment>Bluetooth information</comment>
+       <translation>配置</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>usb</source>
+       <comment>Bluetooth information</comment>
+       <translation>USB</translation>
+   </message>
+   <message><!-- manul track message -->
        <source>Service Classes</source>
-       <comment>Bluetooth infomation from hciconfig</comment>
+       <comment>Bluetooth information</comment>
        <translation>服务类别</translation>
    </message>
    <message><!-- manul track message -->
        <source>TX bytes</source>
-       <comment>Bluetooth infomation from hciconfig</comment>
+       <comment>Bluetooth information</comment>
        <translation>TX 字节</translation>
    </message>
    <message><!-- manul track message -->
        <source>UP RUNNING PSCAN ISCAN</source>
-       <comment>Bluetooth infomation from hciconfig</comment>
+       <comment>Bluetooth information</comment>
        <translation type ="unfinished"></translation>
    </message>
-</context>
-<context>
-<name>ManulTrack__Bluetooth_upower</name>
    <message><!-- manul track message -->
        <source>Modalias</source>
-       <comment>HUAWEI DisplayAdapter</comment>
+       <comment>Bluetooth information</comment>
        <translation>设置命令别名</translation>
    </message>
    <message><!-- manul track message -->
        <source>Alias</source>
-       <comment>HUAWEI DisplayAdapter</comment>
+       <comment>Bluetooth information</comment>
        <translation>别名</translation>
    </message>
    <message><!-- manul track message -->
        <source>Class</source>
-       <comment>HUAWEI DisplayAdapter</comment>
+       <comment>Bluetooth information</comment>
        <translation>类</translation>
    </message>
    <message><!-- manul track message -->
        <source>Name</source>
-       <comment>HUAWEI DisplayAdapter</comment>
+       <comment>Bluetooth information</comment>
        <translation>名称</translation>
    </message>
    <message><!-- manul track message -->
        <source>UUID</source>
-       <comment>HUAWEI DisplayAdapter</comment>
-       <translation>UUID</translation>
+       <comment>Bluetooth information</comment>
+       <translation>通用唯一标识符</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Type</source>
+       <comment>Bluetooth information</comment>
+       <translation>类型</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>configuration</source>
+       <comment>Bluetooth information</comment>
+       <translation>配置</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>usb</source>
+       <comment>Bluetooth information</comment>
+       <translation>USB</translation>
    </message>
 </context>
 <context>
@@ -3016,6 +3392,36 @@
        <source>has statistics</source>
        <comment>HUAWEI power</comment>
        <translation>统计数据</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Device</source>
+       <comment>HUAWEI power</comment>
+       <translation>设备</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>critical-action</source>
+       <comment>HUAWEI power</comment>
+       <translation>Critical-Action</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>daemon-version</source>
+       <comment>HUAWEI power</comment>
+       <translation>Daemon版本</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>on-battery</source>
+       <comment>HUAWEI power</comment>
+       <translation>电池电源</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>lid-is-closed</source>
+       <comment>HUAWEI power</comment>
+       <translation>笔记本合盖</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>lid-is-present</source>
+       <comment>HUAWEI power</comment>
+       <translation>打开笔记本盖子</translation>
    </message>
    <message><!-- manul track message -->
        <source>icon-name</source>
@@ -3174,6 +3580,145 @@
    </message>
 </context>
 <context>
+<name>ManulTrack__KeyBoard</name>
+   <message><!-- manul track message -->
+       <source>Type</source>
+       <comment>HUAWEI Keyboard</comment>
+       <translation>类型</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>configuration</source>
+       <comment>HUAWEI Keyboard</comment>
+       <translation>配置</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>driver</source>
+       <comment>HUAWEI Keyboard</comment>
+       <translation>驱动</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>maxpower</source>
+       <comment>HUAWEI Keyboard</comment>
+       <translation>最大功率</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>speed</source>
+       <comment>HUAWEI Keyboard</comment>
+       <translation>速率</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>usb</source>
+       <comment>HUAWEI Keyboard</comment>
+       <translation>USB</translation>
+   </message>
+</context>
+<context>
+<name>ManulTrack__Mouse</name>
+   <message><!-- manul track message -->
+       <source>Type</source>
+       <comment>HUAWEI Mouse</comment>
+       <translation>类型</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>configuration</source>
+       <comment>HUAWEI Mouse</comment>
+       <translation>配置</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>serial</source>
+       <comment>HUAWEI Mouse</comment>
+       <translation>序列号</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>driver</source>
+       <comment>HUAWEI Mouse</comment>
+       <translation>驱动</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>maxpower</source>
+       <comment>HUAWEI Mouse</comment>
+       <translation>最大功率</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>physical id</source>
+       <comment>HUAWEI Mouse</comment>
+       <translation>物理ID</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>speed</source>
+       <comment>HUAWEI Mouse</comment>
+       <translation>速率</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>usb</source>
+       <comment>HUAWEI Mouse</comment>
+       <translation>USB</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Handlers</source>
+       <comment>HUAWEI Mouse</comment>
+       <translation>处理程序</translation>
+   </message>
+</context>
+<context>
+<name>ManulTrack__CDROM</name>
+   <message><!-- manul track message -->
+       <source>Model</source>
+       <comment>CDROM infomation from lshw</comment>
+       <translation>型号</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Vendor</source>
+       <comment>CDROM infomation from lshw</comment>
+       <translation>制造商</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Description</source>
+       <comment>CDROM infomation from lshw</comment>
+       <translation>描述</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Bus Info</source>
+       <comment>CDROM infomation from lshw</comment>
+       <translation>总线信息</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Version</source>
+       <comment>CDROM infomation from lshw</comment>
+       <translation>版本</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Logical Name</source>
+       <comment>CDROM infomation from lshw</comment>
+       <translation>逻辑名称</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>capabilities</source>
+       <comment>CDROM infomation from lshw</comment>
+       <translation>功能</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>Type</source>
+       <comment>CDROM infomation from lshw</comment>
+       <translation>类型</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>status</source>
+       <comment>CDROM infomation from lshw</comment>
+       <translation>状态</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>ansiversion</source>
+       <comment>CDROM infomation from lshw</comment>
+       <translation>ANSI版本</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>configuration</source>
+       <comment>CDROM infomation from lshw</comment>
+       <translation>配置</translation>
+   </message>
+</context>
+<context>
 <name>ManulTrack__Camera</name>
    <message><!-- manul track message -->
        <source>Type</source>
@@ -3233,6 +3778,74 @@
        <comment>HUAWEI DisplayAdapter</comment>
        <translation>GPU供应商</translation>
    </message>
+   <message><!-- manul track message -->
+       <source>Type</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>类型</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>configuration</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>配置</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>bus info</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>总线信息</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>iomemory</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>IO内存</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>ioport</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>输入输出端口</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>irq</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>中断请求号</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>memory</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>内存</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>latency</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>延迟</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>physical id</source>
+       <comment>HUAWEI DisplayAdapter</comment>
+       <translation>物理ID</translation>
+   </message>
+</context>
+<context>
+<name>ManulTrack__USB</name>
+   <message><!-- manul track message -->
+       <source>Type</source>
+       <comment>USB Information</comment>
+       <translation>类型</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>configuration</source>
+       <comment>USB Information</comment>
+       <translation>配置</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>usb</source>
+       <comment>USB Information</comment>
+       <translation>USB</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>serial</source>
+       <comment>USB Information</comment>
+       <translation>序列号</translation>
+   </message>
 </context>
 <context>
 <name>ManulTrack__OtherDevice</name>
@@ -3245,6 +3858,36 @@
        <source>generic</source>
        <comment>HUAWEI OtherDevice</comment>
        <translation>无商标</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>memory</source>
+       <comment>HUAWEI OtherDevice</comment>
+       <translation>内存</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>driver</source>
+       <comment>HUAWEI OtherDevice</comment>
+       <translation>驱动</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>latency</source>
+       <comment>HUAWEI OtherDevice</comment>
+       <translation>延迟</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>configuration</source>
+       <comment>HUAWEI OtherDevice</comment>
+       <translation>配置</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>irq</source>
+       <comment>HUAWEI OtherDevice</comment>
+       <translation>中断请求号</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>iomemory</source>
+       <comment>HUAWEI OtherDevice</comment>
+       <translation>IO内存</translation>
    </message>
    <message><!-- manul track message -->
        <source>serial</source>
