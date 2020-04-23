@@ -327,10 +327,10 @@ void DiskWidget::initWidget()
 
         DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", disk, articles, existArticles,"ManulTrack__Disk","Disk Information");
 
-        if( DeviceInfoParser::Instance().isToolSuccess("smartctl") )
-        {
-            DeviceInfoParser::Instance().queryRemainderDeviceInfo("smartctl", logicalName, articles, existArticles,"ManulTrack__Disk","Disk Information");
-        }
+//        if( DeviceInfoParser::Instance().isToolSuccess("smartctl") )
+//        {
+//            DeviceInfoParser::Instance().queryRemainderDeviceInfo("smartctl", logicalName, articles, existArticles,"ManulTrack__Disk","Disk Information");
+//        }
 
         addDevice( model.value, articles, diskList.size() );
         tabList.push_back({ modelStr,vendor.value,mediaType.value,sizeStr });

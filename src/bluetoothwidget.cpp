@@ -131,17 +131,17 @@ void BluetoothWidget::initWidget()
         if( i < hciconfigBluetoothList.size() )
         {
             DeviceInfoParser::Instance().queryRemainderDeviceInfo("hciconfig", hciconfigBluetoothList.at(i), articles, existArticles2,
-                                                                  "ManulTrack__Bluetooth_hciconfig","Bluetooth infomation from hciconfig");
+                                                                  "ManulTrack__Bluetooth","Bluetooth information");
 
             if(mac.isValid())
             {
                 DeviceInfoParser::Instance().queryRemainderDeviceInfo("bluetoothctl", mac.value, articles, existArticles3,
-                                                                      "ManulTrack__Bluetooth_bluetoothctl","Bluetooth infomation from bluetoothctl");
+                                                                      "ManulTrack__Bluetooth","Bluetooth information");
             }
         }
 
         DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", device, articles, existArticles,
-                                                              "ManulTrack__Bluetooth_lshw","Bluetooth infomation from lshw");
+                                                              "ManulTrack__Bluetooth","Bluetooth information");
 
         addDevice( name.value, articles,  bluetoothList.size()+ pairedDevicesList.size() );
 
@@ -230,7 +230,7 @@ void BluetoothWidget::initWidget()
         existArticles.insert("Blocked");
 
         DeviceInfoParser::Instance().queryRemainderDeviceInfo("paired-devices", device, articles, existArticles,
-                                                              "ManulTrack__Bluetooth_paired-devices","Bluetooth infomation from paired-devices");
+                                                              "ManulTrack__Bluetooth","Bluetooth information");
 
         if( device.isEmpty() == false )
         {
@@ -243,7 +243,7 @@ void BluetoothWidget::initWidget()
                 articles.push_back(power);
 
                 DeviceInfoParser::Instance().queryRemainderDeviceInfo("upower", upower, articles,QSet<QString>(),
-                                                                      "ManulTrack__Bluetooth_upower","Bluetooth infomation from upower");
+                                                                      "ManulTrack__Bluetooth","Bluetooth information");
             }
         }
 
