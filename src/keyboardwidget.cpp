@@ -194,15 +194,6 @@ bool KeyboardWidget::findKeyboardFromLshw()
         addArticleStruct(tr("Width"), "lshw", keyboard, "width");
         addArticleStruct(tr("Clock"), "lshw", keyboard, "clock");
         addArticleStruct(tr("Capabilities"), "lshw", keyboard, "capabilities");
-        m_existArticles.insert("product");
-        m_existArticles.insert("description");
-        m_existArticles.insert("vendor");
-        m_existArticles.insert("bus info");
-        m_existArticles.insert("physical id");
-        m_existArticles.insert("logical name");
-        m_existArticles.insert("version");
-        m_existArticles.insert("width");
-        m_existArticles.insert("clock");
 
         ArticleStruct driver(tr("driver"));
         driver.queryData("lshw", keyboard, "driver");
@@ -213,11 +204,6 @@ bool KeyboardWidget::findKeyboardFromLshw()
         maxpower.queryData("lshw", keyboard, "maxpower");
         m_articles.push_back(maxpower);
         m_existArticles.insert("maxpower");
-
-//        ArticleStruct physicalId(tr("physical id"));
-//        physicalId.queryData("lshw", keyboard, "physical id");
-//        m_articles.push_back(physicalId);
-//        m_existArticles.insert("physical id");
 
         ArticleStruct speed(tr("speed"));
         speed.queryData("lshw", keyboard, "speed");

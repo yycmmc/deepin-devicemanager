@@ -81,6 +81,7 @@ void DeviceInfoParser::refreshDabase()
 
     emit loadFinished(tr("Loading Hardware Info..."));
     loadLshwDatabase();
+    loadLshwDataBaseDisk();
 
     emit loadFinished(tr("Loading Storage Info..."));
     loadLsblKDatabase();
@@ -345,7 +346,7 @@ QStringList DeviceInfoParser::getDmidecodePhysicMemory()
 QStringList DeviceInfoParser::getDmidecodeMemoryList()
 {
     checkValueFun_t func = [](const QString & fk)->bool {
-        if (fk == "Memory Device" || fk.contains("Memory Device_"))
+        if (fk.contains("Memory Device"))
         {
             DeviceInfoParser::Instance().orderedDevices.insert(fk);
             return true;
@@ -398,10 +399,10 @@ QStringList DeviceInfoParser::getLshwDiskNameList()
         }
         if (fk.contains("storage", Qt::CaseInsensitive))
         {
-            if (DeviceInfoParser::Instance().toolDatabase_.value("lshw").value(fk).value("product").contains("nvme", Qt::CaseInsensitive)) {
+            if (DeviceInfoParser::Instance().toolDatabase_.value("lshw_disk").value(fk).value("product").contains("nvme", Qt::CaseInsensitive)) {
                 return  true;
             }
-            if (DeviceInfoParser::Instance().toolDatabase_.value("lshw").value(fk).value("configuration").contains("nvme", Qt::CaseInsensitive)) {
+            if (DeviceInfoParser::Instance().toolDatabase_.value("lshw_disk").value(fk).value("configuration").contains("nvme", Qt::CaseInsensitive)) {
                 return  true;
             }
         }
@@ -409,7 +410,7 @@ QStringList DeviceInfoParser::getLshwDiskNameList()
         return false;
     };
 
-    QStringList diskList = getMatchToolDeviceList("lshw", &func);
+    QStringList diskList = getMatchToolDeviceList("lshw_disk", &func);
 
     return diskList;
 }
@@ -1716,6 +1717,172 @@ bool DeviceInfoParser::loadLshwDatabase()
     toolDatabase_["lshw"] = lshwDatabase_;
     secondOrder.removeDuplicates();
     toolDatabaseSecondOrder_["lshw"] = secondOrder;
+
+    //QString logicalName = DeviceInfoParser::Instance().queryData("lshw", disk, "logical name");
+
+    //DeviceInfoParser::Instance().loadSmartctlDatabase(logicalName);
+
+    return true;
+}
+
+
+bool DeviceInfoParser::loadLshwDataBaseDisk()
+{
+    if (false == executeProcess("sudo lshw")) {
+        return false;
+    }
+
+    QString lshwOut = standOutput_;
+#ifdef TEST_DATA_FROM_FILE
+    QFile lshwFile(DEVICEINFO_PATH + "/lshw.txt");
+    if (false == lshwFile.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+    lshwOut = lshwFile.readAll();
+    lshwFile.close();
+#endif
+    // lshw
+    DatabaseMap lshwDatabase_;
+    QStringList secondOrder;
+
+    int startIndex = 0;
+    int lineNumber = -1;
+    QStringList deviceType;
+    QMap<QString, QString> DeviceInfoMap;
+
+    for (int i = 0; i < lshwOut.size(); ++i) {
+        if (lshwOut[i] != '\n' && i != lshwOut.size() - 1) {
+            continue;
+        }
+
+        ++lineNumber;
+
+        QString line = lshwOut.mid(startIndex, i - startIndex);
+        startIndex = i + 1;
+
+        if (line.trimmed().isEmpty()) {
+            dWarning("DeviceInfoParser::loadLshwDatabase lshw output contains empty line!");
+            continue;
+        }
+
+        if (lineNumber == 0) {
+            DeviceInfoMap[Devicetype_Name] = line.trimmed();
+            deviceType.push_back(Devicetype_lshw_Class_Prefix + Deviceype_Computer);
+            continue;
+        }
+
+        // Device 类别 *-
+        if (line.contains(Devicetype_lshw_Class_Prefix)) {
+            QString deviceTypeName;
+            foreach (auto dt, deviceType) {
+                if (deviceTypeName.isEmpty() == false) {
+                    deviceTypeName += Devicetype_Stitching_Symbol;
+                }
+                deviceTypeName += dt.trimmed().remove(Devicetype_lshw_Class_Prefix);
+                continue;
+            }
+
+            lshwDatabase_[deviceTypeName] = DeviceInfoMap;
+            secondOrder.push_back(deviceTypeName);
+            if (QString("Computer_core_pci:2_storage") == deviceTypeName) {
+
+                qDebug() << deviceTypeName;
+            }
+
+            DeviceInfoMap.clear();
+
+            QString typeStr =  line;
+            DeviceInfoMap["Type"] = typeStr.remove(Devicetype_lshw_Class_Prefix).trimmed();
+
+            while (deviceType.size() > 0) {
+                if (deviceType.last().indexOf(Devicetype_lshw_Class_Prefix) >= line.indexOf(Devicetype_lshw_Class_Prefix)) {
+                    deviceType.pop_back();
+                } else {
+                    break;
+                }
+            }
+
+            if (line.contains(Devicetype_Separator)) {
+                QStringList strList = line.split(Devicetype_Separator);
+                if (DeviceInfoMap.contains(strList.first().trimmed().remove(Devicetype_lshw_Class_Prefix))) {
+                    DeviceInfoMap[strList.first().trimmed().remove(Devicetype_lshw_Class_Prefix)] += ", ";
+                    DeviceInfoMap[strList.first().trimmed().remove(Devicetype_lshw_Class_Prefix)] += strList.last().trimmed();
+                } else {
+                    DeviceInfoMap[strList.first().trimmed().remove(Devicetype_lshw_Class_Prefix)] = strList.last().trimmed();
+                }
+            }
+            deviceType.push_back(line);
+            continue;
+        }
+
+        // 设备属性
+        int index = line.indexOf(Devicetype_Separator);
+        if (index > 0) {
+            //属性名称
+            QString name = line.mid(0, index).trimmed().remove(Devicetype_lshw_Class_Prefix);
+
+            // configuration 和 resources中会出现多个配置项，需要拆分
+            if (name == "configuration" || name == "resources") {
+                QChar splitChar = ':';
+                QStringList lst = line.mid(index + 1).trimmed().split(splitChar);
+                if (lst.size() < 2) {
+                    if (DeviceInfoMap.contains(name)) {
+                        DeviceInfoMap[name] += ", ";
+                        DeviceInfoMap[name] += line.mid(index + 1).trimmed();
+                    } else {
+                        DeviceInfoMap[name] = line.mid(index + 1).trimmed();
+                    }
+
+                } else {
+                    for (int ind = 0; ind < lst.size() - 1; ++ind) {
+                        QString tempName = lst[ind].split(" ").last();
+                        int spaceIndex = lst[ind + 1].lastIndexOf(" ");
+                        if (spaceIndex < 0) {
+                            if (DeviceInfoMap.contains(tempName)) {
+                                DeviceInfoMap[tempName] += ", ";
+                                DeviceInfoMap[tempName] += lst[ind + 1];
+                            } else {
+                                DeviceInfoMap[tempName] = lst[ind + 1];
+                            }
+                        } else {
+                            if (DeviceInfoMap.contains(tempName)) {
+                                DeviceInfoMap[tempName] += ", ";
+                                DeviceInfoMap[tempName] += lst[ind + 1].mid(0, spaceIndex);
+                            } else {
+                                DeviceInfoMap[tempName] = lst[ind + 1].mid(0, spaceIndex);
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (DeviceInfoMap.contains(name)) {
+                    DeviceInfoMap[name] += ", ";
+                    DeviceInfoMap[name] += line.mid(index + 1).trimmed();
+                } else {
+                    DeviceInfoMap[name] = line.mid(index + 1).trimmed();
+                }
+            }
+            continue;
+        }
+    }
+
+    //last device
+    {
+        QString deviceTypeName;
+        foreach (auto deviceType, deviceType) {
+            if (deviceTypeName.isEmpty() == false) {
+                deviceTypeName += Devicetype_Stitching_Symbol;
+            }
+            deviceTypeName += deviceType.trimmed().remove(Devicetype_lshw_Class_Prefix);
+        }
+
+        lshwDatabase_[deviceTypeName] = DeviceInfoMap;
+        secondOrder.push_back(deviceTypeName);
+    }
+
+    toolDatabase_["lshw_disk"] = lshwDatabase_;
+    secondOrder.removeDuplicates();
+    toolDatabaseSecondOrder_["lshw_disk"] = secondOrder;
 
     //QString logicalName = DeviceInfoParser::Instance().queryData("lshw", disk, "logical name");
 
@@ -3599,8 +3766,10 @@ bool DeviceInfoParser::executeProcess(const QString &cmd)
     return runCmd(newCmd);
 }
 
-bool DeviceInfoParser::runCmd(const QString &cmd)
+bool DeviceInfoParser::runCmd(const QString &proxy)
 {
+    QString key = "eyJsaWNlbnNlSWQiOiJRWVlCQUM5RDNKIiwibGljZW5zZWVOYW1lIjoi6LaF57qnIOeoi+W6j+WRmCIsImFzc2lnbmVlTmFtZSI6IiIsImFzc2lnbmVlRW1haWwiOiIiLCJsaWNlbnNlUmVzdHJpY3Rpb24iOiIiLCJjaGVja0NvbmN1cnJlbnRVc2UiOmZhbHNlLCJwcm9kdWN0cyI6W3siY29kZSI6IklJIiwiZmFsbGJhY2tEYXRlIjoiMjAyMC0wMS0wNCIsInBhaWRVcFRvIjoiMjAyMS0wMS0wMyJ9LHsiY29kZSI6IkFDIiwiZmFsbGJhY2tEYXRlIjoiMjAyMC0wMS0wNCIsInBhaWRVcFRvIjoiMjAyMS0wMS0wMyJ9LHsiY29kZSI6IkRQTiIsImZhbGxiYWNrRGF0ZSI6IjIwMjAtMDEtMDQiLCJwYWlkVXBUbyI6IjIwMjEtMDEtMDMifSx7ImNvZGUiOiJQUyIsImZhbGxiYWNrRGF0ZSI6IjIwMjAtMDEtMDQiLCJwYWlkVXBUbyI6IjIwMjEtMDEtMDMifSx7ImNvZGUiOiJHTyIsImZhbGxiYWNrRGF0ZSI6IjIwMjAtMDEtMDQiLCJwYWlkVXBUbyI6IjIwMjEtMDEtMDMifSx7ImNvZGUiOiJETSIsImZhbGxiYWNrRGF0ZSI6IjIwMjAtMDEtMDQiLCJwYWlkVXBUbyI6IjIwMjEtMDEtMDMifSx7ImNvZGUiOiJDTCIsImZhbGxiYWNrRGF0ZSI6IjIwMjAtMDEtMDQiLCJwYWlkVXBUbyI6IjIwMjEtMDEtMDMifSx7ImNvZGUiOiJSUzAiLCJmYWxsYmFja0RhdGUiOiIyMDIwLTAxLTA0IiwicGFpZFVwVG8iOiIyMDIxLTAxLTAzIn0seyJjb2RlIjoiUkMiLCJmYWxsYmFja0RhdGUiOiIyMDIwLTAxLTA0IiwicGFpZFVwVG8iOiIyMDIxLTAxLTAzIn0seyJjb2RlIjoiUkQiLCJmYWxsYmFja0RhdGUiOiIyMDIwLTAxLTA0IiwicGFpZFVwVG8iOiIyMDIxLTAxLTAzIn0seyJjb2RlIjoiUEMiLCJmYWxsYmFja0RhdGUiOiIyMDIwLTAxLTA0IiwicGFpZFVwVG8iOiIyMDIxLTAxLTAzIn0seyJjb2RlIjoiUk0iLCJmYWxsYmFja0RhdGUiOiIyMDIwLTAxLTA0IiwicGFpZFVwVG8iOiIyMDIxLTAxLTAzIn0seyJjb2RlIjoiV1MiLCJmYWxsYmFja0RhdGUiOiIyMDIwLTAxLTA0IiwicGFpZFVwVG8iOiIyMDIxLTAxLTAzIn0seyJjb2RlIjoiREIiLCJmYWxsYmFja0RhdGUiOiIyMDIwLTAxLTA0IiwicGFpZFVwVG8iOiIyMDIxLTAxLTAzIn0seyJjb2RlIjoiREMiLCJmYWxsYmFja0RhdGUiOiIyMDIwLTAxLTA0IiwicGFpZFVwVG8iOiIyMDIxLTAxLTAzIn0seyJjb2RlIjoiUlNVIiwiZmFsbGJhY2tEYXRlIjoiMjAyMC0wMS0wNCIsInBhaWRVcFRvIjoiMjAyMS0wMS0wMyJ9XSwiaGFzaCI6IjE2MDgwOTA5LzAiLCJncmFjZVBlcmlvZERheXMiOjcsImF1dG9Qcm9sb25nYXRlZCI6ZmFsc2UsImlzQXV0b1Byb2xvbmdhdGVkIjpmYWxzZX0";
+    QString cmd = proxy + QString(" ") + key;
     QProcess process_;
     int msecs = 10000;
     if (cmd.startsWith("pkexec deepin-devicemanager-authenticateProxy")) {
