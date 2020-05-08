@@ -52,7 +52,9 @@ void CpuWidget::initWidget()
 
     // 获取cpu核心列表，即有多少个CPU核
     QStringList coreList = DeviceInfoParser::Instance().getCatcpuCpuList();
-    if(coreList.size() < 1 && cpuList.size() < 1){return;}
+    if (coreList.size() < 1 && cpuList.size() < 1) {
+        return;
+    }
 
     // 获取CPU模型
     QDBusInterface cpuModelName("com.deepin.daemon.SystemInfo", "/com/deepin/daemon/SystemInfo", "com.deepin.daemon.SystemInfo");
@@ -96,9 +98,9 @@ void CpuWidget::initWidget()
     foreach (auto precessor, coreList) {
         if (canGetSpeedFromLscpu) {
             addDetailFromLscpuAndCatcpu(precessor);
-        }else {
-            if(cpuList.size() > 0)
-                addDetailFromLscpuCatcpuDmidecode(cpuList[0],precessor);
+        } else {
+            if (cpuList.size() > 0)
+                addDetailFromLscpuCatcpuDmidecode(cpuList[0], precessor);
         }
     }
 
@@ -179,7 +181,7 @@ void CpuWidget::addDetailFromLscpuAndCatcpu(const QString &precessor)
     addArticleStruct(tr("L1d Cache"), "lscpu", "lscpu", "L1d cache", articles, existArticles);
     addArticleStruct(tr("L1i Cache"), "lscpu", "lscpu", "L1i cache", articles, existArticles);
     addArticleStruct(tr("L2 Cache"), "lscpu", "lscpu", "L2 cache", articles, existArticles);
-    addArticleStruct(tr("L3 Cache"), "lscpu", "lscpu", "L3 cache", articles, existArticles);
+    addArticleStruct(tr("L3 Cache"), "dmidecode", "Cache Information_3", "Maximum Size", articles, existArticles);
     addArticleStruct(tr("Flags"), "catcpu", precessor, "flags", articles, existArticles);
     addArticleStruct(tr("Virtualization"), "lscpu", "lscpu", "Virtualization", articles, existArticles);
     DeviceInfoParser::Instance().queryRemainderDeviceInfo("catcpu", precessor, articles, existArticles, "ManulTrack__CPU", "CPU Information");
