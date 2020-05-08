@@ -33,7 +33,7 @@ DisplayadapterWidget::DisplayadapterWidget(QWidget *parent) : DeviceInfoWidgetBa
 
 void DisplayadapterWidget::initWidget()
 {
-    if(DeviceInfoParser::Instance().isHuaweiAndroidUos()){
+    if (DeviceInfoParser::Instance().isHuaweiAndroidUos()) {
         return initGpuInof();
     }
     QList<QStringList> tabList;
@@ -126,7 +126,7 @@ void DisplayadapterWidget::initWidget()
         articles.push_back(capabilities);
         existArticles.insert("capabilities");
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", displayadapter, articles, existArticles,"ManulTrack__DisplayAdapter","HUAWEI DisplayAdapter");
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", displayadapter, articles, existArticles, "ManulTrack__DisplayAdapter", "HUAWEI DisplayAdapter");
 
         QString dpName = "";
         if ( displayadapterList.size() > 1 ) {
@@ -180,7 +180,7 @@ void DisplayadapterWidget::initGpuInof()
                 t.value = db.value(gpuKey).value(artTitle);
                 articles.push_back(t);
             }
-            addDevice(gpuKey, articles, db.keys().count(),true);
+            addDevice(gpuKey, articles, db.keys().count(), true);
         }
     } else {
         setCentralInfo(tr("Failed to find display adapter information"));
