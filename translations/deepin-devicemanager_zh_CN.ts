@@ -3842,9 +3842,24 @@
        <translation>USB</translation>
    </message>
    <message><!-- manul track message -->
+       <source>driver</source>
+       <comment>USB Information</comment>
+       <translation>驱动</translation>
+   </message>
+   <message><!-- manul track message -->
        <source>serial</source>
        <comment>USB Information</comment>
        <translation>序列号</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>maxpower</source>
+       <comment>USB Information</comment>
+       <translation>最大功率</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>speed</source>
+       <comment>USB Information</comment>
+       <translation>速度</translation>
    </message>
 </context>
 <context>

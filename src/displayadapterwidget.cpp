@@ -176,8 +176,10 @@ void DisplayadapterWidget::initGpuInof()
 
             articles.clear();
             foreach (auto artTitle, db.value(gpuKey).keys()) {
+                QString name = DApplication::translate("ManulTrack__DisplayAdapter", artTitle.trimmed().toStdString().data(), "");
                 ArticleStruct t(artTitle);
                 t.value = db.value(gpuKey).value(artTitle);
+                t.name = name;
                 articles.push_back(t);
             }
             addDevice(gpuKey, articles, db.keys().count(), true);
