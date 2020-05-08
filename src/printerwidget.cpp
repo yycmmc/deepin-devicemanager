@@ -179,120 +179,120 @@ void PrinterWidget::initWidget()
         articles.clear();
         existArticles.clear();
 
-        ArticleStruct copies(tr("copies"));
-        copies.queryData("Cups", device, "copies");
-        articles.push_back(copies);
-        existArticles.insert("copies");
+//        ArticleStruct copies(tr("copies"));
+//        copies.queryData("Cups", device, "copies");
+//        articles.push_back(copies);
+//        existArticles.insert("copies");
 
-        ArticleStruct deviceUri(tr("Device-Uri"));
-        deviceUri.queryData("Cups", device, "device-uri");
-        articles.push_back(deviceUri);
-        existArticles.insert("device-uri");
+//        ArticleStruct deviceUri(tr("Device-Uri"));
+//        deviceUri.queryData("Cups", device, "device-uri");
+//        articles.push_back(deviceUri);
+//        existArticles.insert("device-uri");
 
-        ArticleStruct finishings(tr("Finishings"));
-        finishings.queryData("Cups", device, "finishings");
-        articles.push_back(finishings);
-        existArticles.insert("finishings");
+//        ArticleStruct finishings(tr("Finishings"));
+//        finishings.queryData("Cups", device, "finishings");
+//        articles.push_back(finishings);
+//        existArticles.insert("finishings");
 
-        ArticleStruct jobCancelAfter(tr("Job-cancel-after"));
-        jobCancelAfter.queryData("Cups", device, "job-cancel-after");
-        articles.push_back(jobCancelAfter);
-        existArticles.insert("job-cancel-after");
+//        ArticleStruct jobCancelAfter(tr("Job-cancel-after"));
+//        jobCancelAfter.queryData("Cups", device, "job-cancel-after");
+//        articles.push_back(jobCancelAfter);
+//        existArticles.insert("job-cancel-after");
 
-        ArticleStruct jobHoldUntil(tr("Job-hold-until"));
-        jobHoldUntil.queryData("Cups", device, "job-hold-until");
-        articles.push_back(jobHoldUntil);
-        existArticles.insert("job-hold-until");
+//        ArticleStruct jobHoldUntil(tr("Job-hold-until"));
+//        jobHoldUntil.queryData("Cups", device, "job-hold-until");
+//        articles.push_back(jobHoldUntil);
+//        existArticles.insert("job-hold-until");
 
-        ArticleStruct jobPriority(tr("Job-priority"));
-        jobPriority.queryData("Cups", device, "job-priority");
-        articles.push_back(jobPriority);
-        existArticles.insert("job-priority");
+//        ArticleStruct jobPriority(tr("Job-priority"));
+//        jobPriority.queryData("Cups", device, "job-priority");
+//        articles.push_back(jobPriority);
+//        existArticles.insert("job-priority");
 
-        ArticleStruct jobSheets(tr("Job-Sheets"));
-        jobSheets.queryData("Cups", device, "job-sheets");
-        articles.push_back(jobSheets);
-        existArticles.insert("job-sheets");
+//        ArticleStruct jobSheets(tr("Job-Sheets"));
+//        jobSheets.queryData("Cups", device, "job-sheets");
+//        articles.push_back(jobSheets);
+//        existArticles.insert("job-sheets");
 
-        ArticleStruct makerChangeTime(tr("marker-change-time"));
-        makerChangeTime.queryData("Cups", device, "marker-change-time");
-        articles.push_back(makerChangeTime);
-        existArticles.insert("marker-change-time");
+//        ArticleStruct makerChangeTime(tr("marker-change-time"));
+//        makerChangeTime.queryData("Cups", device, "marker-change-time");
+//        articles.push_back(makerChangeTime);
+//        existArticles.insert("marker-change-time");
 
-        ArticleStruct media(tr("Media"));
-        media.queryData("Cups", device, "media");
-        articles.push_back(media);
-        existArticles.insert("media");
+//        ArticleStruct media(tr("Media"));
+//        media.queryData("Cups", device, "media");
+//        articles.push_back(media);
+//        existArticles.insert("media");
 
-        ArticleStruct numberUp(tr("number-up"));
-        numberUp.queryData("Cups", device, "number-up");
-        articles.push_back(numberUp);
-        existArticles.insert("number-up");
+//        ArticleStruct numberUp(tr("number-up"));
+//        numberUp.queryData("Cups", device, "number-up");
+//        articles.push_back(numberUp);
+//        existArticles.insert("number-up");
 
-        ArticleStruct orientationRequested(tr("orientation-requested"));
-        orientationRequested.queryData("Cups", device, "orientation-requested");
-        articles.push_back(orientationRequested);
-        existArticles.insert("orientation-requestedr");
+//        ArticleStruct orientationRequested(tr("orientation-requested"));
+//        orientationRequested.queryData("Cups", device, "orientation-requested");
+//        articles.push_back(orientationRequested);
+//        existArticles.insert("orientation-requestedr");
 
-        ArticleStruct printColorMode(tr("print-color-mode"));
-        printColorMode.queryData("Cups", device, "print-color-mode");
-        articles.push_back(printColorMode);
-        existArticles.insert("print-color-mode");
+//        ArticleStruct printColorMode(tr("print-color-mode"));
+//        printColorMode.queryData("Cups", device, "print-color-mode");
+//        articles.push_back(printColorMode);
+//        existArticles.insert("print-color-mode");
 
         ArticleStruct printerInfo(tr("printerInfo"));
         printerInfo.queryData("Cups", device, "printer-info");
-        articles.push_back(printerInfo);
-        existArticles.insert("printer-info");
+        //articles.push_back(printerInfo);
+        //existArticles.insert("printer-info");
 
-        ArticleStruct printerIsAcceptingJobs(tr("printer-is-accepting-jobs"));
-        printerIsAcceptingJobs.queryData("Cups", device, "printer-is-accepting-jobs");
-        articles.push_back(printerIsAcceptingJobs);
-        existArticles.insert("printer-is-accepting-jobs");
+//        ArticleStruct printerIsAcceptingJobs(tr("printer-is-accepting-jobs"));
+//        printerIsAcceptingJobs.queryData("Cups", device, "printer-is-accepting-jobs");
+//        articles.push_back(printerIsAcceptingJobs);
+//        existArticles.insert("printer-is-accepting-jobs");
 
-        ArticleStruct printerIsShared(tr("printer-is-shared"));
-        printerIsShared.queryData("Cups", device, "printer-is-shared");
-        articles.push_back(printerIsShared);
-        existArticles.insert("printer-is-shared");
+//        ArticleStruct printerIsShared(tr("printer-is-shared"));
+//        printerIsShared.queryData("Cups", device, "printer-is-shared");
+//        articles.push_back(printerIsShared);
+//        existArticles.insert("printer-is-shared");
 
-        ArticleStruct printerIsTemporary(tr("printer-is-temporary"));
-        printerIsTemporary.queryData("Cups", device, "printer-is-temporar");
-        articles.push_back(printerIsTemporary);
-        existArticles.insert("printer-is-temporar");
+//        ArticleStruct printerIsTemporary(tr("printer-is-temporary"));
+//        printerIsTemporary.queryData("Cups", device, "printer-is-temporar");
+//        articles.push_back(printerIsTemporary);
+//        existArticles.insert("printer-is-temporar");
 
         ArticleStruct printerMakeAndModel(tr("printer-make-and-model"));
         printerMakeAndModel.queryData("Cups", device, "printer-make-and-model");
         articles.push_back(printerMakeAndModel);
         existArticles.insert("printer-make-and-model");
 
-        ArticleStruct printerState(tr("printer-state"));
-        printerState.queryData("Cups", device, "printer-state");
-        articles.push_back(printerState);
-        existArticles.insert("printer-state");
+//        ArticleStruct printerState(tr("printer-state"));
+//        printerState.queryData("Cups", device, "printer-state");
+//        articles.push_back(printerState);
+//        existArticles.insert("printer-state");
 
-        ArticleStruct printerStateChangeTime(tr("printer-state-change-time"));
-        printerStateChangeTime.queryData("Cups", device, "printer-state-change-time");
-        articles.push_back(printerStateChangeTime);
-        existArticles.insert("printer-state-change-time");
+//        ArticleStruct printerStateChangeTime(tr("printer-state-change-time"));
+//        printerStateChangeTime.queryData("Cups", device, "printer-state-change-time");
+//        articles.push_back(printerStateChangeTime);
+//        existArticles.insert("printer-state-change-time");
 
-        ArticleStruct printerStateReasons(tr("printer-state-reasons"));
-        printerStateReasons.queryData("Cups", device, "printer-state-reasons");
-        articles.push_back(printerStateReasons);
-        existArticles.insert("printer-state-reasons");
+//        ArticleStruct printerStateReasons(tr("printer-state-reasons"));
+//        printerStateReasons.queryData("Cups", device, "printer-state-reasons");
+//        articles.push_back(printerStateReasons);
+//        existArticles.insert("printer-state-reasons");
 
-        ArticleStruct printerType(tr("printer-type"));
-        printerType.queryData("Cups", device, "printer-type");
-        articles.push_back(printerType);
-        existArticles.insert("printer-type");
+//        ArticleStruct printerType(tr("printer-type"));
+//        printerType.queryData("Cups", device, "printer-type");
+//        articles.push_back(printerType);
+//        existArticles.insert("printer-type");
 
-        ArticleStruct printerUriSupported(tr("printer-uri-supported"));
-        printerUriSupported.queryData("Cups", device, "printer-uri-supported");
-        articles.push_back(printerUriSupported);
-        existArticles.insert("printer-uri-supported");
+//        ArticleStruct printerUriSupported(tr("printer-uri-supported"));
+//        printerUriSupported.queryData("Cups", device, "printer-uri-supported");
+//        articles.push_back(printerUriSupported);
+//        existArticles.insert("printer-uri-supported");
 
-        ArticleStruct sides(tr("sides"));
-        sides.queryData("Cups", device, "sides");
-        articles.push_back(sides);
-        existArticles.insert("sides");
+//        ArticleStruct sides(tr("sides"));
+//        sides.queryData("Cups", device, "sides");
+//        articles.push_back(sides);
+//        existArticles.insert("sides");
 
 //        ArticleStruct numberUp(tr("number-up"));
 //        busInfo.queryData("Cups", device, "number-up");
@@ -320,7 +320,14 @@ void PrinterWidget::initWidget()
 //        existArticles.insert("printer-is-accepting-jobs");
 
 
-        DeviceInfoParser::Instance().queryRemainderDeviceInfo("Cups", device, articles, existArticles);
+        existArticles.insert("print-quality");
+        existArticles.insert("printer-commands");
+        existArticles.insert("printer-location");
+        existArticles.insert("finishings");
+        existArticles.insert("media-source");
+        existArticles.insert("media-type");
+        existArticles.insert("job-sheets");
+        DeviceInfoParser::Instance().queryRemainderDeviceInfo("Cups", device, articles, existArticles, "ManulTrack__Printer");
 
         addDevice(device, articles, printerList.size());
 

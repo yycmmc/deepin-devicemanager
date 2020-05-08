@@ -3630,6 +3630,26 @@
        <translation>序列号</translation>
    </message>
    <message><!-- manul track message -->
+       <source>driver</source>
+       <comment>HUAWEI Mouse</comment>
+       <translation>驱动</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>maxpower</source>
+       <comment>HUAWEI Mouse</comment>
+       <translation>最大功率</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>physical id</source>
+       <comment>HUAWEI Mouse</comment>
+       <translation>物理ID</translation>
+   </message>
+   <message><!-- manul track message -->
+       <source>speed</source>
+       <comment>HUAWEI Mouse</comment>
+       <translation>速率</translation>
+   </message>
+   <message><!-- manul track message -->
        <source>usb</source>
        <comment>HUAWEI Mouse</comment>
        <translation>USB</translation>
@@ -3850,6 +3870,11 @@
        <translation>驱动</translation>
    </message>
    <message><!-- manul track message -->
+       <source>latency</source>
+       <comment>HUAWEI OtherDevice</comment>
+       <translation>延迟</translation>
+   </message>
+   <message><!-- manul track message -->
        <source>configuration</source>
        <comment>HUAWEI OtherDevice</comment>
        <translation>配置</translation>
@@ -3868,6 +3893,145 @@
        <source>serial</source>
        <comment>HUAWEI OtherDevice</comment>
        <translation>序列号</translation>
+   </message>
+</context>
+<context>
+<name>ManulTrack__Printer</name>
+   <message>
+       <source>printer-location</source>
+       <translation></translation>
+   </message>
+   <message>
+       <source>printer-commands</source>
+       <translation></translation>
+   </message>
+   <message>
+       <source>MSC</source>
+       <translation></translation>
+   </message>
+   <message>
+       <source>printer-state-change-time</source>
+       <translation>打印机状态修改时间</translation>
+   </message>
+   <message>
+       <source>Hardware Class</source>
+       <translation>设备类型</translation>
+   </message>
+   <message>
+       <source>KEY</source>
+       <translation></translation>
+   </message>
+   <message>
+       <source>print-quality</source>
+       <translation></translation>
+   </message>
+   <message>
+       <source>printer-is-accepting-jobs</source>
+       <translation>当前可打印</translation>
+   </message>
+   <message>
+       <source>printer-state-reasons</source>
+       <translation>打印机状态信息</translation>
+   </message>
+   <message>
+       <source>job-sheets</source>
+       <translation></translation>
+   </message>
+   <message>
+       <source>job-hold-until</source>
+       <translation>保留打印任务直至</translation>
+   </message>
+   <message>
+       <source>Device File</source>
+       <translation>设备文件</translation>
+   </message>
+   <message>
+       <source>printer-is-temporary</source>
+       <translation>临时打印机</translation>
+   </message>
+   <message>
+       <source>sides</source>
+       <translation>打印面数</translation>
+   </message>
+   <message>
+       <source>number-up</source>
+       <translation>编号</translation>
+   </message>
+   <message>
+       <source>finishings</source>
+       <translation></translation>
+   </message>
+   <message>
+       <source>printer-make-and-model</source>
+       <translation>制造商和型号</translation>
+   </message>
+   <message>
+       <source>printer-state</source>
+       <translation>打印机状态</translation>
+   </message>
+   <message>
+       <source>device-uri</source>
+       <translation>设备URI</translation>
+   </message>
+   <message>
+       <source>printer-is-shared</source>
+       <translation>打印机已共享</translation>
+   </message>
+   <message>
+       <source>orientation-requested</source>
+       <translation>打印方向</translation>
+   </message>
+   <message>
+       <source>marker-change-time</source>
+       <translation>标记修改次数</translation>
+   </message>
+   <message>
+       <source>printer-uri-supported</source>
+       <translation>支持的URI</translation>
+   </message>
+   <message>
+       <source>media-type</source>
+       <translation></translation>
+   </message>
+   <message>
+       <source>media</source>
+       <translation>打印介质</translation>
+   </message>
+   <message>
+       <source>copies</source>
+       <translation>复印数量</translation>
+   </message>
+   <message>
+       <source>print-color-mode</source>
+       <translation>颜色模式</translation>
+   </message>
+   <message>
+       <source>PROP</source>
+       <translation></translation>
+   </message>
+   <message>
+       <source>printer-info</source>
+       <translation>打印机信息</translation>
+   </message>
+   <message>
+       <source>EV</source>
+       <translation></translation>
+   </message>
+   <message>
+       <source>job-cancel-after</source>
+       <translation>此时取消打印任务</translation>
+   </message>
+   <message>
+       <source>printer-type</source>
+       <translation>打印机类型</translation>
+   </message>
+   <message>
+       <source>job-priority</source>
+       <translation>任务优先级</translation>
+   </message>
+   <message>
+       <source>media-source</source>
+       <translation></translation>
    </message>
 </context>
 </TS>

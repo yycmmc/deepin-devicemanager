@@ -251,7 +251,7 @@ bool DeviceInfoParser::queryRemainderDeviceInfo(const QString &toolname,
             continue;
         }
         QString articleName;
-        if (context != nullptr && disambiguation != nullptr) {
+        if (context != nullptr) {
             articleName = DApplication::translate(context, key.trimmed().toStdString().data(), disambiguation);
 #if GenerateTsItem
             if (out != nullptr) {
@@ -1211,8 +1211,7 @@ bool DeviceInfoParser::loadOSInfo()
             int index = debianVersion.indexOf(")");
             debianVersion.remove(index, 1);
             osInfo_ = linuxCoreVerson + debianVersion + releaseVersion;
-        }
-        else {
+        } else {
             osInfo_ = linuxCoreVerson + releaseVersion;
         }
 
