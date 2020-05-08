@@ -44,8 +44,7 @@ void PowerWidget::initWidget()
     int maxSwitchingSize = maxDeviceSize(lshwSwitchingpowerList, demidecodeSwitchingpowerList, upowerSwitchingList);
     int maxBatterySize = maxDeviceSize(lshwBatteryList, demidecodebatteryList, UpowerBatteryList);
 
-    if(maxSwitchingSize + maxBatterySize < 1)
-    {
+    if (maxSwitchingSize + maxBatterySize < 1) {
         setCentralInfo(tr("Failed to get power information"));
         return ;
     }
@@ -55,8 +54,7 @@ void PowerWidget::initWidget()
     QSet<QString> existArticles2;
     QSet<QString> existArticles3;
 
-    for(int i = 0; i < maxSwitchingSize; ++i )
-    {
+    for (int i = 0; i < maxSwitchingSize; ++i ) {
         articles.clear();
         existArticles1.clear();
         existArticles2.clear();
@@ -67,8 +65,7 @@ void PowerWidget::initWidget()
         ArticleStruct device(tr("Device"));
         ArticleStruct serial(tr("Serial Number"));
 
-        if(i < upowerSwitchingList.size())
-        {
+        if (i < upowerSwitchingList.size()) {
             device.value = upowerSwitchingList[i];
             articles.push_back(device);
 
@@ -83,8 +80,7 @@ void PowerWidget::initWidget()
             powerSupply.queryData( "upower", device.value, "power supply", existArticles1, articles);
         }
 
-        if(i < lshwSwitchingpowerList.size())
-        {
+        if (i < lshwSwitchingpowerList.size()) {
             QString dname = lshwSwitchingpowerList[i];
 
             name.queryData( "lshw", dname, "product", existArticles2, articles);
@@ -106,8 +102,7 @@ void PowerWidget::initWidget()
             capacity.queryData( "lshw", dname, "capacity", existArticles2, articles);
         }
 
-        if(i < demidecodeSwitchingpowerList.size())
-        {
+        if (i < demidecodeSwitchingpowerList.size()) {
             QString demideSwitchingpower = demidecodeSwitchingpowerList[i];
 
             name.queryData( "dmidecode", demideSwitchingpower, "Name", existArticles3, articles);
@@ -123,31 +118,26 @@ void PowerWidget::initWidget()
             ArticleStruct location(tr("Location"));
             location.queryData( "dmidecode", demideSwitchingpower, "Location", existArticles3, articles);
 
-            ArticleStruct assetTag(tr("Asset Tag","Power Info from DMIDecode"));
+            ArticleStruct assetTag(tr("Asset Tag", "Power Info from DMIDecode"));
             assetTag.queryData( "dmidecode", demideSwitchingpower, "Asset Tag", existArticles3, articles);
         }
 
-        if(i < upowerSwitchingList.size())
-        {
-            DeviceInfoParser::Instance().queryRemainderDeviceInfo("upower", device.value, articles, existArticles1,"ManulTrack__POWER","HUAWEI power");
+        if (i < upowerSwitchingList.size()) {
+            DeviceInfoParser::Instance().queryRemainderDeviceInfo("upower", device.value, articles, existArticles1, "ManulTrack__POWER", "HUAWEI power");
         }
 
-        if(i < lshwSwitchingpowerList.size())
-        {
-            DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", lshwSwitchingpowerList[i], articles, existArticles2,"ManulTrack__POWER","HUAWEI power");
+        if (i < lshwSwitchingpowerList.size()) {
+            DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", lshwSwitchingpowerList[i], articles, existArticles2, "ManulTrack__POWER", "HUAWEI power");
         }
 
-        if(i < demidecodeSwitchingpowerList.size())
-        {
-            DeviceInfoParser::Instance().queryRemainderDeviceInfo("dmidecode", demidecodeSwitchingpowerList[i], articles, existArticles3,"ManulTrack__POWER","HUAWEI power");
+        if (i < demidecodeSwitchingpowerList.size()) {
+            DeviceInfoParser::Instance().queryRemainderDeviceInfo("dmidecode", demidecodeSwitchingpowerList[i], articles, existArticles3, "ManulTrack__POWER", "HUAWEI power");
         }
 
         addDevice( "Switching Power", articles, maxSwitchingSize + maxBatterySize, true );
 
-        if( maxSwitchingSize + maxBatterySize > 1 )
-        {
-            QStringList tab =
-            {
+        if ( maxSwitchingSize + maxBatterySize > 1 ) {
+            QStringList tab = {
                 name.value,
                 tr("Switching Power"),
                 vendor.value
@@ -156,30 +146,27 @@ void PowerWidget::initWidget()
             tabList.push_back(tab);
         }
 
-        if(overviewInfo_.value.isEmpty() == false)
-        {
+        if (overviewInfo_.value.isEmpty() == false) {
             overviewInfo_.value += " / ";
         }
         overviewInfo_.value += tr("Switching Power") + " " + name.value;
     }
 
 
-    for( int i = 0; i < maxBatterySize; ++i )
-    {
+    for ( int i = 0; i < maxBatterySize; ++i ) {
         existArticles1.clear();
         existArticles2.clear();
         existArticles3.clear();
         articles.clear();
 
         ArticleStruct vendor(tr("Vendor"));
-        ArticleStruct de(tr("Design Energy","Power Info from Upower"));
+        ArticleStruct de(tr("Design Energy", "Power Info from Upower"));
         ArticleStruct device(tr("Device"));
         ArticleStruct model(tr("Model"));
         ArticleStruct name(tr("Name"));
         ArticleStruct serial(tr("Serial Number"));
 
-        if(i < UpowerBatteryList.size())
-        {
+        if (i < UpowerBatteryList.size()) {
             device.value = UpowerBatteryList[i];
             articles.push_back(device);
 
@@ -210,8 +197,7 @@ void PowerWidget::initWidget()
             powerSupply.queryData( "upower", device.value, "power supply", existArticles1, articles);
         }
 
-        if( i < lshwBatteryList.size())
-        {
+        if ( i < lshwBatteryList.size()) {
             QString device = lshwBatteryList[i];
 
             name.queryData( "lshw", device, "product", existArticles2, articles);
@@ -236,18 +222,15 @@ void PowerWidget::initWidget()
             ArticleStruct slot(tr("Location"));
             slot.queryData( "dmidecode", device, "slot");
             articles.push_back(slot);
-            if(slot.value.isEmpty() == false || slot.value != tr("Unknown"))
-            {
+            if (slot.value.isEmpty() == false || slot.value != tr("Unknown")) {
                 existArticles2.insert("Location");
             }
-            if(slot.isValid())
-            {
+            if (slot.isValid()) {
                 existArticles2.insert("slot");
             }
         }
 
-        if(i < demidecodebatteryList.size())
-        {
+        if (i < demidecodebatteryList.size()) {
             QString demideBattery = demidecodebatteryList[i];
 
             name.queryData( "dmidecode", demideBattery, "Name", existArticles3, articles);
@@ -270,32 +253,27 @@ void PowerWidget::initWidget()
             de.queryData( "dmidecode", demideBattery, "Design Capacity", existArticles3, articles);
         }
 
-        if(i < UpowerBatteryList.size())
-        {
-            DeviceInfoParser::Instance().queryRemainderDeviceInfo("upower", device.value, articles, existArticles1,"ManulTrack__POWER","HUAWEI power");
+        if (i < UpowerBatteryList.size()) {
+            existArticles1.insert("present");
+            DeviceInfoParser::Instance().queryRemainderDeviceInfo("upower", device.value, articles, existArticles1, "ManulTrack__POWER", "HUAWEI power");
         }
 
-        if(i < lshwBatteryList.size())
-        {
-            DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", lshwBatteryList[i], articles, existArticles2,"ManulTrack__POWER","HUAWEI power");
+        if (i < lshwBatteryList.size()) {
+            DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", lshwBatteryList[i], articles, existArticles2, "ManulTrack__POWER", "HUAWEI power");
         }
 
-        if(i < demidecodebatteryList.size())
-        {
-            DeviceInfoParser::Instance().queryRemainderDeviceInfo("dmidecode", demidecodebatteryList[i], articles, existArticles3,"ManulTrack__POWER","HUAWEI power");
+        if (i < demidecodebatteryList.size()) {
+            DeviceInfoParser::Instance().queryRemainderDeviceInfo("dmidecode", demidecodebatteryList[i], articles, existArticles3, "ManulTrack__POWER", "HUAWEI power");
         }
 
         QString d_name = device.value;
 
-        if( maxSwitchingSize + maxBatterySize > 1 )
-        {
-            if(device.isValid() == false)
-            {
+        if ( maxSwitchingSize + maxBatterySize > 1 ) {
+            if (device.isValid() == false) {
                 d_name = name.value;
             }
 
-            QStringList tab =
-            {
+            QStringList tab = {
                 d_name,
                 tr("Battery"),
                 vendor.value
@@ -305,38 +283,29 @@ void PowerWidget::initWidget()
         }
 
         QString overName;
-        if(vendor.isValid())
-        {
+        if (vendor.isValid()) {
             overName = vendor.value;
         }
-        if(overName.isEmpty() == false)
-        {
+        if (overName.isEmpty() == false) {
             overName += " ";
         }
-        if(model.isValid())
-        {
+        if (model.isValid()) {
             overName += model.value;
-        }
-        else if(name.isValid())
-        {
+        } else if (name.isValid()) {
             overName += name.value;
-        }
-        else if(device.isValid())
-        {
+        } else if (device.isValid()) {
             overName += device.value;
         }
 
         addDevice(tr("Battery") + " " + overName, articles, maxSwitchingSize + maxBatterySize, true );
 
-        if(overviewInfo_.value.isEmpty() == false)
-        {
+        if (overviewInfo_.value.isEmpty() == false) {
             overviewInfo_.value += " / ";
         }
         overviewInfo_.value += tr("Battery") + " " + overName;
     }
 
-    if( maxSwitchingSize + maxBatterySize > 1 )
-    {
+    if ( maxSwitchingSize + maxBatterySize > 1 ) {
         QStringList headers = { tr("Name"), tr("Type"), tr("Vendor") };
         addTable( headers, tabList);
     }
