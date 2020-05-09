@@ -181,7 +181,13 @@ void CpuWidget::addDetailFromLscpuAndCatcpu(const QString &precessor)
     addArticleStruct(tr("L1d Cache"), "lscpu", "lscpu", "L1d cache", articles, existArticles);
     addArticleStruct(tr("L1i Cache"), "lscpu", "lscpu", "L1i cache", articles, existArticles);
     addArticleStruct(tr("L2 Cache"), "lscpu", "lscpu", "L2 cache", articles, existArticles);
-    addArticleStruct(tr("L3 Cache"), "dmidecode", "Cache Information_3", "Maximum Size", articles, existArticles);
+
+    ArticleStruct Name(tr("L3 Cache"));
+    Name.queryData("dmidecode", "Cache Information_3", "Maximum Size");
+    Name.value.replace(" ", "").replace("kB", "K");
+    articles.push_back(Name);
+    existArticles.insert("L3 Cache");
+
     addArticleStruct(tr("Flags"), "catcpu", precessor, "flags", articles, existArticles);
     addArticleStruct(tr("Virtualization"), "lscpu", "lscpu", "Virtualization", articles, existArticles);
     DeviceInfoParser::Instance().queryRemainderDeviceInfo("catcpu", precessor, articles, existArticles, "ManulTrack__CPU", "CPU Information");
