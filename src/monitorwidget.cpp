@@ -59,6 +59,40 @@ bool findAspectRatio(int width, int height, int &ar_w, int &ar_h)
     return false;
 }
 
+QString MonitorWidget::transWeekToDate(const QString &year, const QString &week)
+{
+    QString dateStr = year;
+
+    int dayNum[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    if (year.toInt() % 4 == 0) {
+        dayNum[1] = 29;
+    }
+
+    int days = week.toInt() * 7;
+    int tmp = 0 ;
+    int i = 0;
+    for (; i < 12; ++i) {
+        if (tmp + dayNum[i] <= days) {
+            tmp += dayNum[i];
+        } else {
+            break;
+        }
+    }
+
+    dateStr += " " + tr("Year");
+    if (days - tmp > 0) {
+        dateStr += QString::number(i + 1) + " " + tr("Month");
+//        dateStr += QString::number(days - tmp) + tr("Day");
+    } else {
+        dateStr += QString::number(i) + " " + tr("Month");
+//        dateStr += QString::number(dayNum[i - 1]) + " " + tr("Day");
+    }
+
+
+    return dateStr;
+}
+
 MonitorWidget::MonitorWidget(QWidget *parent) : DeviceInfoWidgetBase(parent, tr("Monitor"))
 {
     initWidget();
@@ -131,14 +165,13 @@ void MonitorWidget::initWidget()
             ArticleStruct mDate(tr("Manufacture Date"));
             mDate.queryData("hwinfo", monitor, "Year of Manufacture");
             if ( mDate.isValid() && mDate.value.toInt() != 0) {
-                mDate.value = mDate.value + tr("Year");
 
                 QString mw = DeviceInfoParser::Instance().queryData("hwinfo", monitor, "Week of Manufacture");
                 if ( mw.isEmpty() == false && mw != tr("Unknown") && mw != "0") {
-                    mDate.value += " ";
-                    mDate.value += mw;
-                    mDate.value += tr("Week");
+
+                    mDate.value = transWeekToDate(mDate.value, mw);
                 }
+
                 articles.push_back(mDate);
 
                 existArticles.insert("Year of Manufacture");
@@ -355,7 +388,7 @@ void MonitorWidget::initHwMonitor()
     EDIDParser edidParser;
     edidParser.setSource("/sys/devices/platform/hisi-drm/drm/card0/card0-dp-1/edid");
     int monitorCount = 1;
-    if(edidParser.isVaild()) monitorCount = 2;
+    if (edidParser.isVaild()) monitorCount = 2;
 
     ArticleStruct vendor(tr("Vendor"));
     ArticleStruct currentResolution(tr("Resolution"));
@@ -371,15 +404,16 @@ void MonitorWidget::initHwMonitor()
     articles = {vendor, currentResolution, resolutionList, date, monitorSize};
     addDevice("Notebook monitor", articles, monitorCount );
     overviewInfo_.value = tr("Notebook monitor");
-    if(edidParser.isVaild()){
+    if (edidParser.isVaild()) {
         //external monitor
         vendor.value = edidParser.getManufatureName();
         resolutionList.value = edidParser.getSupportResolutionList().join(" ");
-        int t_week = 1;int t_year = 2019;
-        edidParser.getDate(t_week,t_year);
+        int t_week = 1;
+        int t_year = 2019;
+        edidParser.getDate(t_week, t_year);
         date.value = QString("%1%2%3%4").arg(t_year).arg(tr("Year")).arg(t_week).arg(tr("Week"));
         monitorSize.value = edidParser.getMaxImageSize();
-        articles = {vendor,resolutionList, date, monitorSize};
+        articles = {vendor, resolutionList, date, monitorSize};
         addDevice("External monitor", articles, monitorCount );
         overviewInfo_.value += QString(" / ").arg(tr("External monitor"));
     }

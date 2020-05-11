@@ -33,12 +33,14 @@ public:
     void initWidget() override;
     void initHwMonitor();
 
-    QString parseMonitorSize(const QString& sizeDescription, double& inch,QSize& retSize);
-    QString parseDisplayRatio(const QString& resulotion);
+    QString parseMonitorSize(const QString &sizeDescription, double &inch, QSize &retSize);
+    QString parseDisplayRatio(const QString &resulotion);
 
     QString getMonitorSizeFromEDID();
+
+    QString transWeekToDate(const QString &year, const QString &week);
 private:
-    void parseCurResolution(ArticleStruct &curResolution,ArticleStruct &resolutionList);
+    void parseCurResolution(ArticleStruct &curResolution, ArticleStruct &resolutionList);
 };
 
 
