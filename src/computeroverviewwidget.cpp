@@ -88,7 +88,7 @@ void ComputerOverviewWidget::setOverviewInfos( const QList<ArticleStruct> &other
 
     QList<ArticleStruct> acList;
 
-    acList << vendor << family << model << pName << chassisType;
+    acList << vendor << family << ver << model << pName << chassisType;
 
     model.value = joinArticle(acList);
 //    else if(false == pName.contains(" ") && ver.contains(" "))  //    Product Name: 10N9CTO1WW  Version: ThinkCentre M910t-N000
