@@ -78,6 +78,11 @@
         <translation>版本</translation>
     </message>
     <message>
+        <location filename="../src/audiodevicewidget.cpp" line="156"/>
+        <source>Product</source>
+        <translation>产品</translation>
+    </message>
+    <message>
         <location filename="../src/audiodevicewidget.cpp" line="159"/>
         <source>Sysfs</source>
         <comment>Audio Device Info</comment>

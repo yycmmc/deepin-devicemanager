@@ -42,6 +42,10 @@ void AudiodeviceWidget::initWidgetEx()
         name.value = map[key]["Name"];
         articles.append(name);
 
+        ArticleStruct model(tr("Model", "Audio Device Info"));
+        model.value = map[key]["Model"];
+        articles.append(model);
+
         ArticleStruct vendor(tr("Vendor", "Audio Device Info"));
         vendor.value = map[key]["Vendor"];
         articles.append(vendor);
@@ -54,9 +58,6 @@ void AudiodeviceWidget::initWidgetEx()
         busInfo.value = map[key]["Bus"];
         articles.append(busInfo);
 
-        ArticleStruct description(tr("Description", "Audio Device Info"));
-        description.value = map[key]["Product"];
-        articles.append(description);
 
         QStringList tab = {
             name.value,
@@ -64,7 +65,7 @@ void AudiodeviceWidget::initWidgetEx()
         };
         tabList.append(tab);
 
-        addSubInfo( name.value, articles );
+        addSubInfo( QString("%1-%2").arg(vendor.value).arg(name.value), articles );
 
         if ( overviewInfo_.value.isEmpty() == false ) {
             overviewInfo_.value += " / ";
