@@ -78,6 +78,7 @@ void DeviceInfoParser::refreshDabase()
     emit loadFinished(tr("Loading SMBIOS Info..."));
     loadDmidecodeDatabase();
     loadCatBoardinfoDatabase();
+    loadCatAudioInfoDataBase();
 
     emit loadFinished(tr("Loading Hardware Info..."));
     loadLshwDatabase();
@@ -386,6 +387,11 @@ QStringList DeviceInfoParser::getLshwDiskNameList()
     QStringList diskList = getMatchToolDeviceList("lshw", &func);
 
     return diskList;
+}
+
+const DatabaseMap &DeviceInfoParser::getAudioMapInfo()
+{
+    return toolDatabase_["cat_audio"];
 }
 
 QStringList DeviceInfoParser::getLshwDiaplayadapterList()
@@ -1458,6 +1464,43 @@ bool DeviceInfoParser::loadCatBoardinfoDatabase()
         return false;
     }
     toolDatabase_["catbaseboard"] = info;
+    return true;
+}
+
+bool DeviceInfoParser::loadCatAudioInfoDataBase()
+{
+    if (false == executeProcess("cat /proc/asound/card0/codec#0")) {
+        return false;
+    }
+
+    QString catbaseboardOut = standOutput_;
+#ifdef TEST_DATA_FROM_FILE
+    QFile catboardinfoFile(DEVICEINFO_PATH + "/cat_audio.txt");
+    if (false == catboardinfoFile.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+    catbaseboardOut = catboardinfoFile.readAll();
+    catboardinfoFile.close();
+#endif
+
+    DatabaseMap info;
+    info.clear();
+    QStringList paragraphs = catbaseboardOut.split("\n\n");
+    foreach (const QString &paragraph, paragraphs) {
+        QMap<QString, QString> mapInfo;
+        QStringList lines = paragraph.split("\n");
+        foreach (const QString &line, lines) {
+            QStringList keyvalue = line.split(":");
+            if (keyvalue.size() == 2) {
+                mapInfo.insert(keyvalue[0].trimmed(), keyvalue[1].trimmed());
+            }
+        }
+        info[mapInfo["Name"]] = mapInfo;
+    }
+    if (info.isEmpty()) {
+        return false;
+    }
+    toolDatabase_["cat_audio"] = info;
     return true;
 }
 

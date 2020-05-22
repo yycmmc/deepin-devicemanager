@@ -121,7 +121,7 @@ public:
     QMap<QString, QMap<QString, QString>> getLshwMeoryList();
 
     QStringList getLshwDiskNameList();
-
+    const DatabaseMap &getAudioMapInfo();
     QStringList getLshwDiaplayadapterList();
     QStringList getXrandrScreenName();
     QStringList getXrandrDisplayInterfaceList();
@@ -188,6 +188,7 @@ public:
     bool loadDmidecodeDatabase();
     // cat /proc/baseboard
     bool loadCatBoardinfoDatabase();
+    bool loadCatAudioInfoDataBase();
     // lshw parse
     bool loadLshwDatabase();
     // sudo lsblk -l stdout parse

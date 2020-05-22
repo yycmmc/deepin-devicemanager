@@ -30,16 +30,58 @@ DWIDGET_USE_NAMESPACE
 
 AudiodeviceWidget::AudiodeviceWidget(QWidget *parent) : DeviceInfoWidgetBase(parent, tr("Sound Adapter"))
 {
-    initWidget();
+    initWidgetEx();
 }
+void AudiodeviceWidget::initWidgetEx()
+{
+    QList<QStringList> tabList;
+    const DatabaseMap &map = DeviceInfoParser::Instance().getAudioMapInfo();
+    foreach (const QString &key, map.keys()) {
+        QList<ArticleStruct> articles;
+        ArticleStruct name(tr("Name", "Audio Device Info"));
+        name.value = map[key]["Name"];
+        articles.append(name);
 
+        ArticleStruct vendor(tr("Vendor", "Audio Device Info"));
+        vendor.value = map[key]["Vendor"];
+        articles.append(vendor);
+
+        ArticleStruct version(tr("Version", "Audio Device Info"));
+        version.value = map[key]["Version"];
+        articles.append(version);
+
+        ArticleStruct busInfo(tr("Bus Info", "Audio Device Info"));
+        busInfo.value = map[key]["Bus"];
+        articles.append(busInfo);
+
+        ArticleStruct description(tr("Description", "Audio Device Info"));
+        description.value = map[key]["Product"];
+        articles.append(description);
+
+        QStringList tab = {
+            name.value,
+            vendor.value
+        };
+        tabList.append(tab);
+
+        addSubInfo( name.value, articles );
+
+        if ( overviewInfo_.value.isEmpty() == false ) {
+            overviewInfo_.value += " / ";
+        }
+        overviewInfo_.value += name.value;
+    }
+    if (tabList.size() > 1) {
+        QStringList headers = { tr("Name"),  tr("Vendor")};
+        addTable( headers, tabList);
+    }
+}
 void AudiodeviceWidget::initWidget()
 {
     QStringList multimediaList = DeviceInfoParser::Instance().getLshwMultimediaList();
     QStringList inputdeviceList = DeviceInfoParser::Instance().getCatinputAudioDeviceList();
 
-    if( multimediaList.size() + inputdeviceList.size() < 1 )
-    {
+    if ( multimediaList.size() + inputdeviceList.size() < 1 ) {
         setCentralInfo(tr("No sound adapter found"));
         return;
     }
@@ -48,36 +90,33 @@ void AudiodeviceWidget::initWidget()
     QList<ArticleStruct> articles;
     QSet<QString> existArticles;
 
-    foreach(auto multimedia, multimediaList)
-    {
+    foreach (auto multimedia, multimediaList) {
         articles.clear();
         existArticles.clear();
 
-        ArticleStruct busInfo(tr("Bus Info","Audio Device Info"));
+        ArticleStruct busInfo(tr("Bus Info", "Audio Device Info"));
         busInfo.queryData("lshw", multimedia, "bus info", existArticles);
         QRegExp reg("^pci@[0-9]*:([\\s\\S]*)$");
 
         QString pci_bus;
-        if(reg.exactMatch(busInfo.value))
-        {
-            pci_bus= reg.cap(1);
+        if (reg.exactMatch(busInfo.value)) {
+            pci_bus = reg.cap(1);
         }
 
         QString lspciDeviceName;
         DeviceInfoParser::Instance().fuzzeyQueryKey("lspci", pci_bus, lspciDeviceName);
 
-        ArticleStruct name(tr("Name","Audio Device Info"));
+        ArticleStruct name(tr("Name", "Audio Device Info"));
         name.queryData("lspci", lspciDeviceName, "Name");
         name.queryData( "lshw", multimedia, "product", existArticles);
 
         name.value.remove( " Corporation", Qt::CaseInsensitive );
         int index = name.value.indexOf('(');
-        if(index > 0)
-        {
+        if (index > 0) {
             name.value = name.value.mid(0, index);
         }
 
-        ArticleStruct vendor(tr("Vendor","Audio Device Info"));
+        ArticleStruct vendor(tr("Vendor", "Audio Device Info"));
         vendor.queryData( "lshw", multimedia, "vendor", existArticles);
 
         ArticleStruct description(tr("Description"));
@@ -85,8 +124,7 @@ void AudiodeviceWidget::initWidget()
 
         existArticles.insert("description");
 
-        if(name.value == vendor.value)
-        {
+        if (name.value == vendor.value) {
             name.value = description.value;
         }
 
@@ -95,29 +133,27 @@ void AudiodeviceWidget::initWidget()
         articles.push_back(description);
         articles.push_back(busInfo);
 
-        ArticleStruct version(tr("Version","Audio Device Info"));
+        ArticleStruct version(tr("Version", "Audio Device Info"));
         version.queryData( "lshw", multimedia, "version", existArticles, articles);
 
 
-        ArticleStruct width(tr("Width","Audio Device Info"));
+        ArticleStruct width(tr("Width", "Audio Device Info"));
         width.queryData( "lshw", multimedia, "width", existArticles, articles);
 
 
-        ArticleStruct clock(tr("Clock","Audio Device Info"));
+        ArticleStruct clock(tr("Clock", "Audio Device Info"));
         clock.queryData( "lshw", multimedia, "clock", existArticles, articles);
 
 
-        ArticleStruct capabilities(tr("Capabilities","Audio Device Info"));
+        ArticleStruct capabilities(tr("Capabilities", "Audio Device Info"));
         capabilities.queryData( "lshw", multimedia, "capabilities", existArticles, articles);
 
         DeviceInfoParser::Instance().queryRemainderDeviceInfo("lshw", multimedia, articles, existArticles,
-                                                              "ManulTrack__AudioDevices","Audio device infomation from lshw");
-        addDevice( name.value , articles, multimediaList.size() + inputdeviceList.size());
+                                                              "ManulTrack__AudioDevices", "Audio device infomation from lshw");
+        addDevice( name.value, articles, multimediaList.size() + inputdeviceList.size());
 
-        if( multimediaList.size() + inputdeviceList.size() > 1 )
-        {
-            QStringList tab =
-            {
+        if ( multimediaList.size() + inputdeviceList.size() > 1 ) {
+            QStringList tab = {
                 name.value.remove(vendor.value),
                 vendor.value
             };
@@ -126,21 +162,18 @@ void AudiodeviceWidget::initWidget()
         }
 
 
-        if( overviewInfo_.value.isEmpty() == false )
-        {
+        if ( overviewInfo_.value.isEmpty() == false ) {
             overviewInfo_.value += " / ";
         }
 
-        if(vendor.isValid() && name.value.contains(vendor.value, Qt::CaseInsensitive)==false)
-        {
+        if (vendor.isValid() && name.value.contains(vendor.value, Qt::CaseInsensitive) == false) {
             overviewInfo_.value += vendor.value;
             overviewInfo_.value += " ";
         }
         overviewInfo_.value += name.value;
     }
 
-    foreach(const QString& device, inputdeviceList)
-    {
+    foreach (const QString &device, inputdeviceList) {
         articles.clear();
         existArticles.clear();
 
@@ -151,23 +184,21 @@ void AudiodeviceWidget::initWidget()
         existArticles.insert("Name");
 
         ArticleStruct vendor(tr("Vendor"));
-        vendor.queryData( "catinput", device, "Vendor" , existArticles, articles);
+        vendor.queryData( "catinput", device, "Vendor", existArticles, articles);
 
         ArticleStruct vesion(tr("Version"));
         vesion.queryData( "catinput", device, "Version", existArticles, articles);
 
-        ArticleStruct sysfs(tr("Sysfs","Audio Device Info"));
+        ArticleStruct sysfs(tr("Sysfs", "Audio Device Info"));
         sysfs.queryData( "catinput", device, "Sysfs", existArticles, articles);
 
 
         DeviceInfoParser::Instance().queryRemainderDeviceInfo("catinput", device, articles, existArticles,
-                                                              "ManulTrack__AudioDevices","Audio device infomation from catinput");
-        addSubInfo( name.value , articles );
+                                                              "ManulTrack__AudioDevices", "Audio device infomation from catinput");
+        addSubInfo( name.value, articles );
 
-        if( multimediaList.size() + inputdeviceList.size() > 1 )
-        {
-            QStringList tab =
-            {
+        if ( multimediaList.size() + inputdeviceList.size() > 1 ) {
+            QStringList tab = {
                 name.value,
                 vendor.value
             };
@@ -176,8 +207,7 @@ void AudiodeviceWidget::initWidget()
         }
     }
 
-    if( multimediaList.size() + inputdeviceList.size() > 1 )
-    {
+    if ( multimediaList.size() + inputdeviceList.size() > 1 ) {
         QStringList headers = { tr("Name"),  tr("Vendor")};
         addTable( headers, tabList);
     }

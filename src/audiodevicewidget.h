@@ -29,6 +29,7 @@ class AudiodeviceWidget : public DeviceInfoWidgetBase
     Q_OBJECT
 public:
     explicit AudiodeviceWidget(QWidget *parent = nullptr);
+    void initWidgetEx();
     void initWidget() override;
 };
 
