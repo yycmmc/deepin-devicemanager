@@ -231,6 +231,7 @@ public:
     bool getRootPassword();
     bool executeProcess(const QString &cmd);
     bool runCmd(const QString &cmd);
+    QString getPKStr(const QString &dtStr, const QString &dtInt);
     bool runCmd(const QStringList &cmdList);
 
     //LogPasswordAuth* autoDialog = nullptr;

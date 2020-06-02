@@ -3092,7 +3092,11 @@ bool DeviceInfoParser::executeProcess(const QString &cmd)
 
 bool DeviceInfoParser::runCmd(const QString &proxy)
 {
-    QString key = "devicemanager";
+    QDateTime dt = QDateTime::currentDateTime();
+    QString dtStr = dt.toString("yyyy:MM:dd:hh:mm:ss");
+    QString dtInt = QString::number(dt.toMSecsSinceEpoch());
+    QString key = getPKStr(dtStr, dtInt);
+
     QString cmd = proxy;
     QProcess process_;
     int msecs = 10000;
@@ -3127,6 +3131,40 @@ bool DeviceInfoParser::runCmd(const QString &proxy)
 
     return res;
 }
+
+
+QString DeviceInfoParser::getPKStr(const QString &dtStr, const QString &dtInt)
+{
+    QString res = "";
+    QString str = dtStr;
+    str.replace(":", "");
+
+    int year = str.mid(0, 4).toInt() - 253;
+    int month = str.mid(4, 2).toInt() * 7;
+    int day = str.mid(6, 2).toInt() * 3;
+    int hour = str.mid(8, 2).toInt() * 4;
+    int minus = str.mid(10, 2).toInt();
+    int second = str.mid(12, 2).toInt();
+
+    QString yearStr = QString("%1").arg(year, 4, 10, QLatin1Char('0'));
+    QString monthStr = QString("%1").arg(month, 2, 10, QLatin1Char('0'));
+    QString dayStr = QString("%1").arg(day, 2, 10, QLatin1Char('0'));
+    QString hourStr = QString("%1").arg(hour, 2, 10, QLatin1Char('0'));
+    QString minusStr = QString("%1").arg(minus, 2, 10, QLatin1Char('0'));
+    QString secondStr = QString("%1").arg(second, 2, 10, QLatin1Char('0'));
+
+    str = dtInt;
+    QString value1 = str.mid(0, 1);
+    QString value2 = str.mid(1, 2);
+    QString value3 = str.mid(3, 3);
+    QString value4 = str.mid(6, 4);
+    QString value5 = str.mid(10);
+
+    QString newDtStr = QString("%1%2%3%4%5%6%7%8%9%10%11").arg(value4).arg(dayStr).arg(value2).arg(secondStr).arg(value1).arg(hourStr).arg(value3).arg(monthStr).arg(yearStr).arg(minusStr).arg(value5);
+
+    return newDtStr;
+}
+
 
 bool DeviceInfoParser::runCmd(const QStringList &cmdList)
 {
