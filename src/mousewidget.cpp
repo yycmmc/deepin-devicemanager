@@ -73,28 +73,32 @@ void MouseWidget::initWidget()
 
             existArticles.insert("vendor");
 
-            if (vendor.value.count(" ") < 1) {
+//            if (vendor.value.count(" ") < 1) {
 //                name.value = vendor.value + " " + name.value.remove(vendor.value).trimmed();
 //                name.value = name.value.remove(vendor.value).trimmed();
 
-                QStringList wordList = name.value.split(" ");
-                name.value = "";
-                foreach (auto word, wordList) {
-                    if (word.count(vendor.value) > 0
-                            || word.isEmpty() == true
-                            || word == " ") {
-                        continue;
-                    } else {
-                        if (name.value.isEmpty()) {
-                            name.value = word;
-                        } else {
-                            name.value += " ";
-                            name.value += word;
-                        }
-                    }
-                }
-            } else {
-                name.value = name.value.remove(vendor.value).trimmed();
+//                QStringList wordList = name.value.split(" ");
+//                name.value = "";
+//                foreach (auto word, wordList) {
+//                    if (word.count(vendor.value) > 0
+//                            || word.isEmpty() == true
+//                            || word == " ") {
+//                        continue;
+//                    } else {
+//                        if (name.value.isEmpty()) {
+//                            name.value = word;
+//                        } else {
+//                            name.value += " ";
+//                            name.value += word;
+//                        }
+//                    }
+//                }
+//            } else {
+//                name.value = name.value.remove(vendor.value).trimmed();
+//            }
+
+            if (name.value.count(vendor.value) > 1) {
+                name.value = vendor.value + " " + name.value.remove(vendor.value).trimmed();
             }
 
         }
