@@ -74,6 +74,7 @@ void KeyboardWidget::loadWidget()
 
     if (keyboard_count <= 1) {
         m_articlesmap.clear();
+        overviewInfo_.value = "";
         initWidget();
         return;
     }
@@ -93,8 +94,28 @@ bool KeyboardWidget::findKeyboardFromHwinfo()
         m_existArticles.clear();
 
         // 添加Keyboard相关信息
-        ArticleStruct name = addArticleStruct(tr("Name"), "Keyboard", keyboard, "Device");
-        ArticleStruct vendor = addArticleStruct(tr("Vendor"), "Keyboard", keyboard, "Vendor");
+//        ArticleStruct name = addArticleStruct(tr("Name"), "Keyboard", keyboard, "Device");
+
+        ArticleStruct name(tr("Name"));
+        name.queryData("Keyboard", keyboard, "Device");
+        QRegExp reg(".*\\\"(.*)\\\"$");
+        if (reg.exactMatch(name.value)) {
+            name.value = reg.cap(1);
+        }
+        m_articles.push_back(name);
+        m_existArticles.insert("Name");
+
+//        ArticleStruct vendor = addArticleStruct(tr("Vendor"), "Keyboard", keyboard, "Vendor");
+        ArticleStruct vendor(tr("Vendor"));
+        vendor.queryData("Keyboard", keyboard, "Vendor");
+
+        if (reg.exactMatch(vendor.value)) {
+            vendor.value = reg.cap(1);
+        }
+        m_articles.push_back(vendor);
+        m_existArticles.insert("Vendor");
+
+
         addArticleStruct(tr("Model"), "Keyboard", keyboard, "Model");
         addArticleStruct(tr("Serial ID"), "Keyboard", keyboard, "Serial ID");
         addArticleStruct(tr("Version"), "Keyboard", keyboard, "Revision");
