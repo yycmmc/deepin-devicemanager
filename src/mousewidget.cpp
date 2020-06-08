@@ -55,9 +55,17 @@ void MouseWidget::initWidget()
         ArticleStruct vendor(tr("Vendor"));
         ArticleStruct type(tr("Type"));
 
+//        name.queryData("Mouse", device, "Device");
+//        QRegExp reg(".*\\\"(.*)\\\"$");
+//        if (reg.exactMatch(name.value)) {
+//            name.value = reg.cap(0);
+//        }
+//        existArticles.insert("Name");
+
         name.queryData("catinput", device, "Name");
         name.value.remove("\"");
         existArticles.insert("Name");
+
 
         QString lshwMouse = DeviceInfoParser::Instance().getCorrespondLshwMouse(name.value);
         if (lshwMouse.isEmpty() == false) {
@@ -65,11 +73,31 @@ void MouseWidget::initWidget()
 
             existArticles.insert("vendor");
 
-            if (name.value.count(vendor.value) > 1) {
-                name.value = vendor.value + " " + name.value.remove(vendor.value).trimmed();
-            }
-        }
+            if (vendor.value.count(" ") < 1) {
+//                name.value = vendor.value + " " + name.value.remove(vendor.value).trimmed();
+//                name.value = name.value.remove(vendor.value).trimmed();
 
+                QStringList wordList = name.value.split(" ");
+                name.value = "";
+                foreach (auto word, wordList) {
+                    if (word.count(vendor.value) > 0
+                            || word.isEmpty() == true
+                            || word == " ") {
+                        continue;
+                    } else {
+                        if (name.value.isEmpty()) {
+                            name.value = word;
+                        } else {
+                            name.value += " ";
+                            name.value += word;
+                        }
+                    }
+                }
+            } else {
+                name.value = name.value.remove(vendor.value).trimmed();
+            }
+
+        }
         articles.push_back(name);
 
         if (lshwMouse.isEmpty() == false) {
