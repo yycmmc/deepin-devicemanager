@@ -13,7 +13,9 @@
 #include "CmdHwinfo/CmdHwinfoGpu.h"
 #include "CmdHwinfo/CmdHwinfoNetwork.h"
 #include "CmdHwinfo/CmdHwinfoSound.h"
-
+#include "CmdHwinfo/CmdHwinfoUsb.h"
+#include "CmdHwinfo/CmdHwinfoCDRom.h"
+#include "CmdHwinfo/CmdHwinfoDisk.h"
 
 CmdTool::CmdTool()
 {
@@ -410,7 +412,27 @@ void CmdTool::loadHwinfoInfo(const QString &key, const QString &cmd, const QStri
     foreach (int k, soundInfo.keys()) {
         addMapInfo("hwinfo_sound", soundInfo[k]);
     }
-    //
+
+    CmdHwinfoCDRom cdRom;
+    const QMap<int, QMap<QString, QString> > &cdRomInfo = cdRom.MMInfo();
+    foreach (int k, cdRomInfo.keys()) {
+        addMapInfo("hwinfo_cdrom", cdRomInfo[k]);
+    }
+
+    CmdHwinfoDisk disk;
+    const QMap<int, QMap<QString, QString> > &diskInfo = disk.MMInfo();
+    foreach (int k, diskInfo.keys()) {
+        addMapInfo("hwinfo_disk", diskInfo[k]);
+    }
+
+    CmdHwinfoUsb usb;
+    const QMap<int, QMap<QString, QString>> &usbInfo = usb.MMInfo();
+
+    foreach (int k, usbInfo.keys()) {
+
+        QString item = usb.mapToString(usbInfo[k]);
+        loadHwinfoUsbInfo(item, usbInfo[k]);
+    }
 
 
 //    // 从命令获取信息

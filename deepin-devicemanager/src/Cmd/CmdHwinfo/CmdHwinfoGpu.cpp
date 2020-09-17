@@ -1,6 +1,5 @@
 #include "hd.h"
 #include "CmdHwinfoGpu.h"
-#include <QDebug>
 
 CmdHwinfoGpu::CmdHwinfoGpu()
     : CmdHwinfo()

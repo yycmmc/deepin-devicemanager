@@ -21,6 +21,8 @@ public:
      */
     const QMap<int, QMap<QString, QString> > &MMInfo();
 
+    virtual QString mapToString(QMap<QString, QString> mapInfo);
+
 protected:
 
     /**
@@ -59,6 +61,10 @@ protected:
     void charAInfo(const QString &info, unsigned char a[], unsigned int length);
 
     void printEdid(unsigned int edid_len[], unsigned char edid_data[][0x80]);
+
+    virtual char *float2str(unsigned int i, int n);
+
+
 
 protected:
     QMap<int, QMap<QString, QString> > m_MMInfo; // MapMapInfo

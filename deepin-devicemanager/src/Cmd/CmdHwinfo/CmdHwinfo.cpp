@@ -77,3 +77,45 @@ void CmdHwinfo::printEdid(unsigned int edid_len[], unsigned char edid_data[][0x8
     charAInfo("edid", edid_data[4], sizeof(edid_data[4]) / sizeof(unsigned char));
     charAInfo("edid", edid_data[5], sizeof(edid_data[5]) / sizeof(unsigned char));
 }
+
+char *CmdHwinfo::float2str(unsigned int f, int n)
+{
+    unsigned int i = 1, j;
+    int m = n;
+    static char buf[32];
+
+    while (n--) i *= 10;
+
+    j = f / i;
+    i = f % i;
+
+    while (i && !(i % 10)) {
+        i /= 10;
+        m--;
+    }
+
+    if (i) {
+        sprintf(buf, "%d.%0*d", j, m, i);
+    } else {
+        sprintf(buf, "%d", j);
+    }
+
+    return buf;
+}
+
+QString CmdHwinfo::mapToString(QMap<QString, QString> mapInfo)
+{
+    QString res = "";
+
+    if (!mapInfo.empty()) {
+
+        auto it = mapInfo.begin();
+        for (; it != mapInfo.end(); ++it) {
+            res += it.key();
+            res += " ";
+            res += it.value();
+        }
+    }
+
+    return res;
+}
