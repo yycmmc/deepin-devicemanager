@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 {
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
-    DApplication::loadDXcbPlugin();
+    qputenv("QT_WAYLAND_SHELL_INTEGRATION", "kwayland-shell");
     DApplication app(argc, argv);
 
     app.loadTranslator();
