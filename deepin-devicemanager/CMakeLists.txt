@@ -98,6 +98,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/docx)
 include_directories("/usr/include/cups/")
 #link_directories("/usr/lib/cups/")
 link_libraries("cups")
+link_libraries("hd")
 
 file(GLOB_RECURSE DEVICE_SRC ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 file(GLOB_RECURSE THIRD_PARTY ${CMAKE_CURRENT_LIST_DIR}/3rdparty/*.cpp)

@@ -1,10 +1,19 @@
 #include "CmdTool.h"
-#include "../commondefine.h"
+
 #include<QDebug>
 #include<QDateTime>
 #include<QMutex>
+
 #include "EDIDParser.h"
 #include "DeviceManager.h"
+#include "commondefine.h"
+#include "CmdHwinfo/CmdHwinfoMonitor.h"
+#include "CmdHwinfo/CmdHwinfoMouse.h"
+#include "CmdHwinfo/CmdHwinfoKeyboard.h"
+#include "CmdHwinfo/CmdHwinfoGpu.h"
+#include "CmdHwinfo/CmdHwinfoNetwork.h"
+#include "CmdHwinfo/CmdHwinfoSound.h"
+
 
 CmdTool::CmdTool()
 {
@@ -363,32 +372,77 @@ void CmdTool::loadPrinterInfo()
 
 void CmdTool::loadHwinfoInfo(const QString &key, const QString &cmd, const QString &debugfile)
 {
-    QString deviceInfo;
-    getDeviceInfo(cmd, deviceInfo, debugfile);
-    QStringList items = deviceInfo.split("\n\n");
-    foreach (const QString &item, items) {
-        if (item.isEmpty()) {
-            continue;
-        }
 
-        QMap<QString, QString> mapInfo;
-        getMapInfoFromHwinfo(item, mapInfo);
-
-        // hwinfo --usb 里面有很多的无用信息，需要特殊处理
-        if (key == "hwinfo_usb") {
-            loadHwinfoUsbInfo(item, mapInfo);
-        } else if (key == "hwinfo_mouse" || key == "hwinfo_keyboard") {
-            if (!item.contains("Linux Foundation") && // 在服务器版本中发现，hwinfo --mouse 和 hwinfo --keyboard获取的信息里面有多余的无用信息，需要过滤
-                    !item.contains("Elite Remote Control Driver") && // 在笔记本中发现了一个多余信息，做特殊处理 Elite Remote Control Driver
-                    !item.contains("Model: \"serial console\"") && // 鲲鹏台式机子上发现一条多余信息  Model: "serial console"
-                    !item.contains("Wacom", Qt::CaseInsensitive)) { // 数位板信息被显示成了mouse信息,这里需要做特殊处理(搞不懂数位板为什么不能显示成鼠标)
-
-                addMapInfo(key, mapInfo);
-            }
-        } else {
-            addMapInfo(key, mapInfo);
-        }
+    qint64 dtBegin = QDateTime::currentMSecsSinceEpoch();
+    // 将hwinfo --monitor这个命令换成通过代码的方式获取
+    CmdHwinfoMonitor hMonitor;
+    const QMap< int, QMap<QString, QString> > &monitorInfo = hMonitor.MMInfo();
+    foreach (int k, monitorInfo.keys()) {
+        addMapInfo("hwinfo_monitor", monitorInfo[k]);
     }
+
+    CmdHwinfoMouse mouse;
+    const QMap<int, QMap<QString, QString> > &mouseInfo = mouse.MMInfo();
+    foreach (int k, mouseInfo.keys()) {
+        addMapInfo("hwinfo_mouse", mouseInfo[k]);
+    }
+
+    CmdHwinfoKeyboard keyboard;
+    const QMap<int, QMap<QString, QString> > &keyboardInfo = keyboard.MMInfo();
+    foreach (int k, keyboardInfo.keys()) {
+        addMapInfo("hwinfo_keyboard", keyboardInfo[k]);
+    }
+
+    CmdHwinfoGpu gpu;
+    const QMap<int, QMap<QString, QString> > &gpuInfo = gpu.MMInfo();
+    foreach (int k, gpuInfo.keys()) {
+        addMapInfo("hwinfo_display", gpuInfo[k]);
+    }
+
+    CmdHwinfoNetwork network;
+    const QMap<int, QMap<QString, QString> > &networkInfo = network.MMInfo();
+    foreach (int k, networkInfo.keys()) {
+        addMapInfo("hwinfo_network", networkInfo[k]);
+    }
+
+    CmdHwinfoSound sound;
+    const QMap<int, QMap<QString, QString> > &soundInfo = sound.MMInfo();
+    foreach (int k, soundInfo.keys()) {
+        addMapInfo("hwinfo_sound", soundInfo[k]);
+    }
+    //
+
+
+//    // 从命令获取信息
+//    QString deviceInfo;
+//    getDeviceInfo(cmd, deviceInfo, debugfile);
+//    QStringList items = deviceInfo.split("\n\n");
+//    foreach (const QString &item, items) {
+//        if (item.isEmpty()) {
+//            continue;
+//        }
+
+//        QMap<QString, QString> mapInfo;
+//        getMapInfoFromHwinfo(item, mapInfo);
+
+//        // hwinfo --usb 里面有很多的无用信息，需要特殊处理
+//        if (key == "hwinfo_usb") {
+//            loadHwinfoUsbInfo(item, mapInfo);
+//        } else if (key == "hwinfo_mouse" || key == "hwinfo_keyboard") {
+//            if (!item.contains("Linux Foundation") && // 在服务器版本中发现，hwinfo --mouse 和 hwinfo --keyboard获取的信息里面有多余的无用信息，需要过滤
+//                    !item.contains("Elite Remote Control Driver") && // 在笔记本中发现了一个多余信息，做特殊处理 Elite Remote Control Driver
+//                    !item.contains("Model: \"serial console\"") && // 鲲鹏台式机子上发现一条多余信息  Model: "serial console"
+//                    !item.contains("Wacom", Qt::CaseInsensitive)) { // 数位板信息被显示成了mouse信息,这里需要做特殊处理(搞不懂数位板为什么不能显示成鼠标)
+
+//                addMapInfo(key, mapInfo);
+//            }
+//        } else {
+//            addMapInfo(key, mapInfo);
+//        }
+//    }
+
+    qint64 dtEnd = QDateTime::currentMSecsSinceEpoch();
+    qDebug() << key << "  ************************  " << (dtEnd - dtBegin) / 1000.0;
 }
 
 void CmdTool::loadHwinfoUsbInfo(const QString &item, const QMap<QString, QString> &mapInfo)
@@ -1047,7 +1101,6 @@ bool CmdTool::getDeviceInfo(const QString &command, QString &deviceInfo, const Q
     deviceInfo = inputDeviceFile.readAll();
     inputDeviceFile.close();
 #endif
-
     return true;
 }
 
