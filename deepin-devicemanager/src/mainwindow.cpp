@@ -79,9 +79,9 @@ MainWindow::MainWindow(QWidget *parent)
     , m_sizeForQSetting(mainWindowMinWidth_, mainWindowMinHeight_)
     , mp_ThreadPool(new ThreadPool(this))
 {
-    if (false == DeviceInfoParser::Instance().getRootPassword()) {
-        exit(-1);
-    }
+//    if (false == DeviceInfoParser::Instance().getRootPassword()) {
+//        exit(-1);
+//    }
 
     // 获取计算机架构信息,x86 arm mips
     QString arch = getArchString();
@@ -324,10 +324,10 @@ void MainWindow::refresh()
 
 void MainWindow::refreshDatabase()
 {
-    DApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    if (mp_ThreadPool) {
-        mp_ThreadPool->loadCmdInfo();
-    }
+//    DApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+//    if (mp_ThreadPool) {
+//        mp_ThreadPool->loadCmdInfo();
+//    }
 }
 
 
