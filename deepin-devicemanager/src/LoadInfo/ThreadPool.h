@@ -20,40 +20,49 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef WAITINGWIDGET_H
-#define WAITINGWIDGET_H
+#ifndef THREADPOOL_H
+#define THREADPOOL_H
 
 #include <QObject>
-#include <DWidget>
-#include <DSpinner>
-#include <DLabel>
+#include <QThreadPool>
+#include <QList>
+#include <QVector>
 
-using namespace Dtk::Widget;
+struct Cmd{
+    QString cmd;
+    QString file;
+    bool canNotReplace;
+};
 
-/**
- * @brief The WaitingWidget class
- * 等待窗口
- */
-class WaitingWidget : public DWidget
+class ThreadPool : public QThreadPool
 {
     Q_OBJECT
 public:
-    explicit WaitingWidget(QWidget *parent = nullptr);
-    ~WaitingWidget();
+    ThreadPool(QObject *parent = nullptr);
 
     /**
-     * @brief start开始转动小圈圈
+     * @brief generateDeviceFile : load device info
      */
-    void start();
+    void generateDeviceFile();
 
     /**
-     * @brief stop:停止转动小圈圈
+     * @brief setRunning : Set the working status of the thread pool
+     * @param status : status
      */
-    void stop();
+    void setRunning(bool status);
+
+    /**
+     * @brief running : Get the working status of the thread pool
+     * @return : status
+     */
+    bool running();
 
 private:
-    DSpinner        *mp_Spinner;       // 小圈圈
-    DLabel          *mp_Label;         // 小圈圈下面的label
+    void initCmd();
+
+private:
+    bool              m_Running;             // Mark the working status of the thread pool
+    QList<Cmd>        m_ListCmd;             // all cmd
 };
 
-#endif // WAITINGWIDGET_H
+#endif // THREADPOOL_H

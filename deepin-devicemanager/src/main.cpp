@@ -30,7 +30,6 @@
 #include <stdlib.h>
 #include "DTitlebar"
 #include "DApplicationSettings"
-#include "deviceinfoparser.h"
 #include "environments.h"
 
 DWIDGET_USE_NAMESPACE
