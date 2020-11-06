@@ -122,6 +122,7 @@ void PageOverview::setLabel(const QString &str1, const QString &str2)
     } else if (DSysInfo::UosHome == type) {
         linkStr += "UnionTech OS 20 Home </a>" + os.remove("UnionTech OS 20 Home");
     } else if (DSysInfo::UosCommunity == type) {
+        linkStr = "<a style=\"text-decoration:none\" href=https://www.deepin.org/zh>";
         linkStr += "Deepin 20 </a>" + os.remove("Deepin 20");
     } else if (DSysInfo::UosEnterprise == type) {
         linkStr += "UnionTech OS Server 20 Enterprise </a>" + os.remove("UnionTech OS Server 20 Enterprise");

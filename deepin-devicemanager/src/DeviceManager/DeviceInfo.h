@@ -39,9 +39,9 @@
  * 用来标识对设备启用禁用的结果(包括成功、失败、取消三种情况)
  */
 enum EnableDeviceStatus {
-    EDS_Cancle,
-    EDS_Faild,
-    EDS_Success
+    EDS_Cancle = 0,
+    EDS_Faild  = 1,
+    EDS_Success = 2
 };
 
 /**
