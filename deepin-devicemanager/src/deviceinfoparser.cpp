@@ -151,12 +151,14 @@ bool DeviceInfoParser::runCmd(const QString &proxy, QString &deviceInfo)
         cmd = proxy + QString(" ") + key;
         msecs = -1;
     }
-
+    qint64 begin = QDateTime::currentMSecsSinceEpoch();
     process_.start(cmd);
 
     bool res = process_.waitForFinished(msecs);
     deviceInfo = process_.readAllStandardOutput();
     int exitCode = process_.exitCode();
+    qint64 end = QDateTime::currentMSecsSinceEpoch();
+    qDebug() << proxy << " ************************ " << end - begin;
     if (cmd.startsWith("pkexec deepin-devicemanager-authenticateProxy") && (exitCode == 127 || exitCode == 126)) {
         //dError("Run \'" + cmd + "\' failed: Password Error! " + QString::number(exitCode) + "\n");
         return false;
