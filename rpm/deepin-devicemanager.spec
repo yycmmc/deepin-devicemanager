@@ -21,7 +21,7 @@ BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-qttools-devel
 BuildRequires: cups-devel
 BuildRequires: pkgconfig(dframeworkdbus)
-BuildRequires: pkgconfig(perl-ZMQ-LibZMQ3)
+BuildRequires: zeromq-devel
 
 
 
