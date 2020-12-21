@@ -32,6 +32,8 @@
 #include "environments.h"
 #include "application.h"
 
+#include "MainWindow.h"
+
 DWIDGET_USE_NAMESPACE
 
 int main(int argc, char *argv[])
@@ -59,7 +61,7 @@ int main(int argc, char *argv[])
         Dtk::Core::DLogManager::registerConsoleAppender();
         Dtk::Core::DLogManager::registerFileAppender();
 
-        DMainWindow w;
+        MainWindow w;
         QObject::connect(&app,
                          &DApplication::newInstanceStarted,
                          &w,
