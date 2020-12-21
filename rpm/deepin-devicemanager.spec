@@ -21,7 +21,7 @@ BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-qttools-devel
 BuildRequires: cups-devel
 BuildRequires: pkgconfig(dframeworkdbus)
-BuildRequires: zeromq-devel
+BuildRequires: zeromq3-devel
 
 
 
