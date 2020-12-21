@@ -20,27 +20,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Page/MainWindow.h"
-
 #include <DApplication>
 #include <DWidgetUtil>
 #include <DLog>
+#include <DMainWindow>
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "DTitlebar"
 #include "DApplicationSettings"
 #include "environments.h"
-#include "DebugTimeManager.h"
 #include "application.h"
-#include "zmq.h"
-#include "zhelpers.h"
 
 DWIDGET_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
-    PERF_PRINT_BEGIN("POINT-01", "");
 
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     Application app(argc, argv);
@@ -64,12 +59,11 @@ int main(int argc, char *argv[])
         Dtk::Core::DLogManager::registerConsoleAppender();
         Dtk::Core::DLogManager::registerFileAppender();
 
-        MainWindow w(nullptr);
-        gApp->setMainWindow(&w);
+        DMainWindow w;
         QObject::connect(&app,
                          &DApplication::newInstanceStarted,
                          &w,
-                         &MainWindow::activateWindow);
+                         &DMainWindow::activateWindow);
         w.titlebar()->setTitle("");
 
         QIcon appIcon = QIcon::fromTheme("deepin-devicemanager");
