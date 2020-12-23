@@ -59,11 +59,9 @@ popd
 %doc README.md
 %license LICENSE
 %{_bindir}/%{name}
-%{_bindir}/%{name}-authenticateProxy
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/%{name}/translations/*.qm
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
-%{_datadir}/polkit-1/actions/*.policy
 
 %changelog
 * Mon Oct 12 2020 guoqinglan <guoqinglan@uniontech.com> - 5.5.9.36-1
