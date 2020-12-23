@@ -62,6 +62,8 @@ popd
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/%{name}/translations/*.qm
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
+/lib/systemd/system/deepin-devicemanager-server.service
+%{_bindir}/deepin-devicemanager-server
 
 %changelog
 * Mon Oct 12 2020 guoqinglan <guoqinglan@uniontech.com> - 5.5.9.36-1
