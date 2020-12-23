@@ -14,6 +14,7 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRequires: gcc-c++
 BuildRequires: cmake3
 BuildRequires: dtkwidget-devel
+BuildRequires: dtkgui-devel
 BuildRequires: systemd-devel
 BuildRequires: libicu-devel
 BuildRequires: qt5-rpm-macros
