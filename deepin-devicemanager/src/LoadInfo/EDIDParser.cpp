@@ -1,6 +1,11 @@
+// 项目自身文件
 #include "EDIDParser.h"
+
+// Qt库文件
 #include<QDebug>
 #include<QDate>
+
+// 其它头文件
 #include<qmath.h>
 
 EDIDParser::EDIDParser()
@@ -164,14 +169,15 @@ QString EDIDParser::binToDec(QString strBin)   //二进制转十进制
 QString EDIDParser::decTobin(QString strDec)   //十进制转二进制
 {
     int nDec = strDec.toInt();
-    int nYushu, nShang;
+    int nYushu = 0;
+    int nShang = 0;
     QString strBin, strTemp;
     //TCHAR buf[2];
     bool bContinue = true;
     while (bContinue) {
         nYushu = nDec % 2;
         nShang = nDec / 2;
-        strBin = QString::number(nYushu) + strBin; //qDebug()<<strBin;
+        strBin = QString::number(nYushu) + strBin; //qInfo()<<strBin;
         strTemp = strBin;
         //strBin.Format("%s%s", buf, strTemp);
         nDec = nShang;

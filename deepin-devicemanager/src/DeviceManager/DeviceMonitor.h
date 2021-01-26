@@ -1,28 +1,33 @@
 /*
- * Copyright (C) 2019 ~ 2019 Deepin Technology Co., Ltd.
- *
- * Author:     LZ <zhou.lu@archermind.com>
- *
- * Maintainer: LZ <zhou.lu@archermind.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+*
+* Author:     Jun.Liu <liujuna@uniontech.com>
+*
+* Maintainer: XiaoMei.Ji <jixiaomei@uniontech.com>
+* Maintainer: Jun.Liu <liujuna@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef DEVICEMONITOR_H
 #define DEVICEMONITOR_H
 #include "DeviceInfo.h"
 
+/**
+ * @brief The DeviceMonitor class
+ * 用来描述显示屏的类
+ */
 
 class DeviceMonitor : public DeviceBaseInfo
 {
@@ -93,90 +98,6 @@ public:
     const QString &name()const override;
 
     const QString &driver()const override;
-
-    /**
-     * @brief vendor:获取制造商属性值
-     * @return QString:制造商属性值
-     */
-    const QString &vendor()const;
-
-    /**
-     * @brief model:获取型号属性值
-     * @return QString:型号属性值
-     */
-    const QString &model()const;
-
-    /**
-     * @brief displayInput:获取显示输入属性值
-     * @return QString:显示输入属性值
-     */
-    const QString &displayInput()const;
-
-    /**
-     * @brief VGA:获取VGA属性值
-     * @return QString:VGA属性值
-     */
-    const QString &VGA()const;
-
-    /**
-     * @brief HDMI:获取HDMI属性值
-     * @return QString:HDMI属性值
-     */
-    const QString &HDMI()const;
-
-    /**
-     * @brief DVI:获取DVI属性值
-     * @return QString:DVI属性值
-     */
-    const QString &DVI()const;
-
-    /**
-     * @brief interface:获取接口属性值
-     * @return QString:接口属性值
-     */
-    const QString &interface()const;
-
-    /**
-     * @brief screenSize:获取屏幕尺寸属性值
-     * @return QString:屏幕尺寸属性值
-     */
-    const QString &screenSize()const;
-
-    /**
-     * @brief aspectRatio:获取刷新率属性值
-     * @return QString:刷新率属性值
-     */
-    const QString &aspectRatio()const;
-
-    /**
-     * @brief mainScreen:获取主显示器属性值
-     * @return QString:主显示器属性值
-     */
-    const QString &mainScreen()const;
-
-    /**
-     * @brief currentResolution:获取当前分辨率属性值
-     * @return QString:当前分辨率属性值
-     */
-    const QString &currentResolution()const;
-
-    /**
-     * @brief serialNumber:获取序列号属性值
-     * @return QString:序列号属性值
-     */
-    const QString &serialNumber()const;
-
-    /**
-     * @brief productionWeek:获取生产周属性值
-     * @return QString:生产周属性值
-     */
-    const QString &productionWeek()const;
-
-    /**
-     * @brief supportResolutions:获取支持分辨率属性值
-     * @return QString:支持分辨率属性值
-     */
-    const QString &supportResolutions()const;
 
     /**
      * @brief subTitle:获取子标题

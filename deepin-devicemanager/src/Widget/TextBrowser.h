@@ -1,23 +1,24 @@
 /*
- * Copyright (C) 2019 ~ 2019 Deepin Technology Co., Ltd.
- *
- * Author:     LZ <zhou.lu@archermind.com>
- *
- * Maintainer: LZ <zhou.lu@archermind.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+*
+* Author:     Jun.Liu <liujuna@uniontech.com>
+*
+* Maintainer: XiaoMei.Ji <jixiaomei@uniontech.com>
+* Maintainer: Jun.Liu <liujuna@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef TEXTBROWSER_H
 #define TEXTBROWSER_H
@@ -34,12 +35,15 @@ DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 
 class DeviceBaseInfo;
-
+/**
+ * @brief The TextBrowser class
+ * 封装富文本控件
+ */
 class TextBrowser : public DTextBrowser
 {
     Q_OBJECT
 public:
-    TextBrowser(QWidget *parent = nullptr);
+    explicit TextBrowser(QWidget *parent = nullptr);
 
     /**
      * @brief showDeviceInfo : 显示设备信息
@@ -71,7 +75,6 @@ protected:
     virtual void paintEvent(QPaintEvent *event)override;
     virtual void contextMenuEvent(QContextMenuEvent *event) override;
     virtual void keyPressEvent(QKeyEvent *event) override;
-    virtual void wheelEvent(QWheelEvent *event) override;
     virtual void focusInEvent(QFocusEvent *e) override;
     virtual void focusOutEvent(QFocusEvent *e) override;
 

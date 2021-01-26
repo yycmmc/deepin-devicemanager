@@ -1,29 +1,32 @@
 /*
- * Copyright (C) 2019 ~ 2019 Deepin Technology Co., Ltd.
- *
- * Author:     LZ <zhou.lu@archermind.com>
- *
- * Maintainer: LZ <zhou.lu@archermind.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+*
+* Author:     Jun.Liu <liujuna@uniontech.com>
+*
+* Maintainer: XiaoMei.Ji <jixiaomei@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef DEVICECOMPUTER_H
 #define DEVICECOMPUTER_H
 #include "DeviceInfo.h"
 
-
+/**
+ * @brief The DeviceComputer class
+ * 用来描述计算机信息的类(包括厂商，系统等信息)
+ */
 class DeviceComputer : public DeviceBaseInfo
 {
     Q_OBJECT
@@ -32,42 +35,12 @@ public:
     DeviceComputer();
 
     /**
-     * @brief homeUrl:获取URL属性值
-     * @return QString:URL属性值
-     */
-    const QString &homeUrl()const;
-
-    /**
-     * @brief osDescription:获取操作系统描述属性值
-     * @return QString:操作系统描述属性值
-     */
-    const QString &osDescription();
-
-    /**
-     * @brief os:获取操作系统属性值
-     * @return QString:操作系统属性值
-     */
-    const QString &os();
-
-    /**
-     * @brief vendor:获取制造商属性值
-     * @return QString:制造商属性值
-     */
-    const QString &vendor();
-
-    /**
      * @brief name:获取名称属性值
      * @return QString:名称属性值
      */
     const QString &name() const override;
 
     const QString &driver() const override;
-
-    /**
-     * @brief type:获取类型属性值
-     * @return QString:类型属性值
-     */
-    const QString &type();
 
     /**
      * @brief setHomeUrl:设置URL属性值

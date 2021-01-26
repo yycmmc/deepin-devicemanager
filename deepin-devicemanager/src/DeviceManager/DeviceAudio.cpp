@@ -1,4 +1,7 @@
+// 项目自身文件
 #include "DeviceAudio.h"
+
+// 其它头文件
 #include "EnableManager.h"
 
 DeviceAudio::DeviceAudio()
@@ -16,6 +19,7 @@ DeviceAudio::DeviceAudio()
     , m_Description("")
     , m_Chip("")
     , m_Driver("snd_hda_intel")
+    , m_DriverModules("")
     , m_UniqueKey("")
 {
     // 初始化可显示属性
@@ -23,6 +27,7 @@ DeviceAudio::DeviceAudio()
 
     // 设置可禁用
     m_CanEnable = true;
+    m_IsCatDevice = false;
 }
 
 void DeviceAudio::setInfoFromHwinfo(const QMap<QString, QString> &mapInfo)
@@ -40,6 +45,7 @@ void DeviceAudio::setInfoFromHwinfo(const QMap<QString, QString> &mapInfo)
     setAttribute(mapInfo, "", m_Capabilities);
     setAttribute(mapInfo, "Hardware Class", m_Description);
     setAttribute(mapInfo, "Driver", m_Driver);
+    setAttribute(mapInfo, "Driver Modules", m_Driver);   // 驱动模块
     //2. 获取设备的唯一标识
     /*
      * 在这里将设备的总线信息作为一个设备的唯一标识
@@ -61,6 +67,7 @@ bool DeviceAudio::setInfoFromLshw(const QMap<QString, QString> &mapInfo)
     if (words.size() != 2) {
         return false;
     }
+
     if (words[1] != m_UniqueKey) {
         return false;
     }
@@ -68,6 +75,10 @@ bool DeviceAudio::setInfoFromLshw(const QMap<QString, QString> &mapInfo)
     //2. 确定了是该设备信息，则获取设备的基本信息
     setAttribute(mapInfo, "product", m_Name);
     setAttribute(mapInfo, "vendor", m_Vendor);
+    if (m_Vendor == "0000") {
+        m_Vendor = "";
+    }
+
     setAttribute(mapInfo, "", m_Model);
 
     /*
@@ -112,6 +123,9 @@ bool DeviceAudio::setInfoFromCatDevices(const QMap<QString, QString> &mapInfo)
     //2. 获取设备的其它信息
     getOtherMapInfo(mapInfo);
 
+    //3. get from cat /input/devices
+    m_IsCatDevice = true;
+
     return true;
 }
 
@@ -148,69 +162,24 @@ EnableDeviceStatus DeviceAudio::setEnable(bool e)
     if (e != enable()) {
         res = EDS_Faild;
     }
+
     return res;
 }
 
 bool DeviceAudio::enable()
 {
     // 获取设备状态
-    m_Enable = EnableManager::instance()->isDeviceEnableByDriver(m_Driver);
+    bool eDriver = EnableManager::instance()->isDeviceEnableByDriver(m_Driver);
+    bool eDriverM = EnableManager::instance()->isDeviceEnableByDriver(m_DriverModules);
+    m_Enable = eDriver || eDriverM;
+
+
+    // 如果是从cat /input/devices里面获取的则返回true
+    if (m_IsCatDevice) {
+        return true;
+    }
+
     return m_Enable;
-}
-
-const QString &DeviceAudio::vendor()const
-{
-    return m_Vendor;
-}
-
-const QString &DeviceAudio::model()const
-{
-    return m_Model;
-}
-
-const QString &DeviceAudio::version()const
-{
-    return m_Version;
-}
-
-const QString &DeviceAudio::busInfo()const
-{
-    return m_BusInfo;
-}
-
-const QString &DeviceAudio::irq()const
-{
-    return m_Irq;
-}
-
-const QString &DeviceAudio::memory()const
-{
-    return m_Memory;
-}
-
-const QString &DeviceAudio::width()const
-{
-    return m_Width;
-}
-
-const QString &DeviceAudio::clock()const
-{
-    return m_Clock;
-}
-
-const QString &DeviceAudio::capabilities()const
-{
-    return m_Capabilities;
-}
-
-const QString &DeviceAudio::description()const
-{
-    return m_Description;
-}
-
-const QString &DeviceAudio::chip() const
-{
-    return m_Chip;
 }
 
 QString DeviceAudio::subTitle()
@@ -232,7 +201,7 @@ void DeviceAudio::initFilterKey()
     addFilterKey(QObject::tr("SubVendor"));
     addFilterKey(QObject::tr("SubDevice"));
     addFilterKey(QObject::tr("Driver"));
-    addFilterKey(QObject::tr("Driver Modules"));
+//    addFilterKey(QObject::tr("Driver Modules"));
     addFilterKey(QObject::tr("Driver Status"));
     addFilterKey(QObject::tr("Driver Activation Cmd"));
     addFilterKey(QObject::tr("Config Status"));
@@ -294,6 +263,7 @@ void DeviceAudio::loadTableData()
     } else {
         name = m_Name;
     }
+
     m_TableData.append(name);
     m_TableData.append(m_Vendor);
 }

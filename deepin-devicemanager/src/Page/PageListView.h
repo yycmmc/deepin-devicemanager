@@ -1,23 +1,24 @@
 /*
- * Copyright (C) 2019 ~ 2019 Deepin Technology Co., Ltd.
- *
- * Author:     LZ <zhou.lu@archermind.com>
- *
- * Maintainer: LZ <zhou.lu@archermind.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+*
+* Author:     Jun.Liu <liujuna@uniontech.com>
+*
+* Maintainer: XiaoMei.Ji <jixiaomei@uniontech.com>
+* Maintainer: Jun.Liu <liujuna@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef LISTVIEWWIDGET_H
 #define LISTVIEWWIDGET_H
@@ -30,14 +31,32 @@
 class DeviceListView;
 
 using namespace Dtk::Widget;
+
+/**
+ * @brief The PageListView class
+ * 设备列表的展示类
+ */
+
 class PageListView : public DWidget
 {
     Q_OBJECT
 public:
-    PageListView(DWidget *parent = nullptr);
+    explicit PageListView(DWidget *parent = nullptr);
     ~PageListView() override;
 
     void updateListItems(const QList<QPair<QString, QString> > &lst);
+
+    /**
+     * @brief currentIndex 当前Item类别
+     * @return  类别
+     */
+    QString currentIndex();
+
+    /**
+     * @brief currentType:当前展示设备
+     * @return 设备
+     */
+    QString currentType();
 
 protected:
     /**@brief:事件重写*/

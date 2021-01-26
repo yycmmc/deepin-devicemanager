@@ -1,23 +1,24 @@
 /*
- * Copyright (C) 2019 ~ 2019 Deepin Technology Co., Ltd.
- *
- * Author:     LZ <zhou.lu@archermind.com>
- *
- * Maintainer: LZ <zhou.lu@archermind.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+*
+* Author:     Jun.Liu <liujuna@uniontech.com>
+*
+* Maintainer: XiaoMei.Ji <jixiaomei@uniontech.com>
+* Maintainer: Jun.Liu <liujuna@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef DEVICEMANAGER_H
 #define DEVICEMANAGER_H
@@ -52,7 +53,10 @@ class DeviceCdrom;
 class DeviceInput;
 class DeviceBaseInfo;
 
-/*管理设备信息的单例*/
+/**
+ * @brief The DeviceManager class
+ * 设备的管理类(包括设备的获取、增加、修改)
+ */
 
 class DeviceManager : public QObject
 {
@@ -585,6 +589,15 @@ public:
     void addInputInfo(const QString &key, const QMap<QString, QString> &mapInfo);
     const QMap<QString, QString> &inputInfo(const QString &key);
 
+    // 设备是否存在于蓝牙设备配对信息中
+    bool isDeviceExistInPairedDevice(const QString &name);
+
+    /**
+     * @brief setCpuNum
+     * @param num
+     */
+    void setCpuNum(int num);
+
 protected:
     DeviceManager();
     ~DeviceManager();
@@ -618,6 +631,8 @@ private:
     QMap<QString, QList<DeviceBaseInfo *>>         m_DeviceClassMap;       //<! 所有的设备类型与其对应设备列表
     QMap<QString, QMap<QString, QStringList>>      m_DeviceDriverPool;     //<! 所有的设备驱动与与其对应的设备类型，设备名称列表
     QMap<QString, QMap<QString, QString> >         m_InputDeviceInfo;
+
+    int                                            m_CpuNum;               //<! 物理cpu个数
 
     static int m_CurrentXlsRow;       //<! xlsx表格当前行
 };

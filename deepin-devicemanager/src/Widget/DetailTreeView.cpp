@@ -1,12 +1,7 @@
+// 项目自身文件
 #include "DetailTreeView.h"
-#include "PageDetail.h"
-#include "DetailViewDelegate.h"
-#include "MacroDefinition.h"
-#include "PageInfo.h"
-#include "PageTableWidget.h"
-#include "CmdButtonWidget.h"
-#include "TipsWidget.h"
 
+// Qt库文件
 #include <QHeaderView>
 #include <QPainter>
 #include <QKeyEvent>
@@ -16,19 +11,29 @@
 #include <QToolTip>
 #include <QDateTime>
 #include <QTimer>
+#include <QDesktopWidget>
+#include <QPainterPath>
 
+// Dtk头文件
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DStyle>
 #include <DFontSizeManager>
 
-
-
+// 其它头文件
+#include "PageDetail.h"
+#include "DetailViewDelegate.h"
+#include "MacroDefinition.h"
+#include "PageInfo.h"
+#include "PageTableWidget.h"
+#include "CmdButtonWidget.h"
+#include "TipsWidget.h"
 
 BtnWidget::BtnWidget()
 {
 
 }
+
 void BtnWidget::enterEvent(QEvent *event)
 {
     emit enter();
@@ -41,8 +46,6 @@ void BtnWidget::leaveEvent(QEvent *event)
     return DWidget::leaveEvent(event);
 }
 
-
-
 DetailTreeView::DetailTreeView(DWidget *parent)
     : DTableWidget(parent)
     , mp_ItemDelegate(nullptr)
@@ -53,14 +56,18 @@ DetailTreeView::DetailTreeView(DWidget *parent)
     , mp_OldItem(nullptr)
     , mp_CurItem(nullptr)
     , m_TimeStep(0)
-    , mp_Timer(new QTimer)
+    , mp_Timer(new QTimer(this))
     , mp_ToolTips(nullptr)
 {
     setMouseTracking(true);
     // 初始化界面
     initUI();
+
+    // 连接槽函数
     connect(mp_Timer, &QTimer::timeout, this, &DetailTreeView::slotTimeOut);
     connect(this, &DetailTreeView::itemEntered, this, &DetailTreeView::slotItemEnterd);
+
+    // 启动定时器
     mp_Timer->start(100);
 }
 
@@ -70,13 +77,20 @@ void DetailTreeView::setColumnAndRow(int row, int column)
     setRowCount(row);
     setColumnCount(column);
 
-    // 表格行数大于限制行数时，添加展开button
-    if (row > m_LimitRow + 1) {
+    // 当前页为主板页面时,且信息已展开,展示更多/收起按钮
+    PageTableWidget *p = dynamic_cast<PageTableWidget *>(this->parent());
+    if (p->isBaseBoard() && m_IsExpand) {
         setCommanLinkButton(row);
-    }
-    // 如果行数少于限制行数，则影藏最后一行
-    if (row <= m_LimitRow + 1) {
-        hideRow(row - 1);
+        showRow(row - 1);
+    } else {
+        // 表格行数大于限制行数时，添加展开button
+        if (row > m_LimitRow + 1) {
+            setCommanLinkButton(row);
+        }
+        // 如果行数少于限制行数，则影藏最后一行
+        if (row <= m_LimitRow + 1) {
+            hideRow(row - 1);
+        }
     }
 }
 
@@ -89,9 +103,11 @@ void DetailTreeView::setItem(int row, int column, QTableWidgetItem *item)
     DTableWidget::setItem(row, column, item);
 
     // 行数大于限制行数隐藏信息，展示展开button
-    if (row >= m_LimitRow) {
-        hideRow(row);
-        showRow(this->rowCount() - 1);
+    if (!m_IsExpand) {
+        if (row >= m_LimitRow) {
+            hideRow(row);
+            showRow(this->rowCount() - 1);
+        }
     }
 }
 
@@ -108,7 +124,9 @@ void DetailTreeView::clear()
         delete mp_CommandBtn;
         mp_CommandBtn = nullptr;
     }
-    m_IsExpand = false;
+
+    //清空页面内容时,需要保存页面的展开收起状态
+    //m_IsExpand = false;
 }
 
 void DetailTreeView::setCommanLinkButton(int row)
@@ -116,6 +134,10 @@ void DetailTreeView::setCommanLinkButton(int row)
     // 设置mp_CommandBtn属性
     mp_CommandBtn = new DCommandLinkButton(tr("More"), this);
 
+    // 当页面已展开按钮文字为收起
+    if (m_IsExpand) {
+        mp_CommandBtn->setText(tr("Collapse"));
+    }
     // 设置字号
     DFontSizeManager::instance()->bind(mp_CommandBtn, DFontSizeManager::T8);
 
@@ -133,6 +155,7 @@ void DetailTreeView::setCommanLinkButton(int row)
     QVBoxLayout *pVBoxLayout = new QVBoxLayout();
     pVBoxLayout->addLayout(pHBoxLayout);
 
+    // 新建放置按钮的widget,并设置鼠标出入对应的槽函数
     BtnWidget *btnwidget = new BtnWidget();
     connect(btnwidget, &BtnWidget::enter, this, &DetailTreeView::slotEnterBtnWidget);
     connect(btnwidget, &BtnWidget::leave, this, &DetailTreeView::slotLeaveBtnWidget);
@@ -141,11 +164,13 @@ void DetailTreeView::setCommanLinkButton(int row)
     // 将btnwidget填充到表格中，并隐藏
     setCellWidget(row - 1, 1, btnwidget);
 
+    // 点击按钮槽函数
     connect(mp_CommandBtn, &DCommandLinkButton::clicked, this, &DetailTreeView::expandCommandLinkClicked);
 }
 
 int DetailTreeView::setTableHeight(int paintHeight)
 {
+    // 设备禁用状态下,只显示一行
     if (!m_IsEnable) {
         paintHeight = 40;
         this->setFixedHeight(paintHeight);
@@ -154,15 +179,19 @@ int DetailTreeView::setTableHeight(int paintHeight)
 
     // 父窗口
     PageTableWidget *p = dynamic_cast<PageTableWidget *>(this->parent());
+    PageInfo *par = dynamic_cast<PageInfo *>(p->parent());
 
     // 父窗口可显示的最大表格行数
+    // 最多显示行数与父窗口高度相关,需减去Label以及Spacing占用空间
     int maxRow = 0;
-    if (p->isBaseBoard()) {
-        PageInfo *par = dynamic_cast<PageInfo *>(p->parent());
-        maxRow = par->height() / ROW_HEIGHT - 1;
-    } else {
-        PageInfo *par = dynamic_cast<PageInfo *>(p->parent());
-        maxRow = par->height() / ROW_HEIGHT - 1;
+    maxRow = par->height() / ROW_HEIGHT - 2;
+
+    // 当前页面为概况时，展开更多信息，页面显示的表格的最大行数需减一，避免表格边框显示不完整
+    if (p->isOverview()) {
+        // 有更多信息并且已展开
+        if (hasExpendInfo() && m_IsExpand) {
+            --maxRow;
+        }
     }
 
     // 主板界面的表格高度
@@ -195,12 +224,6 @@ int DetailTreeView::setTableHeight(int paintHeight)
             return this->height();
         }
     }
-
-}
-
-int DetailTreeView::maxRowofWidget()
-{
-    return 0;
 }
 
 bool DetailTreeView::hasExpendInfo()
@@ -216,23 +239,41 @@ bool DetailTreeView::hasExpendInfo()
 
 void DetailTreeView::setLimitRow(int row)
 {
+    // 设置页面显示行数
     m_LimitRow = row;
+
+    // 父窗口
+    PageTableWidget *p = dynamic_cast<PageTableWidget *>(this->parent());
+    PageInfo *par = dynamic_cast<PageInfo *>(p->parent());
+
+    // 最多显示行数与父窗口高度相关,需减去Label以及Spacing占用空间
+    int maxRow = par->height() / ROW_HEIGHT - 3;
+
+    // 主板界面可显示的行数与主板信息内容有关
+    if (p->isBaseBoard() && m_IsExpand) {
+        m_LimitRow = std::min(maxRow, par->getDeviceInfoNum());
+    }
 }
 
 QString DetailTreeView::toString()
 {
+    // 表格行内容转为字符串
     QString str;
+
+    // 表格行,列
     int row = rowCount();
     int column = columnCount();
+
+    // 遍历所有行
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < column; j++) {
             QTableWidgetItem *sItem = this->item(i, j);
             if (sItem) {
+                // 第一列内容后加冒号,否则后面加换行符
                 QString se = (j == 0) ? " : " : "\n";
                 str += sItem->text() + se;
             }
         }
-//        str += "\n";
     }
     return str;
 }
@@ -244,36 +285,50 @@ bool DetailTreeView::isCurDeviceEnable()
 
 void DetailTreeView::setCurDeviceState(bool state)
 {
+    // 设置当前设备状态
     m_IsEnable = state;
+
+    // 禁用状态
     if (!m_IsEnable) {
 
+        // 隐藏除第一行以外的所有行
         for (int i = 1; i < this->rowCount(); ++i) {
             this->hideRow(i);
         }
 
-        this->setTableHeight(40);
+        // 设置表格高度为单行高度
+        this->setTableHeight(ROW_HEIGHT);
     } else {
-        this->setTableHeight(40);
+        // 启用状态
+        this->setTableHeight(ROW_HEIGHT);
 
-        if (m_IsExpand) {
+        // 展开状态，且有更多信息
+        if (m_IsExpand && hasExpendInfo()) {
             for (int i = 1; i < this->rowCount(); ++i) {
                 this->showRow(i);
             }
         }
 
+        // 未展开,但是由更多信息
         if (!m_IsExpand && hasExpendInfo()) {
+
+            // 按照限制行数显示
             for (int i = 1; i < this->m_LimitRow; ++i) {
                 this->showRow(i);
             }
 
+            // 显示展开按钮
             this->showRow(this->rowCount() - 1);
         }
 
+        // 没有更多信息
         if (!hasExpendInfo()) {
+
+            // 显示所有信息,但不显示最后一行
             for (int i = 1; i < this->rowCount() - 1; ++i) {
                 this->showRow(i);
-
             }
+            this->hideRow(this->rowCount() - 1);
         }
     }
 }
@@ -284,12 +339,14 @@ void DetailTreeView::expandCommandLinkClicked()
     if (m_IsExpand) {
         mp_CommandBtn->setText(tr("More"));
         m_IsExpand = false;
+
         for (int i = m_LimitRow; i < rowCount() - 1; ++i) {
             hideRow(i);
         }
     } else { // 当前未展开详细信息
         mp_CommandBtn->setText(tr("Collapse"));
         m_IsExpand = true;
+
         for (int i = m_LimitRow; i < rowCount() - 1; ++i) {
             showRow(i);
         }
@@ -367,16 +424,22 @@ void DetailTreeView::paintEvent(QPaintEvent *event)
     QPainter painter(this->viewport());
     painter.save();
 
+    // 绘制表格外边框采用填充方式,通过内矩形与外矩形相差得到填充区域
     int width = 1;
     int radius = 8;
     QPainterPath paintPath, paintPathOut, paintPathIn;
+
+    // 外圆角矩形路径,即表格的外边框路径
     paintPathOut.addRoundedRect(rect, radius, radius);
 
+    // 内圆角矩形路径,与外圆角矩形上下左右相差1个像素
     QRect rectIn = QRect(rect.x() + width, rect.y() + width, rect.width() - width * 2, rect.height() - width * 2);
     paintPathIn.addRoundedRect(rectIn, radius, radius);
 
+    // 填充路径
     paintPath = paintPathOut.subtracted(paintPathIn);
 
+    // 填充
     QBrush bgBrush(palette.color(cg, DPalette::FrameShadowBorder));
     painter.fillPath(paintPath, bgBrush);
 
@@ -393,7 +456,6 @@ void DetailTreeView::paintEvent(QPaintEvent *event)
         line.setP2(QPoint(rect.bottomLeft().x() + 179, rect.bottomLeft().y() - 40));
 
         // 绘制横线
-
         if (m_IsEnable) {
             QLine hline(rect.bottomLeft().x(), rect.bottomLeft().y() - 39, rect.bottomRight().x(), rect.bottomRight().y() - 39);
             painter.drawLine(hline);
@@ -431,18 +493,24 @@ void DetailTreeView::paintEvent(QPaintEvent *event)
 void DetailTreeView::resizeEvent(QResizeEvent *event)
 {
     DTableWidget::resizeEvent(event);
-    emit heightChange();
+
+    // 解决　调整窗口大小时tooltip未及时刷新
+    QPoint pt = this->mapFromGlobal(QCursor::pos());
+    mp_CurItem = itemAt(pt);
 }
 
 void DetailTreeView::mouseMoveEvent(QMouseEvent *event)
 {
+    // 鼠标移动获取位置
     mp_Point = event->pos();
     DTableWidget::mouseMoveEvent(event);
 }
 
 void DetailTreeView::leaveEvent(QEvent *event)
 {
+    // 鼠标移出事件
     if (mp_ToolTips) {
+        // 隐藏toopTips
         mp_CurItem = nullptr;
         mp_ToolTips->hide();
     }
@@ -451,45 +519,70 @@ void DetailTreeView::leaveEvent(QEvent *event)
 
 void DetailTreeView::slotTimeOut()
 {
-    showTips(mp_CurItem);
+    // tooltips显示当前Item内容
+    if (this->isActiveWindow()) {
+        showTips(mp_CurItem);
+    } else {// 如果窗口不是激活状态，则影藏tips
+        if (mp_ToolTips)
+            mp_ToolTips->hide();
+    }
 }
 
 void DetailTreeView::slotItemEnterd(QTableWidgetItem *item)
 {
+    // 设置当前鼠标所在位置Item
     mp_CurItem = item;
 }
 
 void DetailTreeView::slotEnterBtnWidget()
 {
+    // 鼠标进入BtnWidget,当前Item设置为nullptr,防止tooltips显示
     mp_CurItem = nullptr;
 }
 
 void DetailTreeView::slotLeaveBtnWidget()
 {
+    // 鼠标移出btnWidget,根据鼠标位置获取当前item
     QPoint pt = this->mapFromGlobal(QCursor::pos());
     mp_CurItem = itemAt(pt);
 }
 
 void DetailTreeView::showTips(QTableWidgetItem *item)
 {
+    // 确保tooltips Widget有效存在
     if (!mp_ToolTips) {
         mp_ToolTips = new TipsWidget(this);
     }
 
+    // 当前Item不为空且与上一个显示的Item一致
     if (item && item == mp_OldItem) {
+        // 通过计时器控制toolTips的刷新
         qint64 curMS = QDateTime::currentDateTime().toMSecsSinceEpoch();
         if (curMS - m_TimeStep > 1000 && mp_ToolTips->isHidden()) {
+            // tooltips内容
             QString text = item->text();
+
+            // 设置toolTips显示位置
             QPoint showRealPos(QCursor::pos().x(), QCursor::pos().y() + 10);
+            QRect screenRect = QApplication::desktop()->screenGeometry();
             if (mp_ToolTips) {
+                // 确保tips不会出现一半在窗口，一半看不到
+                if (showRealPos.x() + mp_ToolTips->width() > screenRect.width()) {
+                    showRealPos.setX(showRealPos.x() - mp_ToolTips->width());
+                }
+
+                // 显示toolTips
                 mp_ToolTips->setText(text);
                 mp_ToolTips->move(showRealPos);
                 mp_ToolTips->show();
             }
         }
     } else {
+        // 重新计时,等待下一个tooltips的显示
         m_TimeStep = QDateTime::currentDateTime().toMSecsSinceEpoch();
         mp_OldItem = item;
+
+        // 隐藏tooltips
         if (mp_ToolTips) {
             mp_ToolTips->hide();
         }

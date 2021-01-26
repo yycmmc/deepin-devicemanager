@@ -1,23 +1,24 @@
 ﻿/*
- * Copyright (C) 2019 ~ 2019 Deepin Technology Co., Ltd.
- *
- * Author:     LZ <zhou.lu@archermind.com>
- *
- * Maintainer: LZ <zhou.lu@archermind.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+*
+* Author:     XiaoMei.Ji <jixiaomei@uniontech.com>
+*
+* Maintainer: XiaoMei.Ji <jixiaomei@uniontech.com>
+* Maintainer: Jun.Liu <liujuna@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef DETAILTREEVIEW_H
 #define DETAILTREEVIEW_H
@@ -37,30 +38,48 @@ class ButtonDelegate;
 class CmdButtonWidget;
 class TipsWidget;
 
-
+/**
+ * @brief The BtnWidget class
+ * 控件：按钮
+ */
 class BtnWidget: public DWidget
 {
     Q_OBJECT
 public:
     BtnWidget();
 protected:
+    /**
+     * @brief enterEvent:鼠标进入事件
+     * @param event
+     */
     void enterEvent(QEvent *event)override;
+
+    /**
+     * @brief leaveEvent:鼠标移出事件
+     * @param event
+     */
     void leaveEvent(QEvent *event)override;
 signals:
+    /**
+     * @brief enter:信号,鼠标进入
+     */
     void enter();
+
+    /**
+     * @brief leave:信号,鼠标移出
+     */
     void leave();
 };
 
-
-
-
-
-
+/**
+ * @brief The DetailTreeView class
+ * 封装的表格
+ */
 class DetailTreeView: public DTableWidget//DTreeView
 {
     Q_OBJECT
 public:
-    DetailTreeView(DWidget *parent = nullptr);
+    explicit DetailTreeView(DWidget *parent = nullptr);
 
     /**
      * @brief setColumnAndRow:设置表格行数和列数
@@ -94,9 +113,6 @@ public:
      */
     int setTableHeight(int paintHeight);
 
-    // 界面上最多显示行数
-    int maxRowofWidget();
-
     /**
      * @brief hasExpendInfo:是否由详细信息按钮
      * @return 布尔值：true有详细信息按钮，false没有xiangzx详细信息按钮
@@ -126,9 +142,6 @@ public:
      * @param state true:启用;false:禁用
      */
     void setCurDeviceState(bool state);
-
-signals:
-    void heightChange();
 
 public slots:
     /**
@@ -167,9 +180,25 @@ protected:
     void leaveEvent(QEvent *event)override;
 
 private slots:
+    /**
+     * @brief slotTimeOut
+     */
     void slotTimeOut();
+
+    /**
+     * @brief slotItemEnterd
+     * @param item
+     */
     void slotItemEnterd(QTableWidgetItem *item);
+
+    /**
+     * @brief slotEnterBtnWidget
+     */
     void slotEnterBtnWidget();
+
+    /**
+     * @brief slotLeaveBtnWidget
+     */
     void slotLeaveBtnWidget();
 
 private:

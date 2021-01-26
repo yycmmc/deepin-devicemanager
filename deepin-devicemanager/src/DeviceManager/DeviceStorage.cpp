@@ -1,4 +1,7 @@
+// 项目自身文件
 #include "DeviceStorage.h"
+
+// Qt库文件
 #include<QDebug>
 
 DeviceStorage::DeviceStorage()
@@ -16,6 +19,7 @@ DeviceStorage::DeviceStorage()
     , m_KeyToLshw("")
     , m_KeyFromStorage("")
 {
+    // 初始化可显示属性
     initFilterKey();
 }
 
@@ -28,6 +32,12 @@ bool DeviceStorage::setHwinfoInfo(const QMap<QString, QString> &mapInfo)
     }
     setAttribute(mapInfo, "Model", m_Model);
     setAttribute(mapInfo, "Vendor", m_Vendor);
+
+    // 希捷硬盘为ATA硬盘，无法直接获取厂商信息,只能特殊处理
+    if (m_Model.startsWith("ST") && m_Vendor.isEmpty()) {
+        m_Vendor = "ST";
+    }
+
     setAttribute(mapInfo, "Drive", m_Driver);
     QRegExp exp("pci 0x[0-9a-zA-Z]*");
     if (exp.indexIn(m_Vendor) != -1) {
@@ -41,22 +51,27 @@ bool DeviceStorage::setHwinfoInfo(const QMap<QString, QString> &mapInfo)
         m_Interface.replace("Controller", "");
         m_Interface.replace("controller", "");
     }
+
     setAttribute(mapInfo, "Revision", m_Version);
     setAttribute(mapInfo, "Hardware Class", m_Description);
     setAttribute(mapInfo, "Capacity", m_Size);
+    setAttribute(mapInfo, "Serial ID", m_SerialNumber);
+
     // hwinfo里面显示的内容是  14 GB (15376000000 bytes) 需要处理
     m_Size.replace(QRegExp("\\(.*\\)"), "").replace(" ", "");
-    if (m_Size.startsWith("0") || m_Size == "") {
+
+    // 如果既没有capacity也没有序列号则认为该磁盘无效,否则都属于有效磁盘
+    if ((m_Size.startsWith("0") || m_Size == "") && m_SerialNumber == "") {
+
         return false;
     }
 
-    setAttribute(mapInfo, "Serial ID", m_SerialNumber);
-    ///setDiskSerialID(mapInfo["Device Files"]);
     setAttribute(mapInfo, "SysFS BusID", m_KeyToLshw);
     setAttribute(mapInfo, "Device File", m_DeviceFile);
     if (m_KeyToLshw.contains("nvme0", Qt::CaseInsensitive)) {
         setAttribute(mapInfo, "SysFS Device Link", m_NvmeKey);
     }
+
     getOtherMapInfo(mapInfo);
     return true;
 }
@@ -68,6 +83,7 @@ bool DeviceStorage::setKLUHwinfoInfo(const QMap<QString, QString> &mapInfo)
     if (mapInfo.find("SysFS BusID") == mapInfo.end()) {
         return false;
     }
+
     setAttribute(mapInfo, "Model", m_Model);
     setAttribute(mapInfo, "Vendor", m_Vendor);
     setAttribute(mapInfo, "Drive", m_Driver);
@@ -79,15 +95,16 @@ bool DeviceStorage::setKLUHwinfoInfo(const QMap<QString, QString> &mapInfo)
         m_Interface.replace("Controller", "");
         m_Interface.replace("controller", "");
     }
+
     setAttribute(mapInfo, "Revision", m_Version);
     setAttribute(mapInfo, "Hardware Class", m_Description);
     setAttribute(mapInfo, "Capacity", m_Size);
+
     // hwinfo里面显示的内容是  14 GB (15376000000 bytes) 需要处理
     m_Size.replace(QRegExp("\\(.*\\)"), "").replace(" ", "");
     if (m_Size.startsWith("0") || m_Size == "") {
         return false;
     }
-
 
     setAttribute(mapInfo, "Serial ID", m_SerialNumber);
 //    setDiskSerialID(mapInfo["Device Files"]);
@@ -111,12 +128,12 @@ bool DeviceStorage::addInfoFromlshw(const QMap<QString, QString> &mapInfo)
     if (keys.size() != 2) {
         return false;
     }
+
     QString key = keys[1].trimmed();
     key.replace(".", ":");
     if (key != m_KeyToLshw) {
         return false;
     }
-
 
     // 获取唯一key
     QStringList words = mapInfo["bus info"].split(":");
@@ -127,7 +144,6 @@ bool DeviceStorage::addInfoFromlshw(const QMap<QString, QString> &mapInfo)
 
     // 更新接口
     setAttribute(mapInfo, "interface", m_Interface, false);
-
 
     // 获取基本信息
     getInfoFromLshw(mapInfo);
@@ -155,7 +171,6 @@ bool DeviceStorage::addNVMEInfoFromlshw(const QMap<QString, QString> &mapInfo)
     }
 
     return true;
-
 }
 
 bool DeviceStorage::addInfoFromSmartctl(const QString &name, const QMap<QString, QString> &mapInfo)
@@ -164,6 +179,7 @@ bool DeviceStorage::addInfoFromSmartctl(const QString &name, const QMap<QString,
     if (!m_DeviceFile.contains(name, Qt::CaseInsensitive)) {
         return false;
     }
+
     // 获取基本信息
     getInfoFromsmartctl(mapInfo);
     return true;
@@ -246,10 +262,12 @@ void DeviceStorage::setDiskSerialID(const QString &deviceFiles)
 
 QString DeviceStorage::compareSize(const QString &size1, const QString &size2)
 {
+    // 比较smartctl中可能提供的两个大小，取大值作为存储设备的大小
     if (size1.isEmpty() || size2.isEmpty()) {
         return size1 + size2;
     }
 
+    // 将字符串转为数字大小进行比较
     QRegExp reg("[0-9]*");
     int index = reg.indexIn(size1);
     int num1 = 0;
@@ -264,6 +282,7 @@ QString DeviceStorage::compareSize(const QString &size1, const QString &size2)
         num2 = reg.cap(0).toInt();
     }
 
+    // 返回较大值
     if (num1 > num2) {
         return size1;
     } else {
@@ -281,78 +300,9 @@ const QString &DeviceStorage::driver() const
     return m_Driver;
 }
 
-const QString &DeviceStorage::model()const
-{
-    return m_Model;
-}
-
-const QString &DeviceStorage::vendor()const
-{
-    return m_Vendor;
-}
-
-const QString &DeviceStorage::mediaType()const
-{
-    return m_MediaType;
-}
-
-const QString &DeviceStorage::size()const
-{
-    return m_Size;
-}
-const QString &DeviceStorage::rotationRate()const
-{
-    return m_RotationRate;
-}
-
-const QString &DeviceStorage::interface()const
-{
-    return m_Interface;
-}
-
-const QString &DeviceStorage::serialNumber()const
-{
-    return m_SerialNumber;
-}
-
-const QString &DeviceStorage::version()const
-{
-    return m_Version;
-}
-
-const QString &DeviceStorage::capabilities()const
-{
-    return m_Capabilities;
-}
-
-const QString &DeviceStorage::description()const
-{
-    return m_Description;
-}
-
 const QString &DeviceStorage::keyFromStorage()const
 {
     return m_KeyFromStorage;
-}
-
-const QString &DeviceStorage::firmwareVersion()const
-{
-    return m_FirmwareVersion;
-}
-
-const QString &DeviceStorage::speed()const
-{
-    return m_Speed;
-}
-
-const QString &DeviceStorage::powerOnHours()const
-{
-    return m_PowerOnHours;
-}
-
-const QString &DeviceStorage::powerCycleCount()const
-{
-    return m_PowerCycleCount;
 }
 
 QString DeviceStorage::subTitle()
@@ -380,8 +330,6 @@ void DeviceStorage::initFilterKey()
     addFilterKey(QObject::tr("Config Status"));
     addFilterKey(QObject::tr("Device Number"));
     addFilterKey(QObject::tr("Geometry (Logical)"));
-    addFilterKey(QObject::tr("SubDevice"));
-    addFilterKey(QObject::tr("SubVendor"));
 }
 
 void DeviceStorage::loadBaseDeviceInfo()
@@ -407,12 +355,17 @@ void DeviceStorage::loadOtherDeviceInfo()
     addOtherDeviceInfo(tr("Interface"), m_Interface);
     addOtherDeviceInfo(tr("Rotation Rate"), m_RotationRate);
 
+    if (m_RotationRate == QString("Solid State Device")) {
+        m_MediaType = QObject::tr("SSD");
+    }
+
     // 将QMap<QString, QString>内容转存为QList<QPair<QString, QString>>
     mapInfoToList();
 }
 
 void DeviceStorage::loadTableHeader()
 {
+    // 加载表头信息
     m_TableHeader.append(tr("Model"));
     m_TableHeader.append(tr("Vendor"));
     m_TableHeader.append(tr("Media Type"));
@@ -421,6 +374,7 @@ void DeviceStorage::loadTableHeader()
 
 void DeviceStorage::loadTableData()
 {
+    // 加载表格数据
     m_TableData.append(m_Model);
     m_TableData.append(m_Vendor);
     m_TableData.append(m_MediaType);
@@ -429,6 +383,7 @@ void DeviceStorage::loadTableData()
 
 void DeviceStorage::getInfoFromLshw(const QMap<QString, QString> &mapInfo)
 {
+    // lshw信息获取
     setAttribute(mapInfo, "capabilities", m_Capabilities);
     setAttribute(mapInfo, "version", m_Version);
     setAttribute(mapInfo, "serial", m_SerialNumber, false);
@@ -455,6 +410,10 @@ void DeviceStorage::getInfoFromsmartctl(const QMap<QString, QString> &mapInfo)
     }
 
     setAttribute(mapInfo, "Rotation Rate", m_RotationRate);
+    // 解决Bug45428,INTEL SSDSA2BW160G3L 这个型号的硬盘通过lsblk获取的rota是１，所以这里需要特殊处理
+    if (m_RotationRate == QString("Solid State Device")) {
+        m_MediaType = QObject::tr("SSD");
+    }
 
     // 通电时间
     m_PowerOnHours = mapInfo["Power_On_Hours"];

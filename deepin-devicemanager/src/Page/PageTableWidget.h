@@ -1,3 +1,25 @@
+/*
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+*
+* Author:     Jun.Liu <liujuna@uniontech.com>
+*
+* Maintainer: XiaoMei.Ji <jixiaomei@uniontech.com>
+* Maintainer: Jun.Liu <liujuna@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef PAGETABLEWIDGET_H
 #define PAGETABLEWIDGET_H
 
@@ -11,16 +33,20 @@ DWIDGET_USE_NAMESPACE
 class DetailTreeView;
 class RichTextDelegate;
 
+/**
+ * @brief The PageTableWidget class
+ * 表头控件
+ */
 class PageTableWidget : public DWidget
 {
     Q_OBJECT
 
 public:
-    PageTableWidget(DWidget *parent = nullptr);
+    explicit PageTableWidget(DWidget *parent = nullptr);
 
     /**
      * @brief setLimitRow 限制行数
-     * @param row
+     * @param row 行数
      */
     void setLimitRow(int row);
 
@@ -35,13 +61,13 @@ public:
      * @brief setItem 设置item
      * @param row　行
      * @param column　列
-     * @param item
+     * @param item 表格项
      */
     void setItem(int row, int column, QTableWidgetItem *item);
 
     /**
      * @brief toString 以字符串的方式获取信息
-     * @return
+     * @return 单元格内容以字符串显示
      */
     QString toString();
 
@@ -59,7 +85,7 @@ public:
 
     /**
      * @brief setDeviceEnable
-     * @param e
+     * @param e true:启用 false:禁用
      */
     void setDeviceEnable(bool e);
 
@@ -74,12 +100,6 @@ public:
      * @param height　行高
      */
     void setRowHeight(int row, int height);
-
-    /**
-     * @brief resizeRowToContent 设置行高适应内容
-     * @param row 指定行
-     */
-    void resizeRowToContent(int row);
 
     /**
      * @brief setItemDelegateForRow 设置每一行的委托
@@ -106,15 +126,22 @@ public:
     void expandTable();
 
 signals:
+    /**
+     * @brief enableDeviceSignal:禁用启用设备信号
+     */
     void enableDeviceSignal();
 
-public slots:
-    void changeSize();
-
 protected:
+    /**
+     * @brief paintEvent:重绘事件
+     * @param event:事件
+     */
     void paintEvent(QPaintEvent *event) override;
 
 private:
+    /**
+     * @brief initUI:初始化页面布局
+     */
     void initUI();
 
 private:

@@ -1,16 +1,21 @@
+// 项目自身文件
 #include "TextBrowser.h"
 
-#include <QDebug>
+// Dtk头文件
 #include <DApplicationHelper>
 #include <DApplication>
 #include <DFontSizeManager>
+#include <DMenu>
+
+// Qt库文件
 #include <QTextDocumentFragment>
 #include <QClipboard>
 #include <QContextMenuEvent>
 #include <QScrollBar>
 #include <QAction>
-#include <DMenu>
+#include <QDebug>
 
+// 其它头文件
 #include "DeviceManager/DeviceInfo.h"
 
 TextBrowser::TextBrowser(QWidget *parent)
@@ -91,7 +96,6 @@ EnableDeviceStatus TextBrowser::setDeviceEnabled(bool enable)
     if (!mp_Info) {
         return EDS_Cancle;
     }
-
     return mp_Info->setEnable(enable);
 }
 
@@ -161,10 +165,6 @@ void TextBrowser::keyPressEvent(QKeyEvent *event)
     Dtk::Widget::DTextBrowser::keyPressEvent(event);
 }
 
-void TextBrowser::wheelEvent(QWheelEvent *event)
-{
-
-}
 void TextBrowser::focusInEvent(QFocusEvent *e)
 {
 //    setTextInteractionFlags(Qt::TextBrowserInteraction);
@@ -252,9 +252,9 @@ void TextBrowser::domTitleInfo(QDomDocument &doc, DeviceBaseInfo *info)
 
         if (!info->enable()) {
             title = "(" + tr("Disable") + ")" + title;
-            h3.setAttribute("style", "text-indent:17px;text-align:left;font-weight:504;padding:10px;color:#FF5736;");
+            h3.setAttribute("style", "text-indent:2px;text-align:left;font-weight:504;padding:10px;color:#FF5736;");
         } else {
-            h3.setAttribute("style", "text-indent:17px;text-align:left;font-weight:504;padding:10px;");
+            h3.setAttribute("style", "text-indent:2px;text-align:left;font-weight:504;padding:10px;");
         }
         QDomText valueText = doc.createTextNode(title);
         h3.appendChild(valueText);
@@ -276,7 +276,7 @@ void TextBrowser::domTableInfo(QDomDocument &doc, const QList<QPair<QString, QSt
         // 该行的第一列
         QDomElement td = doc.createElement("th");
         td.setAttribute("width", "20%");
-        td.setAttribute("style", "text-indent:15px;text-align:left;font-weight:504;");
+        td.setAttribute("style", "text-indent:0px;text-align:left;font-weight:504;");
         QDomText nameText = doc.createTextNode(pair.first + ":");
         td.appendChild(nameText);
         tr.appendChild(td);

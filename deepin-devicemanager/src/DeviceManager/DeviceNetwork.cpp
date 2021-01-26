@@ -1,4 +1,7 @@
+// 项目自身文件
 #include "DeviceNetwork.h"
+
+// 其它头文件
 #include "EnableManager.h"
 
 DeviceNetwork::DeviceNetwork()
@@ -28,13 +31,16 @@ DeviceNetwork::DeviceNetwork()
     , m_Latency("")
     , m_Multicast("")
 {
+    // 初始化可显示属性
     initFilterKey();
+
+    // 设备可禁用
     m_CanEnable = true;
 }
 
 void DeviceNetwork::setInfoFromLshw(const QMap<QString, QString> &mapInfo)
 {
-
+    // 设置由lshw获取的信息
     setAttribute(mapInfo, "description", m_Model);
     setAttribute(mapInfo, "product", m_Name);
     setAttribute(mapInfo, "description", m_Name, false);
@@ -62,11 +68,13 @@ void DeviceNetwork::setInfoFromLshw(const QMap<QString, QString> &mapInfo)
     setAttribute(mapInfo, "latency", m_Latency);
     setAttribute(mapInfo, "multicast", m_Multicast);
 
+    // 加载其他信息
     getOtherMapInfo(mapInfo);
 }
 
 bool DeviceNetwork::setInfoFromHwinfo(const QMap<QString, QString> &mapInfo)
 {
+    // 设置由hwinfo获取的信息
     if (mapInfo["Device File"] != m_LogicalName) {
         return false;
     }
@@ -80,124 +88,9 @@ const QString &DeviceNetwork::name()const
     return m_Name;
 }
 
-const QString &DeviceNetwork::vendor()const
-{
-    return m_Vendor;
-}
-
-const QString &DeviceNetwork::model()const
-{
-    return m_Model;
-}
-
-const QString &DeviceNetwork::version()const
-{
-    return m_Version;
-}
-
-const QString &DeviceNetwork::busInfo()const
-{
-    return m_BusInfo;
-}
-
-const QString &DeviceNetwork::logicalName()const
-{
-    return m_LogicalName;
-}
-
-const QString &DeviceNetwork::MACAddress()const
-{
-    return m_MACAddress;
-}
-
-const QString &DeviceNetwork::irq()const
-{
-    return m_Irq;
-}
-
-const QString &DeviceNetwork::memory()const
-{
-    return m_Memory;
-}
-
-const QString &DeviceNetwork::width()const
-{
-    return m_Width;
-}
-
-const QString &DeviceNetwork::clock()const
-{
-    return m_Clock;
-}
-
-const QString &DeviceNetwork::capabilities()const
-{
-    return m_Capabilities;
-}
-
-const QString &DeviceNetwork::autoNegotiation()const
-{
-    return m_Autonegotiation;
-}
-
-const QString &DeviceNetwork::broadcast()const
-{
-    return m_Broadcast;
-}
-
 const QString &DeviceNetwork::driver()const
 {
     return m_Driver;
-}
-
-const QString &DeviceNetwork::driverVersion()const
-{
-    return m_DriverVersion;
-}
-
-const QString &DeviceNetwork::duplex()const
-{
-    return m_Duplex;
-}
-
-const QString &DeviceNetwork::firmware()const
-{
-    return m_Firmware;
-}
-
-const QString &DeviceNetwork::port()const
-{
-    return m_Port;
-}
-
-const QString &DeviceNetwork::link()const
-{
-    return m_Link;
-}
-
-const QString &DeviceNetwork::ip()const
-{
-    return m_Ip;
-}
-
-const QString &DeviceNetwork::speed()const
-{
-    return m_Speed;
-}
-
-const QString &DeviceNetwork::capacity()const
-{
-    return m_Capacity;
-}
-
-const QString &DeviceNetwork::latency()const
-{
-    return m_Latency;
-}
-
-const QString &DeviceNetwork::multicast()const
-{
-    return m_Multicast;
 }
 
 QString DeviceNetwork::subTitle()
@@ -207,23 +100,26 @@ QString DeviceNetwork::subTitle()
 
 const QString DeviceNetwork::getOverviewInfo()
 {
+    // 获取概况信息
     return m_Name.isEmpty() ? m_Model : m_Name;
 }
 
 EnableDeviceStatus DeviceNetwork::setEnable(bool e)
 {
+    // 设置网卡禁用启用
     return EnableManager::instance()->enableNetworkByIfconfig(m_LogicalName, e);
 }
 
 bool DeviceNetwork::enable()
 {
-//    m_Enable = EnableManager::instance()->isDeviceEnableByDriver(m_Driver);
+    // 通过ifconfig配置网卡禁用启用
     m_Enable = EnableManager::instance()->isNetworkEnableByIfconfig(m_LogicalName);
     return m_Enable;
 }
 
 void DeviceNetwork::initFilterKey()
 {
+    // 初始化可显示属性
     addFilterKey(QObject::tr("ioport"));
     addFilterKey(QObject::tr("physical id"));
     addFilterKey(QObject::tr("network"));
@@ -269,12 +165,15 @@ void DeviceNetwork::loadOtherDeviceInfo()
 
 void DeviceNetwork::loadTableData()
 {
+    // 根据是否禁用设置设备名称
     QString name;
     if (!enable()) {
         name = "(" + tr("Disable") + ") " + m_Name;
     } else {
         name = m_Name;
     }
+
+    // 加载表格数据信息
     m_TableData.append(name);
     m_TableData.append(m_Vendor);
     m_TableData.append(m_Model);

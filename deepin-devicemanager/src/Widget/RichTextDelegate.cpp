@@ -1,15 +1,21 @@
+// 项目自身文件
 #include "RichTextDelegate.h"
 
+// Dtk头文件
 #include <DApplication>
 #include <DStyle>
 #include <DApplicationHelper>
 
+// Qt库文件
 #include <QPainter>
 #include <QTextDocument>
 #include <QAbstractTextDocumentLayout>
 #include <QDebug>
-#include "DetailTreeView.h"
 #include <DFontSizeManager>
+#include <QPainterPath>
+
+// 其它头文件
+#include "DetailTreeView.h"
 
 DWIDGET_USE_NAMESPACE
 
@@ -246,6 +252,7 @@ void RichTextDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         painter->translate(point);
         painter->setClipRect(textRect.translated(-point));
         textDoc.documentLayout()->draw(painter, paintContext);
+        painter->restore();
     }
 
 //    if (index.column() == 0) {
@@ -329,9 +336,7 @@ void RichTextDelegate::addRow(QDomDocument &doc, QDomElement &table, const QPair
         QStringList::iterator it = strList.begin();
         addTd2(doc, tr, *it);
         ++it;
-        static int i = 0;
         for (; it != strList.end(); ++it) {
-            ++i;
             QPair<QString, QString> tempPair;
             tempPair.first = "";
             tempPair.second = *it;

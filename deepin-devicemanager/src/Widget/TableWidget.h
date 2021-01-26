@@ -1,23 +1,24 @@
 /*
- * Copyright (C) 2019 ~ 2019 Deepin Technology Co., Ltd.
- *
- * Author:     LZ <zhou.lu@archermind.com>
- *
- * Maintainer: LZ <zhou.lu@archermind.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+*
+* Author:     Jun.Liu <liujuna@uniontech.com>
+*
+* Maintainer: XiaoMei.Ji <jixiaomei@uniontech.com>
+* Maintainer: Jun.Liu <liujuna@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef HEADERTABLEVIEW_H
 #define HEADERTABLEVIEW_H
@@ -32,11 +33,15 @@ class LogTreeView;
 
 using namespace Dtk::Widget;
 
+/**
+ * @brief The TableWidget class
+ * UI : 自定义tablewidget
+ */
 class TableWidget : public DWidget
 {
     Q_OBJECT
 public:
-    TableWidget(QWidget *parent = nullptr);
+    explicit TableWidget(QWidget *parent = nullptr);
 
     /**
      * @brief setHeaderLabels : 设置table的表头
@@ -68,6 +73,12 @@ public:
      * @brief clear : 清空数据
      */
     void clear();
+
+    /**
+     * @brief setRowNum: 设置表格行数
+     * @param row : 总行数
+     */
+    void setRowNum(int row);
 
 signals:
     void itemClicked(int row);

@@ -1,7 +1,10 @@
+// 项目自身文件
 #include "DeviceGenerator.h"
 
+// Qt库文件
 #include <QDebug>
 
+// 其它头文件
 #include "CmdTool.h"
 #include "../DeviceManager/DeviceManager.h"
 #include "../DeviceManager/DeviceCpu.h"
@@ -20,6 +23,7 @@
 #include "../DeviceManager/DeviceCdrom.h"
 #include "../DeviceManager/DevicePrint.h"
 #include "../DeviceManager/DeviceInput.h"
+#include "MacroDefinition.h"
 
 
 DeviceGenerator::DeviceGenerator(QObject *parent)
@@ -27,6 +31,7 @@ DeviceGenerator::DeviceGenerator(QObject *parent)
 {
 
 }
+
 DeviceGenerator::~DeviceGenerator()
 {
 
@@ -52,15 +57,22 @@ void DeviceGenerator::generatorComputerDevice()
     }
 
     // setOsDescription
-    QString os = "UOS";
-    DSysInfo::DeepinType type = DSysInfo::deepinType();
-    if (DSysInfo::DeepinProfessional == type) {
-        os =  "UnionTech OS 20";
-    } else if (DSysInfo::DeepinPersonal == type) {
-        os =  "UnionTech OS 20 Home";
-    } else if (DSysInfo::DeepinDesktop == type) {
-        os =  "Deepin 20";
+    QString os = DEFAULT_STR;
+    DSysInfo::UosEdition type = DSysInfo::uosEditionType();
+    if (DSysInfo::UosProfessional == type) {
+        os =  PROF_STR;
+    } else if (DSysInfo::UosHome == type) {
+        os =  HOME_STR;
+    } else if (DSysInfo::UosCommunity == type) {
+        os =  COMMUNITY_STR;
+    } else if (DSysInfo::UosEnterprise == type) {
+        os =  ENTERPRISE_STR;
+    } else if (DSysInfo::UosEnterpriseC == type) {
+        os =  ENTERPRISEC_STR;
+    } else if (DSysInfo::UosEuler == type) {
+        os =  EULER_STR;
     }
+
     device->setOsDescription(os);
 
     // os
@@ -82,30 +94,46 @@ void DeviceGenerator::generatorComputerDevice()
 
 void DeviceGenerator::generatorCpuDevice()
 {
+    // 生成CPU
     const QList<QMap<QString, QString> >  &lstCatCpu = DeviceManager::instance()->cmdInfo("cat_cpuinfo");
     if (lstCatCpu.size() == 0) {
         return;
     }
 
+    // get info from lscpu
     const QList<QMap<QString, QString> >  &lsCpu = DeviceManager::instance()->cmdInfo("lscpu");
     const QMap<QString, QString> &lscpu = lsCpu.size() > 0 ? lsCpu[0] : QMap<QString, QString>();
 
+    // get info from lshw
     const QList<QMap<QString, QString> >  &lshwCpu = DeviceManager::instance()->cmdInfo("lshw_cpu");
     const QMap<QString, QString> &lshw = lshwCpu.size() > 0 ? lshwCpu[0] : QMap<QString, QString>();
 
+    // get info from dmidecode -t 4
     const QList<QMap<QString, QString> >  &dmidecode4 = DeviceManager::instance()->cmdInfo("dmidecode4");
-    const QMap<QString, QString> &dmidecode = dmidecode4.size() > 1 ? dmidecode4[1] : QMap<QString, QString>();
+    const QMap<QString, QString> &dmidecode = dmidecode4.size() > 0 ? dmidecode4[0] : QMap<QString, QString>();
+
+    // 设置cpu个数
+    DeviceManager::instance()->setCpuNum(dmidecode4.size());
+
+    //  获取逻辑数和core数
+    int coreNum = 0, logicalNum = 0;
+    QList<QMap<QString, QString> >::const_iterator itd = dmidecode4.begin();
+    for (; itd != dmidecode4.end(); ++itd) {
+        coreNum += (*itd)["Core Count"].toInt();
+        logicalNum += (*itd)["Thread Count"].toInt();
+    }
 
     QList<QMap<QString, QString> >::const_iterator it = lstCatCpu.begin();
     for (; it != lstCatCpu.end(); ++it) {
         DeviceCpu *device = new DeviceCpu;
-        device->setCpuInfo(lscpu, lshw, dmidecode, *it);
+        device->setCpuInfo(lscpu, lshw, dmidecode, *it, coreNum, logicalNum);
         DeviceManager::instance()->addCpuDevice(device);
     }
 }
 
 void DeviceGenerator::generatorBiosDevice()
 {
+    // 生成BIOS
     getBiosInfo();
     getSystemInfo();
     getBaseBoardInfo();
@@ -115,12 +143,14 @@ void DeviceGenerator::generatorBiosDevice()
 
 void DeviceGenerator::generatorMemoryDevice()
 {
+    // 生成内存
     getMemoryInfoFromLshw();
     getMemoryInfoFromDmidecode();
 }
 
 void DeviceGenerator::generatorDiskDevice()
 {
+    // 生成存储设备
     // 添加从hwinfo中获取的信息
     getDiskInfoFromHwinfo();
     // 添加从lshw中获取的信息
@@ -132,22 +162,22 @@ void DeviceGenerator::generatorDiskDevice()
 
 void DeviceGenerator::generatorGpuDevice()
 {
+    // 生成显示适配器
     getGpuInfoFromHwinfo();
     getGpuInfoFromLshw();
-    getGpuInfoFromXrandr();
     getGpuSizeFromDmesg();
 }
 
 void DeviceGenerator::generatorMonitorDevice()
 {
+    // 生成显示设备
     getMonitorInfoFromHwinfo();
-    getMonitorInfoFromXrandrVerbose();
-    getMonitorRefreshRateFromXrandr();
 }
 
 void DeviceGenerator::generatorNetworkDevice()
 {
-    const QList<QMap<QString, QString>> lstInfo = DeviceManager::instance()->cmdInfo("lshw_network");
+    // 生成网络适配器
+    const QList<QMap<QString, QString>> &lstInfo = DeviceManager::instance()->cmdInfo("lshw_network");
     QList<QMap<QString, QString> >::const_iterator it = lstInfo.begin();
     for (; it != lstInfo.end(); ++it) {
         if ((*it).size() < 2) {
@@ -161,14 +191,16 @@ void DeviceGenerator::generatorNetworkDevice()
 
 void DeviceGenerator::generatorAudioDevice()
 {
+    // 生成音频适配器
     getAudioInfoFromHwinfo();
     getAudioChipInfoFromDmesg();
     getAudioInfoFromLshw();
-    getAudioInfoFromCatInput();
+    //getAudioInfoFromCatInput();
 }
 
 void DeviceGenerator::generatorBluetoothDevice()
 {
+    // 生成蓝牙
     getBluetoothInfoFromHciconfig();
     getBlueToothInfoFromHwinfo();
     getBluetoothInfoFromLshw();
@@ -176,6 +208,7 @@ void DeviceGenerator::generatorBluetoothDevice()
 
 void DeviceGenerator::generatorKeyboardDevice()
 {
+    // 生成键盘
     getKeyboardInfoFromHwinfo();
     getKeyboardInfoFromLshw();
     getKeyboardInfoFromCatDevices();
@@ -183,6 +216,7 @@ void DeviceGenerator::generatorKeyboardDevice()
 
 void DeviceGenerator::generatorMouseDevice()
 {
+    // 生成鼠标
     getMouseInfoFromHwinfo();
     getMouseInfoFromLshw();
     getMouseInfoFromCatDevices();
@@ -190,7 +224,8 @@ void DeviceGenerator::generatorMouseDevice()
 
 void DeviceGenerator::generatorPrinterDevice()
 {
-    const QList<QMap<QString, QString>> lstInfo = DeviceManager::instance()->cmdInfo("printer");
+    // 生成打印机
+    const QList<QMap<QString, QString>> &lstInfo = DeviceManager::instance()->cmdInfo("printer");
     QList<QMap<QString, QString> >::const_iterator it = lstInfo.begin();
     for (; it != lstInfo.end(); ++it) {
         if ((*it).size() < 2) {
@@ -204,32 +239,36 @@ void DeviceGenerator::generatorPrinterDevice()
 
 void DeviceGenerator::generatorCameraDevice()
 {
+    // 生成图像设备
     getImageInfoFromHwinfo();
     getImageInfoFromLshw();
 }
 
 void DeviceGenerator::generatorCdromDevice()
 {
+    // 生成光盘
     getCdromInfoFromHwinfo();
     getCdromInfoFromLshw();
 }
 
 void DeviceGenerator::generatorOthersDevice()
 {
+    // 生成其他设备
     getOthersInfoFromHwinfo();
     getOthersInfoFromLshw();
 }
 
 void DeviceGenerator::generatorPowerDevice()
 {
+    // 生成电池
     const QList<QMap<QString, QString> > &daemon = DeviceManager::instance()->cmdInfo("Daemon");
     bool hasDaemon = false;
     // 守护进程信息
     if (daemon.size() > 0) {
         hasDaemon = true;
     }
-    // 电池或这电源信息
-    const QList<QMap<QString, QString>> lstInfo = DeviceManager::instance()->cmdInfo("upower");
+    // 电池信息
+    const QList<QMap<QString, QString>> &lstInfo = DeviceManager::instance()->cmdInfo("upower");
     QList<QMap<QString, QString> >::const_iterator it = lstInfo.begin();
     for (; it != lstInfo.end(); ++it) {
         if ((*it).size() < 2) {
@@ -239,6 +278,7 @@ void DeviceGenerator::generatorPowerDevice()
         if (!device->setInfoFromUpower(*it)) {
             continue;
         }
+        // 设置守护进程信息
         if (hasDaemon) {
             device->setDaemonInfo(daemon[0]);
         }
@@ -248,7 +288,8 @@ void DeviceGenerator::generatorPowerDevice()
 
 void DeviceGenerator::getBiosInfo()
 {
-    const QList<QMap<QString, QString>> lstInfo = DeviceManager::instance()->cmdInfo("dmidecode0");
+    // 获取BIOS 信息
+    const QList<QMap<QString, QString>> &lstInfo = DeviceManager::instance()->cmdInfo("dmidecode0");
     QList<QMap<QString, QString> >::const_iterator it = lstInfo.begin();
     for (; it != lstInfo.end(); ++it) {
         if ((*it).size() < 2) {
@@ -259,7 +300,7 @@ void DeviceGenerator::getBiosInfo()
         DeviceManager::instance()->addBiosDevice(device);
     }
 
-    const QList<QMap<QString, QString>> lanInfo = DeviceManager::instance()->cmdInfo("dmidecode13");
+    const QList<QMap<QString, QString>> &lanInfo = DeviceManager::instance()->cmdInfo("dmidecode13");
     QList<QMap<QString, QString> >::const_iterator iter = lanInfo.begin();
     for (; iter != lanInfo.end(); ++iter) {
         if ((*iter).size() < 2) {
@@ -272,7 +313,8 @@ void DeviceGenerator::getBiosInfo()
 
 void DeviceGenerator::getSystemInfo()
 {
-    const QList<QMap<QString, QString>> lstInfo = DeviceManager::instance()->cmdInfo("dmidecode1");
+    // 获取系统信息
+    const QList<QMap<QString, QString>> &lstInfo = DeviceManager::instance()->cmdInfo("dmidecode1");
     QList<QMap<QString, QString> >::const_iterator it = lstInfo.begin();
     for (; it != lstInfo.end(); ++it) {
         if ((*it).size() < 2) {
@@ -286,7 +328,8 @@ void DeviceGenerator::getSystemInfo()
 
 void DeviceGenerator::getBaseBoardInfo()
 {
-    const QList<QMap<QString, QString>> lstInfo = DeviceManager::instance()->cmdInfo("dmidecode2");
+    // 获取主板信息
+    const QList<QMap<QString, QString>> &lstInfo = DeviceManager::instance()->cmdInfo("dmidecode2");
     QList<QMap<QString, QString> >::const_iterator it = lstInfo.begin();
     for (; it != lstInfo.end(); ++it) {
         if ((*it).size() < 2) {
@@ -300,7 +343,8 @@ void DeviceGenerator::getBaseBoardInfo()
 
 void DeviceGenerator::getChassisInfo()
 {
-    const QList<QMap<QString, QString>> lstInfo = DeviceManager::instance()->cmdInfo("dmidecode3");
+    // 获取机箱信息
+    const QList<QMap<QString, QString>> &lstInfo = DeviceManager::instance()->cmdInfo("dmidecode3");
     QList<QMap<QString, QString> >::const_iterator it = lstInfo.begin();
     for (; it != lstInfo.end(); ++it) {
         if ((*it).size() < 2) {
@@ -314,7 +358,8 @@ void DeviceGenerator::getChassisInfo()
 
 void DeviceGenerator::getBiosMemoryInfo()
 {
-    const QList<QMap<QString, QString>> lstInfo = DeviceManager::instance()->cmdInfo("dmidecode16");
+    // 获取内存插槽信息
+    const QList<QMap<QString, QString>> &lstInfo = DeviceManager::instance()->cmdInfo("dmidecode16");
     QList<QMap<QString, QString> >::const_iterator it = lstInfo.begin();
     for (; it != lstInfo.end(); ++it) {
         if ((*it).size() < 2) {
@@ -328,30 +373,27 @@ void DeviceGenerator::getBiosMemoryInfo()
 
 void DeviceGenerator::getMemoryInfoFromLshw()
 {
-    const QList<QMap<QString, QString>> lstMemory = DeviceManager::instance()->cmdInfo("lshw_memory");
-    if (lstMemory.size() == 0) {
-        return;
-    } else if (lstMemory.size() == 1) {
-        DeviceMemory *device = new DeviceMemory();
-        device->setInfoFromLshw(lstMemory[0]);
-        DeviceManager::instance()->addMemoryDevice(device);
-    } else if (lstMemory.size() > 1) {
-        QList<QMap<QString, QString> >::const_iterator it = lstMemory.begin();
-        for (; it != lstMemory.end(); ++it) {
-            if (!(*it)["size"].contains("GiB") || (*it)["description"] == "System Memory") {
-                continue;
-            }
-            DeviceMemory *device = new DeviceMemory();
-            device->setInfoFromLshw(*it);
-            DeviceManager::instance()->addMemoryDevice(device);
+    // 从lshw中获取内存信息
+    const QList<QMap<QString, QString>> &lstMemory = DeviceManager::instance()->cmdInfo("lshw_memory");
+    QList<QMap<QString, QString> >::const_iterator it = lstMemory.begin();
+
+    for (; it != lstMemory.end(); ++it) {
+
+        // bug47194 size属性包含MiB
+        // 目前处理内存信息时，bank下一定要显示内存信息，否则无法生成内存
+        if (!(*it)["size"].contains("GiB") && !(*it)["size"].contains("MiB")) {
+            continue;
         }
+        DeviceMemory *device = new DeviceMemory();
+        device->setInfoFromLshw(*it);
+        DeviceManager::instance()->addMemoryDevice(device);
     }
 }
 
 void DeviceGenerator::getMemoryInfoFromDmidecode()
 {
-    // 加载从dmidecode获取的信息
-    const QList<QMap<QString, QString>> dmiMemory = DeviceManager::instance()->cmdInfo("dmidecode17");
+    // 加载从dmidecode获取的内存信息
+    const QList<QMap<QString, QString>> &dmiMemory = DeviceManager::instance()->cmdInfo("dmidecode17");
     QList<QMap<QString, QString> >::const_iterator dIt = dmiMemory.begin();
     for (; dIt != dmiMemory.end(); ++dIt) {
         if ((*dIt).size() < 2 || (*dIt)["size"] == "No Module Installed") {
@@ -363,7 +405,8 @@ void DeviceGenerator::getMemoryInfoFromDmidecode()
 
 void DeviceGenerator::getDiskInfoFromHwinfo()
 {
-    const QList<QMap<QString, QString>> lstDisk = DeviceManager::instance()->cmdInfo("hwinfo_disk");
+    // 从hwinfo中获取的存储设备信息
+    const QList<QMap<QString, QString>> &lstDisk = DeviceManager::instance()->cmdInfo("hwinfo_disk");
     QList<QMap<QString, QString> >::const_iterator dIt = lstDisk.begin();
     for (; dIt != lstDisk.end(); ++dIt) {
         if ((*dIt).size() < 2) {
@@ -372,14 +415,19 @@ void DeviceGenerator::getDiskInfoFromHwinfo()
         DeviceStorage *device = new DeviceStorage();
         if (device->setHwinfoInfo(*dIt) && device->isValid()) {
             DeviceManager::instance()->addStorageDeivce(device);
-            addBusIDFromHwinfo((*dIt)["SysFS BusID"]);
         }
+
+        // Add all disk including no size disk to filter list
+        if ((*dIt).find("SysFS BusID") != (*dIt).end())
+            addBusIDFromHwinfo((*dIt)["SysFS BusID"]);
     }
 }
 
 void DeviceGenerator::getDiskInfoFromLshw()
 {
-    const QList<QMap<QString, QString>> lstDisk = DeviceManager::instance()->cmdInfo("lshw_disk");
+    // 从lshw中获取的存储设备信息
+    // lshw -C disk
+    const QList<QMap<QString, QString>> &lstDisk = DeviceManager::instance()->cmdInfo("lshw_disk");
     QList<QMap<QString, QString> >::const_iterator dIt = lstDisk.begin();
     for (; dIt != lstDisk.end(); ++dIt) {
         if ((*dIt).size() < 2) {
@@ -388,8 +436,9 @@ void DeviceGenerator::getDiskInfoFromLshw()
         DeviceManager::instance()->addLshwinfoIntoStorageDevice(*dIt);
     }
 
+    // lshw -C storage
     /*if (lstDisk.size() == 0)*/ {
-        const QList<QMap<QString, QString>> lstDisk = DeviceManager::instance()->cmdInfo("lshw_storage");
+        const QList<QMap<QString, QString>> &lstDisk = DeviceManager::instance()->cmdInfo("lshw_storage");
         QList<QMap<QString, QString> >::const_iterator dIt = lstDisk.begin();
         for (; dIt != lstDisk.end(); ++dIt) {
             if ((*dIt).size() < 2) {
@@ -402,7 +451,8 @@ void DeviceGenerator::getDiskInfoFromLshw()
 
 void DeviceGenerator::getDiskInfoFromLsblk()
 {
-    const QList<QMap<QString, QString>> lstblk = DeviceManager::instance()->cmdInfo("lsblk_d");
+    // 通过lsblk信息设备存储设备介质类型
+    const QList<QMap<QString, QString>> &lstblk = DeviceManager::instance()->cmdInfo("lsblk_d");
     if (lstblk.size() > 0) {
         QMap<QString, QString>::const_iterator it = lstblk[0].begin();
         for (; it != lstblk[0].end(); ++it) {
@@ -413,7 +463,8 @@ void DeviceGenerator::getDiskInfoFromLsblk()
 
 void DeviceGenerator::getDiskInfoFromSmartCtl()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("smart");
+    // 加载从smartctl中获取的存储设备信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("smart");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 5) {
@@ -425,7 +476,8 @@ void DeviceGenerator::getDiskInfoFromSmartCtl()
 
 void DeviceGenerator::getGpuInfoFromHwinfo()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("hwinfo_display");
+    // 加载从hwinfo获取的显示适配器信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("hwinfo_display");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 5) {
@@ -440,7 +492,8 @@ void DeviceGenerator::getGpuInfoFromHwinfo()
 
 void DeviceGenerator::getGpuInfoFromLshw()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("lshw_display");
+    // 加载从lshw获取的显示适配器信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("lshw_display");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 5) {
@@ -452,7 +505,8 @@ void DeviceGenerator::getGpuInfoFromLshw()
 
 void DeviceGenerator::getGpuInfoFromXrandr()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("xrandr");
+    // 加载从xrandr获取的显示适配器信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("xrandr");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 1) {
@@ -464,7 +518,8 @@ void DeviceGenerator::getGpuInfoFromXrandr()
 
 void DeviceGenerator::getGpuSizeFromDmesg()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("dmesg");
+    // 加载从dmesg获取的显示适配器信息，设置显存大小
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("dmesg");
     if (lstMap.size() > 0) {
         DeviceManager::instance()->setGpuSizeFromDmesg(lstMap[0]["Size"]);
     }
@@ -472,7 +527,8 @@ void DeviceGenerator::getGpuSizeFromDmesg()
 
 void DeviceGenerator::getMonitorInfoFromHwinfo()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("hwinfo_monitor");
+    // 加载从hwinfo获取的显示设备信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("hwinfo_monitor");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 5) {
@@ -487,7 +543,8 @@ void DeviceGenerator::getMonitorInfoFromHwinfo()
 
 void DeviceGenerator::getMonitorInfoFromXrandrVerbose()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("xrandr_verbose");
+    // 加载从xrandr --verbose中获取的显示设备信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("xrandr_verbose");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 1) {
@@ -499,7 +556,8 @@ void DeviceGenerator::getMonitorInfoFromXrandrVerbose()
 
 void DeviceGenerator::getMonitorRefreshRateFromXrandr()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("xrandr");
+    // 加载从xrandr中获取的显示设备信息， 设置屏幕刷新率
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("xrandr");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 1) {
@@ -511,7 +569,8 @@ void DeviceGenerator::getMonitorRefreshRateFromXrandr()
 
 void DeviceGenerator::getAudioInfoFromHwinfo()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("hwinfo_sound");
+    // 加载从hwinfo中获取的音频适配器信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("hwinfo_sound");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 5) {
@@ -526,7 +585,8 @@ void DeviceGenerator::getAudioInfoFromHwinfo()
 
 void DeviceGenerator::getAudioInfoFromLshw()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("lshw_multimedia");
+    // 加载从lshw中获取的音频适配器信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("lshw_multimedia");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 5) {
@@ -538,9 +598,12 @@ void DeviceGenerator::getAudioInfoFromLshw()
 
 void DeviceGenerator::getAudioInfoFromCatInput()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("cat_devices");
+    // 加载从 cat /proc/bus/input/devices获取的音频适配器信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("cat_devices");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
+
+        // 判断输入设备属于音频适配器
         if ((*it)["Sysfs"].contains("sound", Qt::CaseInsensitive) == true) {
             DeviceAudio *device = new DeviceAudio();
             device->setInfoFromCatDevices(*it);
@@ -551,7 +614,8 @@ void DeviceGenerator::getAudioInfoFromCatInput()
 
 void DeviceGenerator::getAudioChipInfoFromDmesg()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("audiochip");
+    // 加载从dmesg中获取的音频适配器信息，设备声卡型号
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("audiochip");
     if (lstMap.size() > 0) {
         DeviceManager::instance()->setAudioChipFromDmesg(lstMap[0]["chip"]);
     }
@@ -559,7 +623,8 @@ void DeviceGenerator::getAudioChipInfoFromDmesg()
 
 void DeviceGenerator::getBluetoothInfoFromHciconfig()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("hciconfig");
+    //  加载从hciconfig中获取的蓝牙信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("hciconfig");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 1) {
@@ -573,7 +638,8 @@ void DeviceGenerator::getBluetoothInfoFromHciconfig()
 
 void DeviceGenerator::getBlueToothInfoFromHwinfo()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("hwinfo_usb");
+    //  加载从hwinfo中获取的蓝牙信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("hwinfo_usb");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 1) {
@@ -591,7 +657,8 @@ void DeviceGenerator::getBlueToothInfoFromHwinfo()
 
 void DeviceGenerator::getBluetoothInfoFromLshw()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("lshw_usb");
+    //  加载从lshw中获取的蓝牙信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("lshw_usb");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 1) {
@@ -603,7 +670,8 @@ void DeviceGenerator::getBluetoothInfoFromLshw()
 
 void DeviceGenerator::getKeyboardInfoFromHwinfo()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("hwinfo_keyboard");
+    //  加载从hwinfo中获取的键盘信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("hwinfo_keyboard");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 1) {
@@ -623,7 +691,8 @@ void DeviceGenerator::getKeyboardInfoFromHwinfo()
 
 void DeviceGenerator::getKeyboardInfoFromLshw()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("lshw_usb");
+    //  加载从lshw中获取的键盘信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("lshw_usb");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 1) {
@@ -640,7 +709,8 @@ void DeviceGenerator::getKeyboardInfoFromCatDevices()
 
 void DeviceGenerator::getMouseInfoFromHwinfo()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("hwinfo_mouse");
+    //  加载从hwinfo中获取的鼠标信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("hwinfo_mouse");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 1) {
@@ -651,17 +721,39 @@ void DeviceGenerator::getMouseInfoFromHwinfo()
         if ((*it)["Device"].contains("PM")) {
             continue;
         }
+        // 不让数位板显示在鼠标设备里面(nanjing的数位板)
+        if ((*it)["Device"].contains("T70")) {
+            continue;
+        }
 
         DeviceInput *device = new DeviceInput();
         device->setInfoFromHwinfo(*it);
         DeviceManager::instance()->addMouseDevice(device);
         addBusIDFromHwinfo((*it)["SysFS BusID"]);
     }
+
+    //  加载从hwinfo --usb中获取的触摸屏信息具有鼠标功能，放到鼠标设备中
+    const QList<QMap<QString, QString>> &lstMapUSB = DeviceManager::instance()->cmdInfo("hwinfo_usb");
+    QList<QMap<QString, QString> >::const_iterator iter = lstMapUSB.begin();
+    for (; iter != lstMapUSB.end(); ++iter) {
+        if ((*iter).size() < 1) {
+            continue;
+        }
+
+        // 指定型号触摸屏，显示在鼠标设备中
+        if ((*iter)["Model"].contains("Melfas LGDisplay Incell Touch")) {
+            DeviceInput *device = new DeviceInput();
+            device->setInfoFromHwinfo(*iter);
+            DeviceManager::instance()->addMouseDevice(device);
+            addBusIDFromHwinfo((*iter)["SysFS BusID"]);
+        }
+    }
 }
 
 void DeviceGenerator::getMouseInfoFromLshw()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("lshw_usb");
+    //  加载从lshw中获取的鼠标信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("lshw_usb");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 1) {
@@ -678,12 +770,14 @@ void DeviceGenerator::getMouseInfoFromCatDevices()
 
 void DeviceGenerator::getImageInfoFromHwinfo()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("hwinfo_usb");
+    //  加载从hwinfo中获取的图像设备信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("hwinfo_usb");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 5) {
             continue;
         }
+        // hwinfo中对camera的分类不明确，通过camera等关键字认定图像设备
         if ((*it)["Model"].contains("camera", Qt::CaseInsensitive) ||
                 (*it)["Device"].contains("camera", Qt::CaseInsensitive) ||
                 (*it)["Driver"].contains("uvcvideo", Qt::CaseInsensitive) ||
@@ -698,7 +792,8 @@ void DeviceGenerator::getImageInfoFromHwinfo()
 
 void DeviceGenerator::getImageInfoFromLshw()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("lshw_usb");
+    //  加载从lshw中获取的图像设备信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("lshw_usb");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 2) {
@@ -710,7 +805,8 @@ void DeviceGenerator::getImageInfoFromLshw()
 
 void DeviceGenerator::getCdromInfoFromHwinfo()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("hwinfo_cdrom");
+    //  加载从hwinfo中获取的cdrom设备信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("hwinfo_cdrom");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 5) {
@@ -725,7 +821,8 @@ void DeviceGenerator::getCdromInfoFromHwinfo()
 
 void DeviceGenerator::getCdromInfoFromLshw()
 {
-    const QList<QMap<QString, QString>> lstDisk = DeviceManager::instance()->cmdInfo("lshw_cdrom");
+    //  加载从lshw中获取的cdrom设备信息
+    const QList<QMap<QString, QString>> &lstDisk = DeviceManager::instance()->cmdInfo("lshw_cdrom");
     QList<QMap<QString, QString> >::const_iterator dIt = lstDisk.begin();
     for (; dIt != lstDisk.end(); ++dIt) {
         if ((*dIt).size() < 2) {
@@ -737,7 +834,8 @@ void DeviceGenerator::getCdromInfoFromLshw()
 
 void DeviceGenerator::getOthersInfoFromHwinfo()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("hwinfo_usb");
+    //  加载从hwinfo中获取的其他设备信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("hwinfo_usb");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 5) {
@@ -748,10 +846,12 @@ void DeviceGenerator::getOthersInfoFromHwinfo()
         QString curBus = (*it)["SysFS BusID"];
         curBus.replace(QRegExp("\\.[0-9]{1,2}$"), "");
         const QStringList &lstBusId = DeviceManager::instance()->getBusId();
+        // 判断该设备是否已经在其他类别中显示
         if (lstBusId.indexOf(curBus) != -1) {
             isOtherDevice = false;
         }
 
+        // 添加其他设备
         if (isOtherDevice) {
             DeviceOthers *device = new DeviceOthers();
             device->setInfoFromHwinfo(*it);
@@ -762,7 +862,8 @@ void DeviceGenerator::getOthersInfoFromHwinfo()
 
 void DeviceGenerator::getOthersInfoFromLshw()
 {
-    const QList<QMap<QString, QString>> lstMap = DeviceManager::instance()->cmdInfo("lshw_usb");
+    // 加载从lshw中获取的其他设备信息
+    const QList<QMap<QString, QString>> &lstMap = DeviceManager::instance()->cmdInfo("lshw_usb");
     QList<QMap<QString, QString> >::const_iterator it = lstMap.begin();
     for (; it != lstMap.end(); ++it) {
         if ((*it).size() < 2) {
@@ -774,6 +875,7 @@ void DeviceGenerator::getOthersInfoFromLshw()
 
 void DeviceGenerator::addBusIDFromHwinfo(const QString &sysfsBusID)
 {
+    // 添加hwinfo中唯一标识设备的字符串
     if (sysfsBusID.isEmpty()) {
         return;
     }

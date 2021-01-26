@@ -1,28 +1,32 @@
 /*
- * Copyright (C) 2019 ~ 2019 Deepin Technology Co., Ltd.
- *
- * Author:     LZ <zhou.lu@archermind.com>
- *
- * Maintainer: LZ <zhou.lu@archermind.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+*
+* Author:     Jun.Liu <liujuna@uniontech.com>
+*
+* Maintainer: XiaoMei.Ji <jixiaomei@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef DEVICECDROM_H
 #define DEVICECDROM_H
 #include "DeviceInfo.h"
 
+/**
+ * @brief The DeviceCdrom class
+ * 用来描述光驱的类
+ */
 class DeviceCdrom : public DeviceBaseInfo
 {
     Q_OBJECT
@@ -50,52 +54,10 @@ public:
     const QString &name()const override;
 
     /**
-       * @brief vendor:获取制造商属性值
-       * @return QString:制造商属性值
-       */
-    const QString &vendor()const;
-
-    /**
-       * @brief type:获取类型属性值
-       * @return QString:类型属性值
-       */
-    const QString &type()const;
-
-    /**
-       * @brief version:获取名称属性值
-       * @return QString:版本号属性值
-       */
-    const QString &version()const;
-
-    /**
-       * @brief busInfo:获取总线信息属性值
-       * @return QString:总线信息属性值
-       */
-    const QString &busInfo()const;
-
-    /**
-       * @brief capabilities:获取功能属性值
-       * @return QString:功能属性值
-       */
-    const QString &capabilities()const;
-
-    /**
        * @brief driver:获取驱动属性值
        * @return QString:驱动属性值
        */
     const QString &driver()const override;
-
-    /**
-       * @brief maxPower:获取maxPower属性值
-       * @return QString:maxPower属性值
-       */
-    const QString &maxPower()const;
-
-    /**
-       * @brief speed:获取速率属性值
-       * @return QString:速率属性值
-       */
-    const QString &speed()const;
 
     /**
      * @brief subTitle:获取子标题

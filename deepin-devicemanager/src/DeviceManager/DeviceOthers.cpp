@@ -1,5 +1,5 @@
+// 项目自身文件
 #include "DeviceOthers.h"
-#include "../deviceinfoparser.h"
 
 DeviceOthers::DeviceOthers()
     : DeviceBaseInfo()
@@ -22,9 +22,10 @@ void DeviceOthers::setInfoFromLshw(const QMap<QString, QString> &mapInfo)
     if (m_BusInfo.isEmpty() || m_BusInfo != mapInfo["bus info"]) {
         return;
     }
-    setAttribute(mapInfo, "product", m_Name);
-    setAttribute(mapInfo, "vendor", m_Vendor);
-    setAttribute(mapInfo, "product", m_Model);
+
+    setAttribute(mapInfo, "product", m_Name, false);
+    setAttribute(mapInfo, "vendor", m_Vendor, false);
+    setAttribute(mapInfo, "product", m_Model, false);
     setAttribute(mapInfo, "version", m_Version);
     setAttribute(mapInfo, "bus info", m_BusInfo);
     setAttribute(mapInfo, "capabilities", m_Capabilities);
@@ -64,44 +65,14 @@ const QString &DeviceOthers::name()const
     return m_Name;
 }
 
-const QString &DeviceOthers::vendor()const
-{
-    return m_Vendor;
-}
-
-const QString &DeviceOthers::model()const
-{
-    return m_Model;
-}
-
-const QString &DeviceOthers::version()const
-{
-    return m_Version;
-}
-
 const QString &DeviceOthers::busInfo()const
 {
     return m_BusInfo;
 }
 
-const QString &DeviceOthers::capabilities()const
-{
-    return m_Capabilities;
-}
-
 const QString &DeviceOthers::driver()const
 {
     return m_Driver;
-}
-
-const QString &DeviceOthers::maxinumPower()const
-{
-    return m_MaximumPower;
-}
-
-const QString &DeviceOthers::speed()const
-{
-    return m_Speed;
 }
 
 const QString &DeviceOthers::logicalName()const
@@ -145,6 +116,7 @@ void DeviceOthers::loadOtherDeviceInfo()
 
 void DeviceOthers::loadTableData()
 {
+    // 加载表格数据
     m_TableData.append(m_Name);
     m_TableData.append(m_Vendor);
     m_TableData.append(m_Model);

@@ -1,8 +1,13 @@
+// 项目自身文件
 #include "KLUGenerator.h"
+
+// Qt库文件
+#include<QDebug>
+
+// 其它头文件
 #include "DeviceManager/DeviceManager.h"
 #include "DeviceManager/DeviceGpu.h"
 #include "DeviceManager/DeviceMonitor.h"
-//#include "DeviceManager/DeviceKeyboard.h"
 #include "DeviceManager/DeviceOthers.h"
 #include "DeviceManager/DeviceStorage.h"
 #include "DeviceManager/DeviceAudio.h"
@@ -10,7 +15,6 @@
 #include "DeviceManager/DevicePower.h"
 #include "DeviceManager/DeviceInput.h"
 
-#include<QDebug>
 
 KLUGenerator::KLUGenerator()
 {
@@ -227,7 +231,7 @@ void KLUGenerator::getDiskInfoFromLshw()
             tempMap.insert(key, (*dIt)[key]);
         }
 
-        qDebug() << tempMap["product"] << " ***** " << modelStr << " " << (tempMap["product"] == modelStr);
+//        qInfo() << tempMap["product"] << " ***** " << modelStr << " " << (tempMap["product"] == modelStr);
         // HW写死
         if (tempMap["product"] == modelStr) {
             // 应HW的要求，将描述固定为   Universal Flash Storage

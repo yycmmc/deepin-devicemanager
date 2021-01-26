@@ -1,26 +1,27 @@
 /*
- * Copyright (C) 2019 ~ 2019 Deepin Technology Co., Ltd.
- *
- * Author:     liujun <liujuna@uniontech.com>
- *
- * Maintainer: liujun <liujuna@uniontech.com>
- * Maintainer: jixiaomei <jixiaomei@uniontech.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+*
+* Author:     Jun.Liu <liujuna@uniontech.com>
+*
+* Maintainer: XiaoMei.Ji <jixiaomei@uniontech.com>
+* Maintainer: Jun.Liu <liujuna@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #pragma once
+#include <QString>
 
 /**@brief:定义一个删除指针的宏*/
 #define DELETE_PTR(p) \
@@ -210,6 +211,24 @@
 
 
 //HeaderTableView的相关宏定义
-#define TABLE_HEIGHT 180   // Table的高度
-#define ROW_HEIGHT   40    // 每一行的高度
-#define LINE_WIDTH   1     // 表头的线宽
+#define   TABLE_HEIGHT       180   // Table的高度
+#define   ROW_HEIGHT         40    // 每一行的高度
+#define   LINE_WIDTH         1     // 表头的线宽
+#define   ROW_NUM            4     // TreeWidget 默认行数
+#define   TREE_ROW_HEIGHT    36    // TreeWidget 行高
+#define   WIDGET_MARGIN      2     // 页边距
+#define   BOTTOM_MARGIN      11    // 下边距
+#define   LABEL_MARGIN       12    // 页面标签的上下边距
+#define   HORSCROLL_WIDTH    11    // TreeWidget 横向滚动条高度
+#define   MIN_NUM            5     // num
+
+const QString LINK_STR = "<a style=\"text-decoration:none\" href=https://www.chinauos.com/home>";        // uos官网链接
+const QString COMMUNITY_LINK_STR = "<a style=\"text-decoration:none\" href=https://www.deepin.org/zh>";  // community uos官网链接
+const QString PROF_STR = "UnionTech OS Desktop 20 Professional";                                         // 桌面专业版系统名称
+const QString HOME_STR = "UnionTech OS Desktop 20 Home";                                                 // 个人版系统名称
+const QString COMMUNITY_STR = "Deepin 20.1";                                                        // 社区版系统名称
+const QString ENTERPRISE_STR = "UnionTech OS Server 20 Enterprise";                                      // 服务器企业版
+const QString ENTERPRISEC_STR = "UnionTech OS Server 20 Enterprise-C";                                   // 服务器行业版
+const QString EULER_STR = "UnionTech OS Server 20 Euler";                                                // 服务器欧拉版
+const QString DEFAULT_STR = "UnionTech OS";                                                              // 默认值
+const QString END_STR = " </a>";                                                                         // end html

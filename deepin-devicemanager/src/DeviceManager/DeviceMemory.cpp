@@ -1,31 +1,41 @@
+// 项目自身文件
 #include "DeviceMemory.h"
 
 DeviceMemory::DeviceMemory()
     : DeviceBaseInfo()
 {
+    // 初始化可显示属性
     initFilterKey();
 }
 
 void DeviceMemory::setInfoFromLshw(const QMap<QString, QString> &mapInfo)
 {
+    // 由lshw设置基本信息
     setAttribute(mapInfo, "product", m_Name, false);
     setAttribute(mapInfo, "description", m_Name, false);
     setAttribute(mapInfo, "vendor", m_Vendor);
     setAttribute(mapInfo, "slot", m_Locator);
     setAttribute(mapInfo, "size", m_Size);
+
+    // 替换内存大小单位
     if (m_Size.contains("GiB")) {
         m_Size.replace("GiB", "GB");
     }
+
     if (m_Size.contains("MiB")) {
         m_Size.replace("MiB", "");
+        // MiB换算MB
         double size = m_Size.toDouble() / 1024.0;
         m_Size = QString::number(size, 'g', 0) + QString("GB");
     }
+
+    // 设置内存速率
     setAttribute(mapInfo, "clock", m_Speed);
     if (m_Speed.contains("MT/s")) {
         m_Speed.replace("MT/s", "MHz");
     }
 
+    // 由lshw设置基本信息
     setAttribute(mapInfo, "width", m_TotalBandwidth);
     setAttribute(mapInfo, "width", m_DataBandwidth);
     setAttribute(mapInfo, "serial", m_SerialNumber);
@@ -35,25 +45,35 @@ void DeviceMemory::setInfoFromLshw(const QMap<QString, QString> &mapInfo)
 
 bool DeviceMemory::setInfoFromDmidecode(const QMap<QString, QString> &mapInfo)
 {
+    // 由 locator属性判断是否为同一内存条
     if (mapInfo["Locator"] != m_Locator) {
         return false;
     }
+
+    // 由dmidecode设置基本属性
     setAttribute(mapInfo, "Part Number", m_Name);
     setAttribute(mapInfo, "Serial Number", m_SerialNumber);
+
+    // 设置配置频率
     setAttribute(mapInfo, "Configured Memory Speed", m_ConfiguredSpeed);
     if (m_ConfiguredSpeed.contains("MT/s")) {
         m_ConfiguredSpeed.replace("MT/s", "MHz");
     }
+
+    // 由dmidecode设置基本属性
     setAttribute(mapInfo, "Minimum Voltage", m_MinimumVoltage);
     setAttribute(mapInfo, "Maximum Voltage", m_MaximumVoltage);
     setAttribute(mapInfo, "Configured Voltage", m_ConfiguredVoltage);
     setAttribute(mapInfo, "Total Width", m_TotalBandwidth);
     setAttribute(mapInfo, "Data Width", m_DataBandwidth);
+
+    // 设置类型
     setAttribute(mapInfo, "Type", m_Type);
     if (m_Type == "<OUT OF SPEC>") {
         m_Type = "";
     }
 
+    // 获取其他属性
     getOtherMapInfo(mapInfo);
 
     return true;
@@ -61,6 +81,7 @@ bool DeviceMemory::setInfoFromDmidecode(const QMap<QString, QString> &mapInfo)
 
 void DeviceMemory::initFilterKey()
 {
+    // 初始化可显示属性
     addFilterKey(QObject::tr("Array Handle"));  // 数组程序
     addFilterKey(QObject::tr("Error Information Handle")); //错误信息程序
     addFilterKey(QObject::tr("Form Factor")); // 尺寸型号
@@ -112,6 +133,7 @@ void DeviceMemory::loadOtherDeviceInfo()
 
 void DeviceMemory::loadTableHeader()
 {
+    // 加载表头
     m_TableHeader.append(tr("Name"));
     m_TableHeader.append(tr("Vendor"));
     m_TableHeader.append(tr("Type"));
@@ -121,6 +143,7 @@ void DeviceMemory::loadTableHeader()
 
 void DeviceMemory::loadTableData()
 {
+    // 加载表格内容
     m_TableData.append(m_Name);
     m_TableData.append(m_Vendor);
     m_TableData.append(m_Type);
@@ -138,73 +161,15 @@ const QString &DeviceMemory::driver() const
     return m_Driver;
 }
 
-const QString &DeviceMemory::vendor()const
-{
-    return m_Vendor;
-}
-
-const QString &DeviceMemory::size()const
-{
-    return m_Size;
-}
-
-const QString &DeviceMemory::type()const
-{
-    return m_Type;
-}
-
-const QString &DeviceMemory::speed()const
-{
-    return m_Speed;
-}
-
-const QString &DeviceMemory::totalBandwidth()const
-{
-    return m_TotalBandwidth;
-}
-
-const QString &DeviceMemory::dataBandwidth()const
-{
-    return m_DataBandwidth;
-}
-
-const QString &DeviceMemory::locator()const
-{
-    return m_Locator;
-}
-
-const QString &DeviceMemory::serialNumber()const
-{
-    return m_SerialNumber;
-}
-
-const QString &DeviceMemory::configuredSpeed()const
-{
-    return m_ConfiguredSpeed;
-}
-
-const QString &DeviceMemory::minimumVoltage()const
-{
-    return m_MinimumVoltage;
-}
-
-const QString &DeviceMemory::maximumVoltage()const
-{
-    return m_MaximumVoltage;
-}
-
-const QString &DeviceMemory::configuredVoltage()const
-{
-    return m_ConfiguredVoltage;
-}
-
 QString DeviceMemory::subTitle()
 {
+    // 获取子标题
     return m_Vendor + " " + m_Name;
 }
 
 const QString DeviceMemory::getOverviewInfo()
 {
+    // 获取概况信息
     QString ov;
     ov += QString("%1(%2 %3 %4)") \
           .arg(m_Size) \

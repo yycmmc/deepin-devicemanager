@@ -1,6 +1,10 @@
+// 项目自身文件
 #include "DevicePower.h"
+
+// Qt库文件
 #include<QFileInfo>
 
+// Dtk头文件
 #include <DApplication>
 
 DWIDGET_USE_NAMESPACE
@@ -26,12 +30,16 @@ DevicePower::DevicePower()
     , m_SBDSManufactureDate("")
     , m_SBDSSerialNumber("")
     , m_SBDSVersion("")
+    , m_Temp("")
+
 {
+    // 初始化可显示属性
     initFilterKey();
 }
 
 bool DevicePower::setInfoFromUpower(const QMap<QString, QString> &mapInfo)
 {
+    // 设置upower中获取的信息
     if (mapInfo["Device"].contains("line_power", Qt::CaseInsensitive)) {
         return false;
     }
@@ -55,12 +63,22 @@ bool DevicePower::setInfoFromUpower(const QMap<QString, QString> &mapInfo)
     setAttribute(mapInfo, "", m_SBDSManufactureDate);
     setAttribute(mapInfo, "", m_SBDSSerialNumber);
     setAttribute(mapInfo, "", m_SBDSVersion);
+
+    // 添加电池温度
+    setAttribute(mapInfo, "temperature", m_Temp);
+    if (!m_Temp.isEmpty()) {
+        double temp = m_Temp.replace("degrees C", "").trimmed().toDouble();
+        temp = temp * 10;
+        m_Temp = QString("%1 degrees C").arg(temp);
+    }
+
     getOtherMapInfo(mapInfo);
     return true;
 }
 
 void DevicePower::setDaemonInfo(const QMap<QString, QString> &mapInfo)
 {
+    // 设置守护进程信息
     if (m_Name == QObject::tr("battery"))
         getOtherMapInfo(mapInfo);
 }
@@ -75,96 +93,6 @@ const QString &DevicePower::driver() const
     return m_Driver;
 }
 
-const QString &DevicePower::vendor()const
-{
-    return m_Vendor;
-}
-
-const QString &DevicePower::model()const
-{
-    return m_Model;
-}
-
-const QString &DevicePower::type()const
-{
-    return m_Type;
-}
-
-const QString &DevicePower::serialNumber()const
-{
-    return m_SerialNumber;
-}
-
-const QString &DevicePower::electircType()const
-{
-    return m_ElectricType;
-}
-
-const QString &DevicePower::maxPower()const
-{
-    return m_MaxPower;
-}
-
-const QString &DevicePower::status()const
-{
-    return m_Status;
-}
-
-const QString &DevicePower::enabled()const
-{
-    return m_Enabled;
-}
-
-const QString &DevicePower::hotSwitch()const
-{
-    return m_HotSwitch;
-}
-
-const QString &DevicePower::capacity()const
-{
-    return  m_Capacity;
-}
-
-const QString &DevicePower::voltage()const
-{
-    return m_Voltage;
-}
-
-const QString &DevicePower::slot()const
-{
-    return m_Slot;
-}
-
-const QString &DevicePower::designCapacity()const
-{
-    return m_DesignCapacity;
-}
-
-const QString &DevicePower::designVoltage()const
-{
-    return m_DesignVoltage;
-}
-
-const QString &DevicePower::SBDSChemistry()const
-{
-    return m_SBDSChemistry;
-}
-
-const QString &DevicePower::SBDSManufactureDate()const
-{
-    return m_SBDSManufactureDate;
-}
-
-const QString &DevicePower::SBDSSerialNumber()const
-{
-    return m_SBDSSerialNumber;
-}
-
-const QString &DevicePower::SBDSVersion()const
-{
-    return m_SBDSVersion;
-}
-
 QString DevicePower::subTitle()
 {
     return m_Name;
@@ -172,12 +100,14 @@ QString DevicePower::subTitle()
 
 const QString DevicePower::getOverviewInfo()
 {
+    // 获取概况信息
     QString value = DApplication::translate("ManulTrack", m_Name.trimmed().toStdString().data(), "");
     return value;
 }
 
 void DevicePower::initFilterKey()
 {
+    // 初始化可显示属性
     addFilterKey(QObject::tr("native-path"));
     addFilterKey(QObject::tr("power supply"));
     addFilterKey(QObject::tr("updated"));
@@ -193,7 +123,7 @@ void DevicePower::initFilterKey()
     addFilterKey(QObject::tr("energy-rate"));
     addFilterKey(QObject::tr("voltage"));
     addFilterKey(QObject::tr("percentage"));
-    addFilterKey(QObject::tr("temperature"));
+//    addFilterKey(QObject::tr("temperature"));    // 温度已经常规显示
     addFilterKey(QObject::tr("technology"));
     addFilterKey(QObject::tr("icon-name"));
     addFilterKey(QObject::tr("online"));
@@ -222,6 +152,7 @@ void DevicePower::loadBaseDeviceInfo()
     addBaseDeviceInfo(tr("SBDS Serial Number"), m_SBDSSerialNumber);
     addBaseDeviceInfo(tr("SBDS Manufacture Date"), m_SBDSManufactureDate);
     addBaseDeviceInfo(tr("SBDS Chemistry"), m_SBDSChemistry);
+    addBaseDeviceInfo(tr("Temperature"), m_Temp);
 }
 
 void DevicePower::loadOtherDeviceInfo()
@@ -232,6 +163,7 @@ void DevicePower::loadOtherDeviceInfo()
 
 void DevicePower::loadTableData()
 {
+    // 加载表格信息
     m_TableData.append(m_Name);
     m_TableData.append(m_Vendor);
     m_TableData.append(m_Model);

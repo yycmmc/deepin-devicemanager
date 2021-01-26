@@ -1,7 +1,11 @@
+// 项目自身文件
 #include "DevicePrint.h"
-#include "EnableManager.h"
 
+// Qt库文件
 #include <QDebug>
+
+// 其它头文件
+#include "EnableManager.h"
 
 DevicePrint::DevicePrint()
     : DeviceBaseInfo()
@@ -14,7 +18,10 @@ DevicePrint::DevicePrint()
     , m_Status("")
     , m_Shared("")
 {
+    // 初始化可显示属性
     initFilterKey();
+
+    // 设备可禁用
     m_CanEnable = true;
 }
 
@@ -56,41 +63,6 @@ const QString &DevicePrint::driver() const
     return m_Driver;
 }
 
-const QString &DevicePrint::vendor()const
-{
-    return m_Vendor;
-}
-
-const QString &DevicePrint::model()const
-{
-    return m_Model;
-}
-
-const QString &DevicePrint::serialNumber()const
-{
-    return m_SerialNumber;
-}
-
-const QString &DevicePrint::interfaceType()const
-{
-    return m_InterfaceType;
-}
-
-const QString &DevicePrint::URI()const
-{
-    return m_URI;
-}
-
-const QString &DevicePrint::status()const
-{
-    return m_Status;
-}
-
-const QString &DevicePrint::shared()const
-{
-    return m_Shared;
-}
-
 QString DevicePrint::subTitle()
 {
     return m_Name;
@@ -98,12 +70,24 @@ QString DevicePrint::subTitle()
 
 const QString DevicePrint::getOverviewInfo()
 {
+    // 获取概况信息
     return m_Name.isEmpty() ? m_Model : m_Name;
 }
 
 EnableDeviceStatus DevicePrint::setEnable(bool e)
 {
-    return EnableManager::instance()->enablePrinter(m_Name, e);
+    // 设置启用禁用状态
+    EnableDeviceStatus res = EnableManager::instance()->enablePrinter(m_Name, e);
+
+    // 禁用成功，状态设为5
+    if (res == EDS_Success && e == false) {
+        m_Status = "5";
+    } else if (res == EDS_Success && e == true) {
+        // 启用成功状态设为3
+        m_Status = "3";
+    }
+
+    return res;
 }
 
 bool DevicePrint::enable()
@@ -113,28 +97,19 @@ bool DevicePrint::enable()
 
 void DevicePrint::initFilterKey()
 {
+    // 初始化可显示属性
     addFilterKey(QObject::tr("copies"));
-    //addFilterKey(QObject::tr("device-uri"));
-    //addFilterKey(QObject::tr("finishings"));
     addFilterKey(QObject::tr("job-cancel-after"));
     addFilterKey(QObject::tr("job-hold-until"));
     addFilterKey(QObject::tr("job-priority"));
-    //addFilterKey(QObject::tr("job-sheets"));
     addFilterKey(QObject::tr("marker-change-time"));
-    //addFilterKey(QObject::tr("media-source"));
-    //addFilterKey(QObject::tr("media-type"));
     addFilterKey(QObject::tr("number-up"));
     addFilterKey(QObject::tr("orientation-requested"));
     addFilterKey(QObject::tr("print-color-mode"));
-    //addFilterKey(QObject::tr("print-quality"));
-    //addFilterKey(QObject::tr("printer-commands"));
-    //addFilterKey(QObject::tr("printer-info"));
     addFilterKey(QObject::tr("printer-is-accepting-jobs"));
     addFilterKey(QObject::tr("printer-is-shared"));
     addFilterKey(QObject::tr("printer-is-temporary"));
-    //addFilterKey(QObject::tr("printer-location"));
     addFilterKey(QObject::tr("printer-make-and-model"));
-    //addFilterKey(QObject::tr("printer-state"));
     addFilterKey(QObject::tr("printer-state-change-time"));
     addFilterKey(QObject::tr("printer-state-reasons"));
     addFilterKey(QObject::tr("printer-type"));
@@ -165,12 +140,14 @@ void DevicePrint::loadOtherDeviceInfo()
 
 void DevicePrint::loadTableData()
 {
+    // 加载表格数据
     QString name;
     if (!enable()) {
         name = "(" + tr("Disable") + ") " + m_Name;
     } else {
         name = m_Name;
     }
+
     m_TableData.append(name);
     m_TableData.append(m_Vendor);
     m_TableData.append(m_Model);

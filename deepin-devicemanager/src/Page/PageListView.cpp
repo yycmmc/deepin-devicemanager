@@ -1,10 +1,14 @@
+// 项目自身文件
 #include "PageListView.h"
 
+// Qt库文件
 #include <QHBoxLayout>
-#include <DApplicationHelper>
-
 #include <QDebug>
 
+// Dtk头文件
+#include <DApplicationHelper>
+
+// 其它头文件
 #include "DeviceListView.h"
 #include "MacroDefinition.h"
 
@@ -58,6 +62,18 @@ void PageListView::updateListItems(const QList<QPair<QString, QString> > &lst)
     emit itemClicked(m_CurType);
 }
 
+QString PageListView::currentIndex()
+{
+    // 获取当前Index的UserRole
+    return mp_ListView->currentIndex().data(Qt::UserRole).toString();
+}
+
+QString PageListView::currentType()
+{
+    // 获取当前设备类型
+    return m_CurType;
+}
+
 void PageListView::paintEvent(QPaintEvent *event)
 {
     // 让背景色适合主题颜色
@@ -71,8 +87,10 @@ void PageListView::paintEvent(QPaintEvent *event)
 
 void PageListView::slotShowMenu(const QPoint &)
 {
+    // 右键菜单
     mp_Menu->clear();
 
+    // 导出/刷新
     mp_Menu->addAction(mp_Export);
     mp_Menu->addAction(mp_Refresh);
 
@@ -81,16 +99,19 @@ void PageListView::slotShowMenu(const QPoint &)
 
 void PageListView::slotActionRefresh()
 {
+    // 刷新
     emit refreshActionTrigger();
 }
 
 void PageListView::slotActionExport()
 {
+    // 导出
     emit exportActionTrigger();
 }
 
 void PageListView::slotListViewItemClicked(const QModelIndex &index)
 {
+    // Item 点击事件
     QString concateStr = mp_ListView->getConcatenateStrings(index);
     if (!concateStr.isEmpty()) {
         emit itemClicked(concateStr);

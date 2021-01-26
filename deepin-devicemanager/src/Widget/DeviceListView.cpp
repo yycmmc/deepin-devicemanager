@@ -1,12 +1,18 @@
+// 项目自身文件
 #include "DeviceListView.h"
 
+// Dtk头文件
 #include <DApplicationHelper>
 #include <DApplication>
 
+// Qt库文件
 #include <qdrawutil.h>
 #include <QPainter>
 #include <QDebug>
+#include <QKeyEvent>
+#include <QPainterPath>
 
+// 其它头文件
 #include "MacroDefinition.h"
 
 DWIDGET_USE_NAMESPACE
@@ -78,7 +84,11 @@ DeviceListView::DeviceListView(QWidget *parent)
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setItemSpacing(0);
     setAutoFillBackground(true); //与背景色有关
-    setViewportMargins(5, 2, 5, 5);
+
+    // bug51444左侧菜单和滚动条不重叠重叠
+    setViewportMargins(5, 2, 11, 5);
+
+    setMovement(QListView::Static);
 }
 
 DeviceListView::~DeviceListView()
@@ -163,4 +173,54 @@ void DeviceListView::paintEvent(QPaintEvent *event)
     DApplicationHelper::instance()->setPalette(this, pa);
 
     DListView::paintEvent(event);
+}
+
+void DeviceListView::mousePressEvent(QMouseEvent *event)
+{
+    if ((QApplication::keyboardModifiers() == Qt::ControlModifier) && (event->button() == Qt::LeftButton)) {
+        // 当键盘按住ctrl，不响应鼠标点击事件
+    } else {
+        DListView::mousePressEvent(event);
+    }
+}
+
+void DeviceListView::mouseMoveEvent(QMouseEvent *event)
+{
+    if ((QApplication::keyboardModifiers() == Qt::ControlModifier)/* && (event->button() == Qt::LeftButton)*/) {
+        // 当键盘按住ctrl，不响应鼠标移动事件
+    } else {
+        DListView::mouseMoveEvent(event);
+    }
+}
+
+void DeviceListView::keyPressEvent(QKeyEvent *keyEvent)
+{
+    DListView::keyPressEvent(keyEvent);
+
+    // 当前Item 为Separator时，需要跳过Separator
+    if (this->currentIndex().data(Qt::DisplayRole) == "Separator") {
+        // 按键：下一个
+        if (keyEvent->key() == Qt::Key_Down) {
+            int curRow = this->currentIndex().row();
+
+            // 当前 Separator 不是最后一个Item，显示下一个Item
+            if (curRow != mp_ItemModel->rowCount() - 1) {
+                QModelIndex index = this->currentIndex().siblingAtRow(curRow + 1);
+                this->setCurrentIndex(index);
+            }
+        }
+
+        // 按键：上一个
+        if (keyEvent->key() == Qt::Key_Up) {
+            int curRow = this->currentIndex().row();
+            // 当前 Separator 不是第一个Item，显示上一个Item
+            if (curRow != 0) {
+                QModelIndex index = this->currentIndex().siblingAtRow(curRow - 1);
+                this->setCurrentIndex(index);
+            }
+        }
+    }
+
+    // 切换对应设备信息页面
+    emit clicked(this->currentIndex());
 }

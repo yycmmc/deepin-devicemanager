@@ -1,4 +1,7 @@
+// 项目自身文件
 #include "DeviceImage.h"
+
+// 其它头文件
 #include "DeviceManager.h"
 #include "EnableManager.h"
 
@@ -22,6 +25,7 @@ void DeviceImage::setInfoFromLshw(const QMap<QString, QString> &mapInfo)
     if (m_KeyToLshw != mapInfo["bus info"]) {
         return;
     }
+
     setAttribute(mapInfo, "product", m_Name, false);
     setAttribute(mapInfo, "vendor", m_Vendor);
     setAttribute(mapInfo, "version", m_Version);
@@ -61,49 +65,9 @@ const QString &DeviceImage::name()const
     return m_Name;
 }
 
-const QString &DeviceImage::vendor()const
-{
-    return m_Vendor;
-}
-
-const QString &DeviceImage::model()const
-{
-    return m_Model;
-}
-
-const QString &DeviceImage::version()const
-{
-    return m_Version;
-}
-
-const QString &DeviceImage::busInfo()const
-{
-    return m_BusInfo;
-}
-
-const QString &DeviceImage::capabilities()const
-{
-    return m_Capabilities;
-}
-
 const QString &DeviceImage::driver()const
 {
     return m_Driver;
-}
-
-const QString &DeviceImage::maxinumPower()const
-{
-    return m_MaximumPower;
-}
-
-const QString &DeviceImage::speed()const
-{
-    return m_Speed;
-}
-
-const QString &DeviceImage::keyToLshw()const
-{
-    return m_KeyToLshw;
 }
 
 QString DeviceImage::subTitle()
@@ -127,6 +91,7 @@ EnableDeviceStatus DeviceImage::setEnable(bool e)
     if (e != enable()) {
         res = EDS_Faild;
     }
+
     return res;
 }
 
@@ -173,6 +138,7 @@ void DeviceImage::loadTableData()
     } else {
         name = m_Name;
     }
+
     m_TableData.append(name);
     m_TableData.append(m_Vendor);
     m_TableData.append(m_Model);

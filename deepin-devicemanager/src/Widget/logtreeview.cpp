@@ -20,15 +20,19 @@
  */
 
 #include "logtreeview.h"
+
 #include <DApplication>
 #include <DApplicationHelper>
 #include <DStyledItemDelegate>
+
 #include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QHeaderView>
 #include <QScrollBar>
+#include <QPainterPath>
+
 #include "MacroDefinition.h"
 #include "TableWidget.h"
 
@@ -36,6 +40,7 @@ DWIDGET_USE_NAMESPACE
 
 LogTreeView::LogTreeView(QWidget *parent)
     : DTreeView(parent)
+    , m_RowCount(4)
     , mp_Model(nullptr)
     , mp_ItemDelegate(nullptr)
     , mp_HeaderView(nullptr)
@@ -113,6 +118,20 @@ void LogTreeView::clear()
         mp_Model->clear();
 }
 
+void LogTreeView::setRowNum(int row)
+{
+    // 设置表格行数
+    m_RowCount = row;
+
+    // 行数改变,表格高度要随之改变，为保证treewidget横向滚动条与item不重叠，添加滚动条高度(bug52470)
+    this->setFixedHeight(TREE_ROW_HEIGHT * (m_RowCount + 1) + HORSCROLL_WIDTH);
+}
+
+int LogTreeView::RowNum() const
+{
+    return m_RowCount;
+}
+
 void LogTreeView::initUI()
 {
     // 模型
@@ -145,9 +164,9 @@ void LogTreeView::initUI()
     // 水平右对齐
     this->header()->setDefaultAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-    // 设置的固定高度
-    this->header()->setFixedHeight(36);
-    this->setFixedHeight(36 * 5);
+    // 设置的固定高度,包括内容与表头(+1)，为保证treewidget横向滚动条与item不重叠，添加滚动条高度
+    this->header()->setFixedHeight(TREE_ROW_HEIGHT);
+    this->setFixedHeight(TREE_ROW_HEIGHT * (m_RowCount + 1) + HORSCROLL_WIDTH);
 
 
     // Item 不可扩展
@@ -160,6 +179,7 @@ void LogTreeView::initUI()
     setAlternatingRowColors(false);
     setAllColumnsShowFocus(false);
     //  setFocusPolicy(Qt::TabFocus);
+
 }
 
 void LogTreeView::paintEvent(QPaintEvent *event)

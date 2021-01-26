@@ -1,3 +1,4 @@
+// 项目自身文件
 #include "DeviceOtherPCI.h"
 
 DeviceOtherPCI::DeviceOtherPCI()
@@ -25,69 +26,9 @@ const QString &DeviceOtherPCI::name()const
     return m_Name;
 }
 
-const QString &DeviceOtherPCI::vendor()const
-{
-    return m_Vendor;
-}
-
-const QString &DeviceOtherPCI::model()const
-{
-    return m_Model;
-}
-
-const QString &DeviceOtherPCI::version()const
-{
-    return m_Version;
-}
-
-const QString &DeviceOtherPCI::busInfo()const
-{
-    return m_BusInfo;
-}
-
-const QString &DeviceOtherPCI::irq()const
-{
-    return m_Irq;
-}
-
-const QString &DeviceOtherPCI::memory()const
-{
-    return m_Memory;
-}
-
-const QString &DeviceOtherPCI::width()const
-{
-    return m_Width;
-}
-
-const QString &DeviceOtherPCI::clock()const
-{
-    return m_Clock;
-}
-
-const QString &DeviceOtherPCI::capabilities()const
-{
-    return m_Capabilities;
-}
-
-const QString &DeviceOtherPCI::description()const
-{
-    return m_Description;
-}
-
 const QString &DeviceOtherPCI::driver()const
 {
     return m_Driver;
-}
-
-const QString &DeviceOtherPCI::latency()const
-{
-    return m_Latency;
-}
-
-const QString &DeviceOtherPCI::inputOutput()const
-{
-    return m_InputOutput;
 }
 
 QString DeviceOtherPCI::subTitle()
@@ -133,6 +74,7 @@ void DeviceOtherPCI::loadOtherDeviceInfo()
 
 void DeviceOtherPCI::loadTableData()
 {
+    // 加载表格数据
     m_TableData.append(m_Name);
     m_TableData.append(m_Vendor);
     m_TableData.append(m_Model);

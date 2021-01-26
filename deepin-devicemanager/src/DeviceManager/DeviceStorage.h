@@ -1,27 +1,33 @@
 /*
- * Copyright (C) 2019 ~ 2019 Deepin Technology Co., Ltd.
- *
- * Author:     LZ <zhou.lu@archermind.com>
- *
- * Maintainer: LZ <zhou.lu@archermind.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+*
+* Author:     Jun.Liu <liujuna@uniontech.com>
+*
+* Maintainer: XiaoMei.Ji <jixiaomei@uniontech.com>
+* Maintainer: Jun.Liu <liujuna@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef DEVICESTORAGE_H
 #define DEVICESTORAGE_H
 #include"DeviceInfo.h"
+
+/**
+ * @brief The DeviceStorage class
+ * 用来描述存储设备的类
+ */
 
 class DeviceStorage: public DeviceBaseInfo
 {
@@ -118,109 +124,11 @@ public:
     const QString &driver()const override;
 
     /**
-       * @brief model:获取型号属性值
-       * @param 无
-       * @return QString:型号属性值
-       */
-    const QString &model()const;
-
-    /**
-       * @brief vendor:获取制造商属性值
-       * @param 无
-       * @return QString:制造商属性值
-       */
-    const QString &vendor()const;
-
-    /**
-       * @brief mediaType:获取介质类型属性值
-       * @param 无
-       * @return QString:mediaType属性值
-       */
-    const QString &mediaType()const;
-
-    /**
-       * @brief size:获取容量属性值
-       * @param 无
-       * @return QString:容量属性值
-       */
-    const QString &size()const;
-
-    /**
-       * @brief rotationRate:获取转速属性值
-       * @param 无
-       * @return QString:转速属性值
-       */
-    const QString &rotationRate()const;
-
-    /**
-       * @brief interface:获取接口属性值
-       * @param 无
-       * @return QString:接口属性值
-       */
-    const QString &interface()const;
-
-    /**
-       * @brief serialNumber:获取序列号属性值
-       * @param 无
-       * @return QString:序列号属性值
-       */
-    const QString &serialNumber()const;
-
-    /**
-       * @brief version:获取版本号属性值
-       * @param 无
-       * @return QString:版本号属性值
-       */
-    const QString &version()const;
-
-    /**
-       * @brief capabilities:获取功能属性值
-       * @param 无
-       * @return QString:功能属性值
-       */
-    const QString &capabilities()const;
-
-    /**
-       * @brief description:获取描述属性值
-       * @param 无
-       * @return QString:描述属性值
-       */
-    const QString &description()const;
-
-    /**
        * @brief keyFromStorage:获取存储设备标识符
        * @param 无
        * @return QString:存储设备标识符
        */
     const QString &keyFromStorage()const;
-
-    /**
-       * @brief firmwareVersion:获取固件版本属性值
-       * @param 无
-       * @return QString:固件版本属性值
-       */
-    const QString &firmwareVersion()const;
-
-    /**
-       * @brief speed:获取速率属性值
-       * @param 无
-       * @return QString:速率属性值
-       */
-    const QString &speed()const;
-
-    /**
-       * @brief powerOnHours:获取通电时长属性值
-       * @param 无
-       * @return QString:通电时长属性值
-       */
-    const QString &powerOnHours()const;
-
-    /**
-       * @brief powerCycleCount:获取通电次数属性值
-       * @param 无
-       * @return QString:通电次数属性值
-       */
-    const QString &powerCycleCount()const;
 
     /**
      * @brief subTitle:获取子标题

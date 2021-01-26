@@ -1,10 +1,14 @@
+// 项目自身文件
 #include "CmdButtonWidget.h"
 #include "DetailTreeView.h"
 
+// Qt库文件
 #include <QHBoxLayout>
 #include <QPainter>
 #include <QDebug>
+#include <QPainterPath>
 
+// Dtk头文件
 #include <DFontSizeManager>
 #include <DApplication>
 #include <DApplicationHelper>
@@ -13,24 +17,22 @@ CmdButtonWidget::CmdButtonWidget(DetailTreeView *parent)
     : DWidget(parent)
     , mp_cmdButton(new DCommandLinkButton(tr("More"), this))
 {
+    // 初始化UI界面
     initUI();
-    connect(mp_cmdButton, &DCommandLinkButton::clicked, this, &CmdButtonWidget::expandCommandLinkClicked);
-}
 
-void CmdButtonWidget::setButtonText(const QString &str)
-{
-    mp_cmdButton->setText(str);
+    // 连接槽函数
+    connect(mp_cmdButton, &DCommandLinkButton::clicked, this, &CmdButtonWidget::expandCommandLinkClicked);
 }
 
 void CmdButtonWidget::expandCommandLinkClicked()
 {
+    // Button点击信号发送
     emit cmdButtonClicked();
 }
 
 void CmdButtonWidget::paintEvent(QPaintEvent *event)
 {
     DWidget::paintEvent(event);
-
 
     QPainter painter(this);
     painter.save();

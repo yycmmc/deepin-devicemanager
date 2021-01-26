@@ -1,12 +1,17 @@
+// 项目自身文件
 #include "DeviceFactory.h"
+
+// Qt库文件
+#include <QProcess>
+#include <QFile>
+
+// 其它头文件
 #include "X86Generator.h"
 #include "MipsGenerator.h"
 #include "ArmGenerator.h"
 #include "KLUGenerator.h"
 #include "PanguGenerator.h"
 #include "PanguVGenerator.h"
-#include <QProcess>
-#include <QFile>
 #include "../commondefine.h"
 
 QString DeviceFactory::s_GeneratorKey = "";
@@ -18,6 +23,7 @@ DeviceFactory::DeviceFactory()
 
 DeviceGenerator *DeviceFactory::getDeviceGenerator()
 {
+    // 根据架构创建设备信息生成器
     DeviceGenerator *generator = nullptr;
     if (!generator) {
         if (s_GeneratorKey == "x86_64")
@@ -41,5 +47,6 @@ DeviceGenerator *DeviceFactory::getDeviceGenerator()
 
 void DeviceFactory::setGeneratorKey(const QString &key)
 {
+    // 设置机器架构
     s_GeneratorKey = key;
 }

@@ -1,23 +1,24 @@
 /*
- * Copyright (C) 2019 ~ 2019 Deepin Technology Co., Ltd.
- *
- * Author:     LZ <zhou.lu@archermind.com>
- *
- * Maintainer: LZ <zhou.lu@archermind.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+*
+* Author:     Jun.Liu <liujuna@uniontech.com>
+*
+* Maintainer: XiaoMei.Ji <jixiaomei@uniontech.com>
+* Maintainer: Jun.Liu <liujuna@uniontech.com>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef DEVICEDETAILPAGE_H
 #define DEVICEDETAILPAGE_H
@@ -37,6 +38,11 @@ class QVBoxLayout;
 
 using namespace Dtk::Widget;
 
+/**
+ * @brief The DetailButton class
+ * 控件，展开和收起
+ */
+
 class DetailButton: public DCommandLinkButton
 {
     Q_OBJECT
@@ -52,6 +58,10 @@ protected:
     void paintEvent(QPaintEvent *e) override;
 };
 
+/**
+ * @brief The DetailSeperator class
+ * 分割线
+ */
 class DetailSeperator: public DWidget
 {
     Q_OBJECT
@@ -62,6 +72,10 @@ protected:
     void paintEvent(QPaintEvent *e) override;
 };
 
+/**
+ * @brief The ScrollAreaWidget class
+ * 滑动区域
+ */
 class ScrollAreaWidget: public DWidget
 {
     Q_OBJECT
@@ -73,7 +87,10 @@ protected:
 
 };
 
-
+/**
+ * @brief The PageDetail class
+ * UI 设备详细信息的展示
+ */
 class PageDetail : public DWidget
 {
     Q_OBJECT
@@ -102,6 +119,8 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *e) override;
+
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     /**
@@ -143,8 +162,6 @@ private slots:
      */
     void slotExportInfo();
     void slotCopyAllInfo();
-
-
 
 private:
     QVBoxLayout      *mp_ScrollAreaLayout;

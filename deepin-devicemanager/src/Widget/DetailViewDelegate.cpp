@@ -1,13 +1,18 @@
+// 项目自身文件
 #include "DetailViewDelegate.h"
 
+// Qt库文件
 #include <QPainter>
 #include <QDebug>
+#include <QPainterPath>
 
+// Dtk头文件
 #include <DApplication>
 #include <DStyle>
 #include <DApplicationHelper>
 #include <DFontSizeManager>
 
+// 其它头文件
 #include "DetailTreeView.h"
 
 DWIDGET_USE_NAMESPACE
@@ -64,7 +69,6 @@ void DetailViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
     // 第一列右空一个像素
     rectpath.setWidth(rect.width() - 1);
-//    qDebug() << index.row() << rect;
 
     // 最后一行是更多信息按钮行，背景色为白色，单元格上边框要绘制横线以
     if (index.row() == dynamic_cast<DetailTreeView *>(this->parent())->rowCount() - 1

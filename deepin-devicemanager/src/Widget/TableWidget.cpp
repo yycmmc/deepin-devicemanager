@@ -1,5 +1,7 @@
+// 项目自身文件
 #include "TableWidget.h"
 
+// Dtk头文件
 #include <DFontSizeManager>
 #include <DApplication>
 #include <DStyle>
@@ -7,10 +9,13 @@
 #include <DHeaderView>
 #include <DMenu>
 
+// Qt库文件
 #include <QPainter>
 #include <QDebug>
 #include <QHBoxLayout>
+#include <QPainterPath>
 
+// 其它头文件
 #include "MacroDefinition.h"
 #include "logviewitemdelegate.h"
 #include "logtreeview.h"
@@ -81,6 +86,12 @@ void TableWidget::clear()
     }
 }
 
+void TableWidget::setRowNum(int row)
+{
+    // 设置表格行数
+    mp_Table->setRowNum(row);
+}
+
 void TableWidget::paintEvent(QPaintEvent *e)
 {
     DWidget::paintEvent(e);
@@ -105,7 +116,8 @@ void TableWidget::paintEvent(QPaintEvent *e)
         cg = DPalette::Inactive;
     }
 
-    this->setFixedHeight(36 * 5 + 4);
+    // 设置Widget固定高度,(+1)表示包含表头高度,(*2)表示上下边距，为保证treewidget横向滚动条与item不重叠，添加滚动条高度
+    this->setFixedHeight(TREE_ROW_HEIGHT * (mp_Table->RowNum() + 1) + HORSCROLL_WIDTH + WIDGET_MARGIN * 2);
     QRect rect  = this->rect();
 
     // 开始绘制边框 *********************************************************
@@ -158,7 +170,6 @@ void TableWidget::slotActionEnable()
     if (!mp_Table) {
         return;
     }
-
     if (mp_Enable->text() == tr("Enable")) {
         emit enableDevice(mp_Table->currentRow(), true);
     } else {

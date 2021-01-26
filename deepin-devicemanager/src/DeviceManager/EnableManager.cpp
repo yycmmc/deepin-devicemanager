@@ -1,8 +1,14 @@
+// 项目自身文件
 #include "EnableManager.h"
+
+// Qt库文件
 #include <QDebug>
 #include <QProcess>
 #include <QTime>
+
+// 其它头文件
 #include <stdlib.h>
+#include "ZmqOrder.h"
 
 EnableManager *EnableManager::s_Instance = nullptr;
 
@@ -13,8 +19,10 @@ EnableManager::EnableManager()
 
 EnableDeviceStatus EnableManager::enableDeviceByInput(const QString &name, bool enable, int index)
 {
+    // 获取输入设备ID
     int id = getDeviceID(name, enable, index);
 
+    // 通过ID禁用启用设备
     QString cmd = QString("xinput %1 %2").arg(enable ? "enable" : "disable").arg(id);
     QProcess process;
     int msecs = -1;
@@ -22,14 +30,17 @@ EnableDeviceStatus EnableManager::enableDeviceByInput(const QString &name, bool 
     process.waitForFinished(msecs);
     int exitCode = process.exitCode();
     QString output = process.readAllStandardOutput();
+
     if (exitCode == 0) {
         return EDS_Success;
     }
+
     return EDS_Faild;
 }
 
 bool EnableManager::isDeviceEnable(const QString &name)
 {
+    // 根据输入设备名称判断设备禁用启用状态
     QString cmd = "xinput list-props \"" + name + "\" ";
     QProcess process;
     int msecs = -1;
@@ -37,10 +48,13 @@ bool EnableManager::isDeviceEnable(const QString &name)
     process.waitForFinished(msecs);
     QString output = process.readAllStandardOutput();
     QStringList listOutput = output.split("\n");
+
+    // 获取禁用启用信息
     foreach (const QString &str, listOutput) {
         if (!str.contains("Device Enabled")) {
             continue;
         }
+
         QStringList items = str.trimmed().split(":");
         if (items.size() != 2) {
             return true;
@@ -57,6 +71,7 @@ bool EnableManager::isDeviceEnable(const QString &name)
 
 bool EnableManager::isDeviceEnable(int id)
 {
+    // 根据输入设备ID判断设备禁用启用状态
     QString cmd = QString("xinput list-props %1").arg(id);
     QProcess process;
     int msecs = -1;
@@ -64,15 +79,19 @@ bool EnableManager::isDeviceEnable(int id)
     process.waitForFinished(msecs);
     QString output = process.readAllStandardOutput();
     QStringList listOutput = output.split("\n");
+
+    // 获取禁用启用信息
     foreach (const QString &str, listOutput) {
         if (!str.contains("Device Enabled")) {
             continue;
         }
+
         QStringList items = str.trimmed().split(":");
         if (items.size() != 2) {
             return true;
         }
 
+        // 1:启用状态
         if (items[1].trimmed() == "1") {
             return true;
         } else {
@@ -84,32 +103,22 @@ bool EnableManager::isDeviceEnable(int id)
 
 EnableDeviceStatus EnableManager::enableDeviceByDriver(bool enable, const QString &driver)
 {
-    if (!getPasswd()) {
-        return EDS_Cancle;
-    }
-
-    QDateTime dt = QDateTime::currentDateTime();
-    QString dtStr = dt.toString("yyyy:MM:dd:hh:mm:ss");
-    QString dtInt = QString::number(dt.toMSecsSinceEpoch());
-    QString key = getPKStr(dtStr, dtInt);
-
+    // 生成命令
     QString cmd;
     if (enable) {
-        cmd = QString("pkexec deepin-devicemanager-authenticateProxy \"insmod %1\" %2").arg(getDriverPath(driver)).arg(key);
+        cmd = QString("insmod %1").arg(getDriverPath(driver));
     } else {
-        cmd = QString("pkexec deepin-devicemanager-authenticateProxy \"rmmod %1\" %2").arg(driver).arg(key);
+        cmd = QString("rmmod %1").arg(driver);
     }
 
-    QProcess process;
-    int msecs = -1;
-    process.start(cmd);
-    process.waitForFinished(msecs);
-    int exitcode = process.exitCode();
-    if (exitcode == 127 || exitcode == 126) {
-        return EDS_Cancle;
+    // 连接到后台
+    ZmqOrder order;
+    if (!order.connect()) {
+        return  EDS_Faild;
     }
-    QString output = process.readAllStandardOutput();
-    if (output == "") {
+
+    // 通知后台执行禁用操作
+    if (order.execDriverOrder(cmd)) {
         return EDS_Success;
     } else {
         return EDS_Faild;
@@ -122,6 +131,7 @@ bool EnableManager::isDeviceEnableByDriver(const QString &driver)
         return false;
     }
 
+    // 获取lsmod信息
     QString cmd = "lsmod";
     QProcess process;
     int msecs = -1;
@@ -129,16 +139,38 @@ bool EnableManager::isDeviceEnableByDriver(const QString &driver)
     process.waitForFinished(msecs);
     QString output = process.readAllStandardOutput();
     QStringList drivers = output.split("\n");
+
+    // 判断驱动是否在lsmod列表中
     foreach (const QString &d, drivers) {
         if (d.startsWith(driver)) {
             return true;
         }
     }
+
+    // 获取cat /boot/config* | grep '=y'信息
+    cmd = "cat /boot/config* | grep '=y'";
+    QStringList options;
+
+    // QProcess执行带管道的命令
+    options << "-c" << cmd;
+    process.start("/bin/bash", options);
+    process.waitForFinished(msecs);
+    output = process.readAllStandardOutput();
+    drivers = output.split("\n");
+
+    // 判断驱动是否在/boot/config* 列表中
+    foreach (const QString &d, drivers) {
+        if (d.contains(driver, Qt::CaseInsensitive)) {
+            return true;
+        }
+    }
+
     return false;
 }
 
 EnableDeviceStatus EnableManager::enablePrinter(const QString &name, bool enable)
 {
+    // 打印机禁用、启用
     QString cmd;
     if (true == enable) {
         cmd = "cupsenable " + name;
@@ -160,48 +192,40 @@ EnableDeviceStatus EnableManager::enablePrinter(const QString &name, bool enable
 
 EnableDeviceStatus EnableManager::enableNetworkByIfconfig(const QString &logicalName, bool enable)
 {
-    if (!getPasswd()) {
-        return EDS_Cancle;
-    }
-
-    QDateTime dt = QDateTime::currentDateTime();
-    QString dtStr = dt.toString("yyyy:MM:dd:hh:mm:ss");
-    QString dtInt = QString::number(dt.toMSecsSinceEpoch());
-    QString key = getPKStr(dtStr, dtInt);
-
+    // 生成命令
     QString cmd;
     if (enable) {
-        cmd = QString("pkexec deepin-devicemanager-authenticateProxy \"ifconfig %1 up\" %2").arg(logicalName).arg(key);
+        cmd = QString("ifconfig %1 up").arg(logicalName);
     } else {
-        cmd = QString("pkexec deepin-devicemanager-authenticateProxy \"ifconfig %1 down\" %2").arg(logicalName).arg(key);
+        cmd = QString("ifconfig %1 down").arg(logicalName);
     }
 
-    QProcess process;
-    int msecs = -1;
-    process.start(cmd);
-    process.waitForFinished(msecs);
-
-    int exitCode = process.exitCode();
-    if (exitCode == 126 || exitCode == 127) {
-        return EDS_Cancle;
+    // 连接到后台
+    ZmqOrder order;
+    if (!order.connect()) {
+        return  EDS_Faild;
     }
 
-    QString output = process.readAllStandardOutput();
-    if (output == "") {
+    // 执行命令
+    if (order.execIfconfigOrder(cmd)) {
         return EDS_Success;
     } else {
         return EDS_Faild;
     }
+
 }
 
 bool EnableManager::isNetworkEnableByIfconfig(const QString &logicalName)
 {
+    // 获取ifconfig信息
     QString cmd = "ifconfig";
     QProcess process;
     int msecs = -1;
     process.start(cmd);
     process.waitForFinished(msecs);
     QString output = process.readAllStandardOutput();
+
+    // 判断网卡是否通过ifconfig配置
     QStringList items = output.split("\n\n");
     foreach (const QString &item, items) {
         if (item.startsWith(logicalName)) {
@@ -213,8 +237,10 @@ bool EnableManager::isNetworkEnableByIfconfig(const QString &logicalName)
 
 int EnableManager::getDeviceID(const QString &name, bool enable, int index)
 {
+    // 获取输入设备ID
     int id = -1;
     int curIndex = -1;
+
     // 先判断有没有同名
     QString cmd = "xinput list";
     QProcess process;
@@ -240,77 +266,17 @@ int EnableManager::getDeviceID(const QString &name, bool enable, int index)
     return id;
 }
 
-QString EnableManager::getPKStr(const QString &dtStr, const QString &dtInt)
-{
-    QString res = "";
-    QString str = dtStr;
-    str.replace(":", "");
-
-    int year = str.mid(0, 4).toInt() - 253;
-    int month = str.mid(4, 2).toInt() * 7;
-    int day = str.mid(6, 2).toInt() * 3;
-    int hour = str.mid(8, 2).toInt() * 4;
-    int minus = str.mid(10, 2).toInt();
-    int second = str.mid(12, 2).toInt();
-
-    QString yearStr = QString("%1").arg(year, 4, 10, QLatin1Char('0'));
-    QString monthStr = QString("%1").arg(month, 2, 10, QLatin1Char('0'));
-    QString dayStr = QString("%1").arg(day, 2, 10, QLatin1Char('0'));
-    QString hourStr = QString("%1").arg(hour, 2, 10, QLatin1Char('0'));
-    QString minusStr = QString("%1").arg(minus, 2, 10, QLatin1Char('0'));
-    QString secondStr = QString("%1").arg(second, 2, 10, QLatin1Char('0'));
-
-    str = dtInt;
-    QString value1 = str.mid(0, 1);
-    QString value2 = str.mid(1, 2);
-    QString value3 = str.mid(3, 3);
-    QString value4 = str.mid(6, 4);
-    QString value5 = str.mid(10);
-
-    QTime time = QTime::currentTime();
-    qsrand(uint(time.msec()) + uint(time.second()) * 1000);
-    int random = (qrand() % 10000 + 10000) * 3;  //产生随机数
-    QString randomS = QString::number(random);
-
-    QString newDtStr = QString("%1%2%3%4%5%6%7%8%9%10%11%12").arg(value4).arg(dayStr).arg(value2).arg(secondStr).arg(value1).arg(hourStr).arg(value3).arg(monthStr).arg(yearStr).arg(minusStr).arg(value5).arg(randomS);
-
-    return newDtStr;
-}
-void EnableManager::getPKStr(QString &dtStr, QString &dtInt, const QString &cStr)
-{
-    QString value4 = cStr.mid(0, 4);
-    QString dayStr = QString("%1").arg(cStr.mid(4, 2).toInt() / 3, 2, 10, QLatin1Char('0'));
-    QString value2 = cStr.mid(6, 2);
-    QString secondStr = QString("%1").arg(cStr.mid(8, 2).toInt(), 2, 10, QLatin1Char('0'));
-    QString value1 = cStr.mid(10, 1);
-    QString hourStr = QString("%1").arg(cStr.mid(11, 2).toInt() / 4, 2, 10, QLatin1Char('0'));
-    QString value3 = cStr.mid(13, 3);
-    QString monthStr = QString("%1").arg(cStr.mid(16, 2).toInt() / 7, 2, 10, QLatin1Char('0'));
-    QString yearStr = QString("%1").arg(cStr.mid(18, 4).toInt() + 253, 4, 10, QLatin1Char('0'));
-    QString minuStr = cStr.mid(22, 2);
-
-    QString value5 = cStr.mid(24);
-    QString extraS = value5.right(5);
-    value5.replace(extraS, "");
-
-    int extraInt = extraS.toInt();
-    if (extraInt % 3 != 0) {
-        dtStr = "111";
-        return;
-    }
-
-    dtStr = QString("%1:%2:%3:%4:%5:%6").arg(yearStr, monthStr, dayStr, hourStr, minuStr, secondStr);
-    dtInt = QString("%1%2%3%4%5").arg(value1).arg(value2).arg(value3).arg(value4).arg(value5);
-}
-
 QString EnableManager::getDriverPath(const QString &driver)
 {
+    // 执行modinfo命令
     QString path;
     QString cmd = QString("modinfo %1").arg(driver);
     QProcess process;
     int msecs = -1;
     process.start(cmd);
     process.waitForFinished(msecs);
+
+    // 获取驱动路径
     QString output = process.readAllStandardOutput();
     QStringList lst = output.split("\n");
     foreach (const QString &item, lst) {
@@ -323,19 +289,5 @@ QString EnableManager::getDriverPath(const QString &driver)
         }
     }
     return path;
-}
-
-bool EnableManager::getPasswd()
-{
-    QString cmd = QString("pkexec deepin-devicemanager-authenticateProxy \"whoami\"");
-    QProcess process;
-    int msecs = -1;
-    process.start(cmd);
-    bool res = process.waitForFinished(msecs);
-    int exitcode = process.exitCode();
-    if (exitcode == 127 || exitcode == 126) {
-        return false;
-    }
-    return res;
 }
 

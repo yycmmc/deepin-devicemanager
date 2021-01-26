@@ -68,24 +68,6 @@ void TipsWidget::setAlignment(Qt::Alignment alignment)
     update();
 }
 
-void TipsWidget::setLeftRightMargin(int margin)
-{
-    m_lrMargin = margin;
-    update();
-}
-
-void TipsWidget::setTopBottomMargin(int margin)
-{
-    m_tbMargin = margin;
-    update();
-}
-
-void TipsWidget::setMaxLineCount(int maxLinecnt)
-{
-    m_maxLineCount = maxLinecnt;
-    update();
-}
-
 void TipsWidget::paintEvent(QPaintEvent *event)
 {
     DWidget::paintEvent(event);
@@ -102,7 +84,7 @@ void TipsWidget::paintEvent(QPaintEvent *event)
 
 void TipsWidget::adjustContent(const QString &text)
 {
-    qDebug() << text;
+//    qInfo() << text;
     QFontMetricsF fontMetris(this->font());
     int wordHeight = static_cast<int>(fontMetris.boundingRect(QRectF(0, 0, this->width() - 2 * m_lrMargin, 0),
                                                               static_cast<int>(m_alignment | Qt::TextWrapAnywhere), text).height() + 2 * m_tbMargin);

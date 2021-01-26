@@ -1,4 +1,7 @@
+// 项目自身文件
 #include "DeviceComputer.h"
+
+// Qt库文件
 #include <QDebug>
 
 DeviceComputer::DeviceComputer()
@@ -13,26 +16,6 @@ DeviceComputer::DeviceComputer()
 
 }
 
-const QString &DeviceComputer::homeUrl()const
-{
-    return m_HomeUrl;
-}
-
-const QString &DeviceComputer::osDescription()
-{
-    return m_OsDescription;
-}
-
-const QString &DeviceComputer::os()
-{
-    return m_OS;
-}
-
-const QString &DeviceComputer::vendor()
-{
-    return m_Vendor;
-}
-
 const QString &DeviceComputer::name() const
 {
     return m_Name;
@@ -41,11 +24,6 @@ const QString &DeviceComputer::name() const
 const QString &DeviceComputer::driver() const
 {
     return m_Driver;
-}
-
-const QString &DeviceComputer::type()
-{
-    return m_Type;
 }
 
 void DeviceComputer::setHomeUrl(const QString &value)
